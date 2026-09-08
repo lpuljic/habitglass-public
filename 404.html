@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — HabitGlass</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#05070d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef3ff" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/assets/icon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script>
+  (function () {
+    var t;
+    try { t = localStorage.getItem('hg-theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') {
+      t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    document.documentElement.dataset.theme = t;
+    document.documentElement.classList.add('js');
+  })();
+</script>
+</head>
+<body>
+
+<main class="shell oops">
+  <p class="kicker" style="margin-bottom:0">404</p>
+  <h1 style="font-size:clamp(2.2rem,5vw,3.4rem)">A gap in the grid.</h1>
+  <p class="lede" style="max-width:30rem;margin-inline:auto">
+    This page isn't here. Fill in a few bubbles while you decide where to go next.
+  </p>
+  <div class="field" data-field role="group" aria-label="A grid of bubbles you can fill in"></div>
+  <p class="cta-row" style="justify-content:center">
+    <a class="btn btn-primary" href="/">Back to HabitGlass</a>
+    <a class="btn btn-ghost" href="/support.html">Support</a>
+  </p>
+</main>
+
+<script src="/assets/js/site.js" defer></script>
+</body>
+</html>

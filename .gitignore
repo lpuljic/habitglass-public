@@ -1,0 +1,6 @@
+.DS_Store
+
+# Full-resolution XCUITest captures. Regenerate with `make test-ui-light` /
+# `make test-ui-dark` in the HabitGlass repo, then re-run tools/optimise-shots.sh.
+# Only the optimised assets/shots/*.webp are published.
+assets/screens/

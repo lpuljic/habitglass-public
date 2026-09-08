@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- Source for assets/og.png. Rendered by tools/make-og.sh at 1200x630. -->
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../assets/css/site.css">
+<style>
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body::before { inset: 0; animation: none; }
+  .card {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    align-items: center;
+    padding: 60px 0 60px 80px;
+  }
+  .mark {
+    width: 76px;
+    height: 76px;
+    border-radius: 20px;
+    box-shadow: 0 18px 40px -14px rgba(41, 115, 255, 0.8);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+  }
+  h1 { font-size: 70px; margin: 30px 0 0; }
+  p { font-size: 23px; line-height: 1.45; color: var(--ink-soft); margin-top: 20px; max-width: 600px; }
+  .strip {
+    display: flex;
+    gap: 26px;
+    margin-top: 32px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  /* The handset is taken out of flow on purpose: in flow it is 780px tall,
+     which stretches the grid row and shoves the text block off the bottom. */
+  .stage { position: relative; }
+  .stage::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    left: -30px;
+    width: 460px;
+    height: 460px;
+    border-radius: 50%;
+    background: var(--brand-ramp);
+    filter: blur(90px);
+    opacity: 0.4;
+  }
+  .device {
+    position: absolute;
+    top: -150px;
+    left: 30px;
+    width: 330px;
+    transform: rotate(-4deg);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div>
+      <div class="wordmark">
+        <img class="mark" src="../assets/icon.svg" alt="" width="76" height="76">
+        HabitGlass
+      </div>
+      <h1>Your habits, as a<br><span class="ramp">constellation</span>.</h1>
+      <p>A habit tracker for iOS 26. One tap fills a bubble, and your data never leaves your phone.</p>
+      <div class="strip">
+        <span>On-device</span><span>No account</span><span>No analytics</span>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="device">
+        <div class="device-screen">
+          <img src="../assets/shots/home-dark.webp" width="1206" height="2622" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

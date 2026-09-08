@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — HabitGlass</title>
+<meta name="description" content="Your habit data lives on your device. HabitGlass has no accounts, no analytics and no telemetry. Here is the whole policy in plain English.">
+<link rel="canonical" href="https://habitglass.info/privacy.html">
+<meta name="theme-color" content="#05070d" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#eef3ff" media="(prefers-color-scheme: light)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Privacy Policy — HabitGlass">
+<meta property="og:description" content="Your habit data lives on your device. No accounts, no analytics, no telemetry.">
+<meta property="og:url" content="https://habitglass.info/privacy.html">
+<meta property="og:image" content="https://habitglass.info/assets/og.jpg">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/satoshi-900.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/satoshi-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/site.css">
+<script>
+  (function () {
+    var t;
+    try { t = localStorage.getItem('hg-theme'); } catch (e) {}
+    if (t !== 'light' && t !== 'dark') {
+      t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+    document.documentElement.dataset.theme = t;
+    document.documentElement.classList.add('js');
+  })();
+</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-7-7 7 7 7"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-head">
+  <div class="shell">
+    <div class="head-row">
+      <a class="brand" href="index.html">
+        <img class="brand-mark" src="assets/icon.svg" alt="" width="32" height="32">
+        HabitGlass
+      </a>
+      <div class="head-actions" style="margin-inline-start:auto">
+        <a class="back-link" href="index.html" style="margin-right:.75rem">
+          <svg aria-hidden="true"><use href="#i-back"/></svg> Home
+        </a>
+        <div class="theme-toggle" role="group" aria-label="Appearance">
+          <button type="button" data-set-theme="light" aria-pressed="false" title="Light appearance">
+            <svg aria-hidden="true"><use href="#i-sun"/></svg><span class="sr-only">Light</span>
+          </button>
+          <button type="button" data-set-theme="dark" aria-pressed="true" title="Dark appearance">
+            <svg aria-hidden="true"><use href="#i-moon"/></svg><span class="sr-only">Dark</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="shell doc-head">
+    <p class="kicker" style="margin-bottom:0">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p class="meta">Effective September 4, 2026</p>
+  </div>
+
+  <div class="shell" style="padding-bottom:clamp(3rem,7vw,6rem)">
+    <article class="doc glass prose">
+      <p class="callout">
+        <strong>The short version.</strong> Your habit data lives on your device.
+        I don't collect it, and I don't want to. There is no account, no analytics
+        SDK and no telemetry anywhere in the app.
+      </p>
+
+      <p>
+        Habit Glass ("the app") is built by Lano Puljic ("I", "me"). This policy
+        explains what data the app handles and how it stays private. The short
+        version: your habit data lives on your device, I don't collect it, and I
+        don't want to.
+      </p>
+
+      <h2 id="on-device">What data stays on your device</h2>
+      <p>
+        Everything you create in Habit Glass (habits, check-ins, notes, schedules,
+        and preferences) is stored locally on your iPhone using Apple's SwiftData
+        framework. This data never leaves your device unless you turn on iCloud
+        sync.
+      </p>
+      <p>The app also stores small pieces of local state:</p>
+      <ul>
+        <li>Your appearance preference (light, dark, or system)</li>
+        <li>Whether you've completed onboarding</li>
+        <li>Your iCloud sync preference</li>
+        <li>A cached copy of your subscription status in the device Keychain, so Pro features work offline</li>
+      </ul>
+
+      <h2 id="icloud">iCloud sync</h2>
+      <p>
+        If you're a Habit Glass Pro subscriber, you can turn on iCloud sync. When
+        enabled, your habit data is mirrored to your <strong>private</strong>
+        iCloud database using Apple's CloudKit. This means the data syncs between
+        your devices through your own Apple ID. I have no access to your CloudKit
+        data, and Apple handles it under their
+        <a href="https://www.apple.com/legal/privacy/">privacy policy</a>.
+      </p>
+      <p>
+        iCloud sync is entirely optional. You can turn it off at any time in
+        Settings, and your data remains on-device.
+      </p>
+
+      <h2 id="payments">Subscriptions and payments</h2>
+      <p>
+        Habit Glass offers optional paid subscriptions and a lifetime purchase,
+        processed entirely through Apple's App Store. I never see your payment
+        details, credit card number, or Apple ID.
+      </p>
+      <p>
+        To manage subscriptions and verify your purchase status, the app uses
+        <a href="https://www.revenuecat.com">RevenueCat</a>, a third-party
+        subscription platform. RevenueCat receives an anonymous app user ID and
+        your App Store transaction data to confirm your entitlements. RevenueCat
+        does not receive your name, email, or any habit data. You can review their
+        privacy practices at
+        <a href="https://www.revenuecat.com/privacy/">revenuecat.com/privacy</a>.
+      </p>
+
+      <h2 id="not-collected">What I don't collect</h2>
+      <p>To be direct about it:</p>
+      <ul>
+        <li>No analytics or usage tracking</li>
+        <li>No crash reporting services</li>
+        <li>No advertising or ad networks</li>
+        <li>No device fingerprinting</li>
+        <li>No location data</li>
+        <li>No health data</li>
+        <li>No contacts, photos, or camera access</li>
+        <li>No server-side accounts or registration</li>
+        <li>No telemetry of any kind</li>
+      </ul>
+      <p>
+        The app's Apple privacy manifest declares <code>NSPrivacyTracking: false</code>
+        with no collected data types. That's not a technicality, it's the whole
+        design philosophy.
+      </p>
+
+      <h2 id="notifications">Notifications</h2>
+      <p>
+        Habit Glass can send local notifications to remind you about your habits.
+        These are scheduled and delivered entirely on your device by iOS. No
+        notification data is sent to me or any server. You can disable
+        notifications in the app's settings or in iOS Settings at any time.
+      </p>
+
+      <h2 id="third-parties">Third-party services</h2>
+      <p>The app uses exactly two external services:</p>
+      <ul>
+        <li>
+          <strong>Apple (App Store, iCloud, push infrastructure)</strong> &ndash;
+          Handles payments, optional CloudKit sync, and silent push delivery for
+          sync. Governed by
+          <a href="https://www.apple.com/legal/privacy/">Apple's privacy policy</a>.
+        </li>
+        <li>
+          <strong>RevenueCat</strong> &ndash;
+          Subscription receipt validation. Receives anonymous transaction data
+          only. Governed by
+          <a href="https://www.revenuecat.com/privacy/">RevenueCat's privacy policy</a>.
+        </li>
+      </ul>
+      <p>There are no other third-party SDKs, frameworks, or services in the app.</p>
+
+      <h2 id="deletion">Data deletion</h2>
+      <p>
+        You can delete all your habit data from Settings &gt; Data &gt; Delete All
+        Data. This permanently removes all habits and check-ins from your device.
+        If iCloud sync is enabled, the deletion propagates to your iCloud storage
+        as well.
+      </p>
+      <p>
+        Uninstalling the app removes all local data. To also clear iCloud data,
+        remove it from Settings &gt; Apple ID &gt; iCloud &gt; Manage Storage on
+        your device.
+      </p>
+
+      <h2 id="children">Children's privacy</h2>
+      <p>
+        Habit Glass does not knowingly collect personal information from children
+        under 13. The app doesn't collect personal information from anyone, but if
+        you believe a child is using the app in a way that concerns you, please
+        contact me.
+      </p>
+
+      <h2 id="rights">Your rights</h2>
+      <p>
+        If you're in the European Union, you have rights under the GDPR including
+        access, correction, deletion, data portability, restriction of processing,
+        and the right to object. You can also lodge a complaint with your local
+        data protection authority.
+      </p>
+      <p>
+        In practice, Habit Glass doesn't collect or store your personal data on
+        any server, so there's nothing for me to provide, correct, or delete. For
+        data held by Apple or RevenueCat through their own services, contact them
+        directly under their respective privacy policies.
+      </p>
+
+      <h2 id="changes">Changes to this policy</h2>
+      <p>
+        If this policy changes, I'll update the effective date at the top and post
+        the revised version here. For significant changes, I'll include a note in
+        the app's update description on the App Store.
+      </p>
+
+      <h2 id="contact">Contact</h2>
+      <p>
+        Habit Glass is built by Lano Puljic, based in Sydney, Australia.
+        Questions or concerns about your privacy? Reach me at
+        <a href="mailto:support@habitglass.info">support@habitglass.info</a>.
+      </p>
+
+      <hr>
+      <p class="muted" style="margin-bottom:0">
+        Habit Glass &middot; Built by Lano Puljic &middot;
+        <a href="terms.html">Terms of service</a> &middot;
+        <a href="support.html">Support</a>
+      </p>
+    </article>
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="shell">
+    <div class="foot-base" style="margin-top:0;padding-top:0;border:0">
+      <span>&copy; <span data-year>2026</span> HabitGlass. Built by Lano Puljic.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/site.js" defer></script>
+</body>
+</html>
