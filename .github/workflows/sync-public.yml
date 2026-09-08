@@ -33,9 +33,8 @@ jobs:
 
       - name: Push converted site to target public repo
         env:
-          TOKEN: ${{ secrets.REPO_TOKEN }}
-          # Set as repo secret or update below:
-          TARGET: ${{ vars.TARGET_REPO || 'YOUR_USERNAME/YOUR_PUBLIC_REPO' }}
+          TOKEN: ${{ secrets.HABITGLASS_PUBLIC }}
+          TARGET: lpuljic/habitglass-public
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
