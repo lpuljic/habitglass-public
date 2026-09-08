@@ -37,9 +37,11 @@ jobs:
           TOKEN: ${{ secrets.HABITGLASS_PUBLIC }}
           TARGET: lpuljic/habitglass-public
         run: |
+          # Clear the credential helper that actions/checkout injects,
+          # otherwise it authenticates as github-actions[bot] instead of the PAT.
+          git config --unset-all http.https://github.com/.extraheader || true
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Add or update remote
           git remote add target "https://x-access-token:${TOKEN}@github.com/${TARGET}.git" 2>/dev/null || \
             git remote set-url target "https://x-access-token:${TOKEN}@github.com/${TARGET}.git"
           git branch -M main
