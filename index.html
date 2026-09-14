@@ -95,7 +95,7 @@
       </a>
 
       <nav class="nav" aria-label="Primary">
-        <a href="#inside">Inside the app</a>
+        <a href="#inside">Experience</a>
         <a href="#features">Features</a>
         <a href="#privacy">Privacy</a>
         <a href="#pricing">Pricing</a>
@@ -127,7 +127,7 @@
 
     <div class="mobile-menu glass" id="mobile-menu" hidden>
       <ul>
-        <li><a href="#inside">Inside the app</a></li>
+        <li><a href="#inside">Experience</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#privacy">Privacy</a></li>
         <li><a href="#pricing">Pricing</a></li>
@@ -148,10 +148,11 @@
     <div class="shell">
       <div class="hero-grid">
         <div class="hero-copy">
+          <p class="hero-eyebrow"><span aria-hidden="true"></span>Private by design. Made for iPhone.</p>
           <h1>Your habits, as a <span class="ramp">constellation</span>.</h1>
           <p class="lede">
-            One tap fills a bubble. Thirty of them turn into something you would rather
-            not leave half finished. HabitGlass is a habit tracker, and your data never leaves your phone unless you ask it to.
+            One tap at a time, build a routine you can see. HabitGlass turns daily
+            progress into something worth continuing, while your data stays on your device.
           </p>
           <div class="cta-row">
             <a class="btn btn-primary" href="#">
@@ -166,11 +167,55 @@
         </div>
 
         <div class="hero-stage">
+          <div class="habit-floats" aria-hidden="true">
+            <span class="habit-orbit habit-orbit-water">
+              <span class="habit-float habit-float-water">
+                <span class="habit-float-bubble"></span>
+                Drink water
+                <svg><use href="#i-check"/></svg>
+              </span>
+            </span>
+            <span class="habit-orbit habit-orbit-meditate">
+              <span class="habit-float habit-float-meditate">
+                <span class="habit-float-bubble"></span>
+                Meditate
+                <svg><use href="#i-check"/></svg>
+              </span>
+            </span>
+            <span class="habit-orbit habit-orbit-run">
+              <span class="habit-float habit-float-run">
+                <span class="habit-float-bubble"></span>
+                Morning run
+                <svg><use href="#i-check"/></svg>
+              </span>
+            </span>
+            <span class="habit-orbit habit-orbit-read">
+              <span class="habit-float habit-float-read">
+                <span class="habit-float-bubble"></span>
+                Read 20 pages
+                <svg><use href="#i-check"/></svg>
+              </span>
+            </span>
+            <span class="habit-orbit habit-orbit-journal">
+              <span class="habit-float habit-float-journal">
+                <span class="habit-float-bubble"></span>
+                Daily journal
+                <svg><use href="#i-check"/></svg>
+              </span>
+            </span>
+            <span class="habit-orbit habit-orbit-stretch">
+              <span class="habit-float habit-float-stretch">
+                <span class="habit-float-bubble"></span>
+                Evening stretch
+                <svg><use href="#i-check"/></svg>
+              </span>
+            </span>
+          </div>
           <div class="device device-hero">
             <div class="device-screen">
-              <picture data-shot="home">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-light.webp">
-                <img src="assets/shots/home-dark.webp" width="1206" height="2622" fetchpriority="high"
+              <picture data-shot="phone-home">
+                <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-home-light.webp">
+                <img src="assets/shots/phone-home-dark.webp" width="900" height="1840" fetchpriority="high"
                      alt="The HabitGlass home screen: four habit cards, each with a coloured bubble field showing the month so far.">
               </picture>
             </div>
@@ -230,12 +275,11 @@
   <section id="inside" class="band" style="padding-bottom:0">
     <div class="shell">
       <div class="section-head reveal">
-        <p class="kicker">Inside the app</p>
+        <p class="kicker">The HabitGlass experience</p>
         <h2>Real screens, straight off a real device.</h2>
         <p class="lede">
-          Every shot below came out of the app's own UI test run on an iPhone. Flip the
-          switch in the header and they all change appearance, because both sets were
-          captured the same way.
+          Thoughtful in light and dark, down to the smallest detail. Flip the switch in
+          the header to see both appearances, captured directly from the app.
         </p>
       </div>
     </div>
@@ -259,9 +303,9 @@
         <div class="chapter-stage reveal" style="--stage-glow:#2973ff">
           <div class="device">
             <div class="device-screen">
-              <picture data-shot="home">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-light.webp">
-                <img src="assets/shots/home-dark.webp" width="1206" height="2622" loading="lazy" decoding="async"
+              <picture data-shot="phone-home">
+                <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-home-light.webp">
+                <img src="assets/shots/phone-home-dark.webp" width="900" height="1840" loading="lazy" decoding="async"
                      alt="Home screen with Drink water, Meditate, Morning run and Read a book, each showing a bubble field and a streak chip.">
               </picture>
             </div>
@@ -291,18 +335,18 @@
         <div class="chapter-stage stage-duo reveal" style="--stage-glow:#8c5cff">
           <div class="device">
             <div class="device-screen">
-              <picture data-shot="month">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/month-light.webp">
-                <img src="assets/shots/month-dark.webp" width="1206" height="2622" loading="lazy" decoding="async"
+              <picture data-shot="phone-month">
+                <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-month-light.webp">
+                <img src="assets/shots/phone-month-dark.webp" width="900" height="1840" loading="lazy" decoding="async"
                      alt="The history section: a consistency heatmap above a full September calendar with every day filled in purple.">
               </picture>
             </div>
           </div>
           <div class="device">
             <div class="device-screen">
-              <picture data-shot="detail">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/detail-light.webp">
-                <img src="assets/shots/detail-dark.webp" width="1206" height="2622" loading="lazy" decoding="async"
+              <picture data-shot="phone-detail">
+                <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-detail-light.webp">
+                <img src="assets/shots/phone-detail-dark.webp" width="900" height="1840" loading="lazy" decoding="async"
                      alt="Habit detail for Meditate: streak and completion stat cards, a consistency heatmap, and the start of the September calendar.">
               </picture>
             </div>
@@ -330,9 +374,9 @@
         <div class="chapter-stage reveal" style="--stage-glow:#8c5cff">
           <div class="device">
             <div class="device-screen">
-              <picture data-shot="create">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/create-light.webp">
-                <img src="assets/shots/create-dark.webp" width="1206" height="2622" loading="lazy" decoding="async"
+              <picture data-shot="phone-create">
+                <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-create-light.webp">
+                <img src="assets/shots/phone-create-dark.webp" width="900" height="1840" loading="lazy" decoding="async"
                      alt="The New Habit sheet: a purple flame icon, name and description fields, a row of colour swatches, and repeat, goal and start rows.">
               </picture>
             </div>
@@ -361,9 +405,9 @@
         <div class="chapter-stage reveal" style="--stage-glow:#2973ff">
           <div class="device">
             <div class="device-screen">
-              <picture data-shot="settings">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/settings-light.webp">
-                <img src="assets/shots/settings-dark.webp" width="1206" height="2622" loading="lazy" decoding="async"
+              <picture data-shot="phone-settings">
+                <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-settings-light.webp">
+                <img src="assets/shots/phone-settings-dark.webp" width="900" height="1840" loading="lazy" decoding="async"
                      alt="Settings: the Pro row, iCloud sync, export and import, delete all data, and the appearance picker set to Light.">
               </picture>
             </div>
@@ -678,7 +722,7 @@
       <div class="foot-col">
         <h2>Product</h2>
         <ul>
-          <li><a href="#inside">Inside the app</a></li>
+          <li><a href="#inside">Experience</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#faq">FAQ</a></li>
@@ -704,6 +748,7 @@
 
     <div class="foot-base">
       <span>&copy; <span data-year>2026</span> HabitGlass. Built by Lano Puljic.</span>
+      <span>iPhone is a trademark of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc.</span>
     </div>
   </div>
 </footer>
