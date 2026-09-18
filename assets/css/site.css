@@ -1868,6 +1868,68 @@ section {
   margin-top: 1.2rem;
 }
 
+.release-card.release-layouts {
+  min-height: 0;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: 2rem;
+  padding: clamp(1.25rem, 3vw, 2rem);
+}
+
+.release-layouts .release-copy {
+  padding: 0;
+}
+
+.release-layouts h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.release-layouts .lede {
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+}
+
+.release-layout-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.5rem, 1.5vw, 1rem);
+  width: 100%;
+  max-width: 28rem;
+  justify-self: center;
+}
+
+.release-layout-gallery figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.release-layout-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--hairline);
+  border-radius: clamp(0.6rem, 1.5vw, 1rem);
+}
+
+.release-layout-gallery figcaption {
+  margin-top: 0.625rem;
+  text-align: center;
+}
+
+.release-layout-gallery h3 {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+@media (max-width: 900px) {
+  .release-card.release-layouts {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+
 .change-groups {
   display: grid;
   gap: 1.6rem;
