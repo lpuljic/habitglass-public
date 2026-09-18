@@ -506,12 +506,46 @@ section {
 }
 
 .nav a {
+  position: relative;
   color: var(--ink-soft);
-  transition: color 0.2s var(--ease);
+  transition: color 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
-.nav a:hover {
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.35rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-ramp);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.28s var(--ease);
+}
+
+.nav a:hover,
+.nav a:focus-visible {
   color: var(--ink);
+  transform: translateY(-1px);
+}
+
+.nav a:hover::after,
+.nav a:focus-visible::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav a,
+  .nav a::after {
+    transition: none;
+  }
+
+  .nav a:hover,
+  .nav a:focus-visible {
+    transform: none;
+  }
 }
 
 .head-actions {
