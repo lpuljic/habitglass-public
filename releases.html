@@ -40,8 +40,6 @@
     <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
     <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-7-7 7 7 7"/></symbol>
     <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></symbol>
-    <symbol id="i-tune" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></symbol>
-    <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5-5L12 3.6 8.4 7.2 6.1 4.9a4 4 0 0 0 5 5L4 17a2.1 2.1 0 0 0 3 3l7.1-7.1a4 4 0 0 0 5-5l-2.3 2.3-3.6-3.6Z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
   </defs>
 </svg>
@@ -88,38 +86,67 @@
         </div>
         <div class="release-card release-layouts glass">
           <div class="release-copy">
-            <p class="kicker">New · Free for everyone</p>
-            <h2 id="release-110">Your home screen, your way.</h2>
-            <p class="lede">Shape Home around the way you think and track habits.</p>
-            <ul class="launch-grid release-layout-highlights">
-              <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Cards, Bubble rows, or Mini constellations.</li>
-              <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Preview layouts in Settings.</li>
-              <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Tap Home dots or swipe to switch.</li>
-              <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Emoji or SF Symbols for habits and categories.</li>
-            </ul>
+            <p class="kicker">Free for everyone</p>
+            <h2 id="release-110">A clearer way to keep going.</h2>
+            <p class="lede">Make Home yours. Give Read a Book the progress it deserves.</p>
+            <div class="release-highlight-groups">
+              <section class="release-highlight-group" aria-label="UI changes">
+                <h3 class="release-highlight-title"><span aria-hidden="true">🎨</span>UI Changes</h3>
+                <ul class="launch-grid release-layout-highlights">
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Choose Cards, Bubble rows, or Mini constellations for Home.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Preview layouts in Settings, then switch with dots or a swipe.</li>
+                </ul>
+              </section>
+              <section class="release-highlight-group" aria-label="New features">
+                <h3 class="release-highlight-title"><span aria-hidden="true">✨</span>New Features</h3>
+                <ul class="launch-grid release-layout-highlights">
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Personalize habits and custom categories with full-color emoji or SF Symbols.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>📚 Attach books to Read a Book, log pages, and keep finished books in history.</li>
+                </ul>
+              </section>
+            </div>
           </div>
-          <div class="release-layout-gallery">
-            <figure>
-              <picture data-shot="release-110-cards">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-cards-light.webp">
-                <img src="assets/shots/release-110-cards-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with roomy habit cards and full monthly bubble clouds.">
-              </picture>
-              <figcaption><h3>Cards</h3></figcaption>
-            </figure>
-            <figure>
-              <picture data-shot="release-110-rows">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-rows-light.webp">
-                <img src="assets/shots/release-110-rows-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with compact Bubble rows and a small activity cloud beside each habit.">
-              </picture>
-              <figcaption><h3>Bubble rows</h3></figcaption>
-            </figure>
-            <figure>
-              <picture data-shot="release-110-tiles">
-                <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-tiles-light.webp">
-                <img src="assets/shots/release-110-tiles-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with Mini constellations arranged in a two-column grid.">
-              </picture>
-              <figcaption><h3>Mini constellations</h3></figcaption>
-            </figure>
+          <div class="release-slideshow" aria-label="HabitGlass v1.1.0 highlights">
+            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-1" checked>
+            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-2">
+            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-3">
+            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-4">
+            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-5">
+
+            <div class="release-slides">
+              <figure class="release-slide release-slide-1">
+                <picture data-shot="release-110-cards">
+                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-cards-light.webp">
+                  <img src="assets/shots/release-110-cards-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with roomy habit cards and full monthly bubble clouds.">
+                </picture>
+              </figure>
+              <figure class="release-slide release-slide-2">
+                <img src="assets/shots/release-110-reading-detail-dark.webp" width="368" height="800" loading="lazy" alt="HabitGlass habit details showing Atomic Habits as the current book.">
+              </figure>
+              <figure class="release-slide release-slide-3">
+                <img src="assets/shots/release-110-book-detail-dark.webp" width="368" height="800" loading="lazy" alt="HabitGlass book details showing reading progress and session controls.">
+              </figure>
+              <figure class="release-slide release-slide-4">
+                <picture data-shot="release-110-rows">
+                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-rows-light.webp">
+                  <img src="assets/shots/release-110-rows-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with compact Bubble rows and a small activity cloud beside each habit.">
+                </picture>
+              </figure>
+              <figure class="release-slide release-slide-5">
+                <picture data-shot="release-110-tiles">
+                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-tiles-light.webp">
+                  <img src="assets/shots/release-110-tiles-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with Mini constellations arranged in a two-column grid.">
+                </picture>
+              </figure>
+            </div>
+
+            <div class="release-slide-nav" aria-label="Choose a v1.1.0 preview">
+              <label for="release-110-slide-1"><span>01</span>Cards</label>
+              <label for="release-110-slide-2"><span>02</span>Habit details</label>
+              <label for="release-110-slide-3"><span>03</span>Book tracking</label>
+              <label for="release-110-slide-4"><span>04</span>Bubble rows</label>
+              <label for="release-110-slide-5"><span>05</span>Mini constellations</label>
+            </div>
           </div>
         </div>
       </article>
@@ -127,70 +154,60 @@
       <article class="release-entry release-featured reveal" aria-labelledby="release-101">
         <div class="release-meta">
           <span class="release-version">v1.0.1</span>
+          <span class="release-status release-status-released"><svg aria-hidden="true"><use href="#i-check"/></svg>Released</span>
           <time datetime="2026-09">September 2026</time>
         </div>
 
-        <div class="release-card glass">
+        <div class="release-card release-layouts glass">
           <div class="release-copy">
-            <p class="kicker">Next update</p>
+            <p class="kicker">The polish update</p>
             <h2 id="release-101">Your habits, easier to shape.</h2>
             <p class="lede">Put routines in your order, understand progress faster, and spend less time hunting for useful actions.</p>
 
-            <div class="change-groups">
-              <section class="change-group change-group-new">
-                <span class="change-icon change-new" aria-hidden="true"><svg><use href="#i-sparkle"/></svg></span>
-                <div>
-                  <h3>New</h3>
-                  <ul>
-                    <li>See clearer month and day labels in consistency views.</li>
-                    <li>Reorder habit cards to keep important routines close.</li>
-                    <li>Create custom habit colors with the new color picker.</li>
-                    <li>Long-press hints reveal useful habit actions.</li>
-                  </ul>
-                </div>
+            <div class="release-highlight-groups">
+              <section class="release-highlight-group" aria-label="New">
+                <h3 class="release-highlight-title"><span aria-hidden="true">✨</span>New</h3>
+                <ul class="launch-grid release-layout-highlights">
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>See clearer month and day labels in consistency views.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Reorder habit cards to keep important routines close.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Create custom habit colors with the new color picker.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Long-press hints reveal useful habit actions.</li>
+                </ul>
               </section>
 
-              <section class="change-group change-group-improved">
-                <span class="change-icon change-improved" aria-hidden="true"><svg><use href="#i-tune"/></svg></span>
-                <div>
-                  <h3>Improved</h3>
-                  <ul>
-                    <li>Move completed habits to the bottom automatically.</li>
-                    <li>Enjoy a more polished Settings experience.</li>
-                    <li>See more consistent layouts across Category, Reminders, Repeat, and related sheets.</li>
-                    <li>Track multi-completion goals in notifications with progress such as “1 of 3.”</li>
-                  </ul>
-                </div>
+              <section class="release-highlight-group" aria-label="Improvements">
+                <h3 class="release-highlight-title"><span aria-hidden="true">💎</span>Improvements</h3>
+                <ul class="launch-grid release-layout-highlights">
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Move completed habits to the bottom automatically.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Enjoy a more polished Settings experience.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>See more consistent layouts across Category, Reminders, Repeat, and related sheets.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Track multi-completion goals in notifications with progress such as “1 of 3.”</li>
+                </ul>
               </section>
 
-              <section class="change-group change-group-fixed">
-                <span class="change-icon change-fixed" aria-hidden="true"><svg><use href="#i-wrench"/></svg></span>
-                <div>
-                  <h3>Fixed</h3>
-                  <ul>
-                    <li>Calendar edits update history and stats immediately.</li>
-                    <li>Skip Intro now dismisses onboarding correctly.</li>
-                    <li>Selected controls remain readable with light and custom habit colors.</li>
-                    <li>Core habit, category, statistics, and consistency layouts now adapt to accessibility text sizes.</li>
-                    <li>Calendars and weekday selectors now follow the device's regional week order.</li>
-                    <li>Category sheets now expand correctly without repeated layout warnings.</li>
-                    <li>Reminder and habit-card state no longer gets stuck.</li>
-                  </ul>
-                </div>
+              <section class="release-highlight-group" aria-label="Fixes">
+                <h3 class="release-highlight-title"><span aria-hidden="true">🐞</span>Fixes</h3>
+                <ul class="launch-grid release-layout-highlights">
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Calendar edits update history and stats immediately.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Skip Intro now dismisses onboarding correctly.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Selected controls remain readable with light and custom habit colors.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Core habit, category, statistics, and consistency layouts now adapt to accessibility text sizes.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Calendars and weekday selectors now follow the device's regional week order.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Category sheets now expand correctly without repeated layout warnings.</li>
+                  <li><span aria-hidden="true"><svg><use href="#i-check"/></svg></span>Reminder and habit-card state no longer gets stuck.</li>
+                </ul>
               </section>
             </div>
           </div>
 
-          <div class="release-visual" aria-hidden="true">
-            <div class="release-orbit release-orbit-one"></div>
-            <div class="release-orbit release-orbit-two"></div>
-            <div class="device release-device">
-              <div class="device-screen">
+          <div class="release-slideshow release-slideshow-static" aria-label="HabitGlass v1.0.1 preview">
+            <div class="release-slides">
+              <figure class="release-slide">
                 <picture data-shot="phone-month">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-month-light.webp">
-                  <img src="assets/shots/phone-month-dark.webp" width="900" height="1840" loading="eager" alt="">
+                  <img src="assets/shots/phone-month-dark.webp" width="900" height="1840" loading="lazy" alt="HabitGlass month calendar showing habit history and daily checkmarks.">
                 </picture>
-              </div>
+              </figure>
             </div>
           </div>
         </div>

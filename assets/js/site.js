@@ -93,6 +93,86 @@
     });
   }
 
+  /* --------------------------------------------------------- nav underline */
+
+  var nav = document.querySelector('.nav');
+  if (nav) {
+    var navLinks = nav.querySelectorAll('a');
+    var bar = document.createElement('span');
+    bar.className = 'nav-indicator';
+    bar.setAttribute('aria-hidden', 'true');
+    nav.appendChild(bar);
+
+    var activeLink = null;
+
+    var place = function (link) {
+      if (!link) {
+        bar.classList.remove('on');
+        return;
+      }
+      bar.style.setProperty('--nav-x', link.offsetLeft + 'px');
+      bar.style.setProperty('--nav-w', link.offsetWidth + 'px');
+      bar.classList.add('on');
+    };
+
+    var setActive = function (link) {
+      if (activeLink === link) return;
+      if (activeLink) activeLink.classList.remove('is-active');
+      activeLink = link;
+      if (activeLink) activeLink.classList.add('is-active');
+      place(activeLink);
+    };
+
+    for (var n = 0; n < navLinks.length; n++) {
+      navLinks[n].addEventListener('pointerenter', function (e) {
+        place(e.currentTarget);
+      });
+      navLinks[n].addEventListener('focus', function (e) {
+        place(e.currentTarget);
+      });
+    }
+    nav.addEventListener('pointerleave', function () {
+      place(activeLink);
+    });
+    nav.addEventListener('focusout', function (e) {
+      if (!nav.contains(e.relatedTarget)) place(activeLink);
+    });
+
+    /* Scrollspy: link wins when its section passes 35% down the viewport.
+       Cross-page links (Releases) never activate from scrolling. */
+    var spy = [];
+    for (var s = 0; s < navLinks.length; s++) {
+      var hash = navLinks[s].getAttribute('href') || '';
+      if (hash.charAt(0) !== '#') continue;
+      var sec = document.querySelector(hash);
+      if (sec) spy.push({ link: navLinks[s], section: sec });
+    }
+
+    var syncSpy = function () {
+      var mark = window.scrollY + window.innerHeight * 0.35;
+      var winner = null;
+      for (var i = 0; i < spy.length; i++) {
+        if (spy[i].section.offsetTop <= mark) winner = spy[i].link;
+      }
+      /* Above the first section (hero) nothing has won yet — first link owns it. */
+      setActive(winner || (spy.length ? spy[0].link : null));
+    };
+
+    syncSpy();
+    var spyTick = false;
+    addEventListener('scroll', function () {
+      if (spyTick) return;
+      spyTick = true;
+      requestAnimationFrame(function () {
+        spyTick = false;
+        syncSpy();
+      });
+    }, { passive: true });
+    addEventListener('resize', function () {
+      place(activeLink);
+    });
+  }
+
   /* --------------------------------------------------------------- reveal */
 
   var targets = document.querySelectorAll('.reveal');
@@ -102,9 +182,9 @@
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('in');
-        io.unobserve(entry.target);
+        /* Toggle both ways: scrolling back up fades sections out again, so
+           returning to the hero never leaves stale content on screen. */
+        entry.target.classList.toggle('in', entry.isIntersecting);
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
     for (var t = 0; t < targets.length; t++) io.observe(targets[t]);
