@@ -1160,6 +1160,30 @@ section {
   z-index: 1;
 }
 
+.logging-stage {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.6rem, 2vw, 1.25rem);
+}
+
+.logging-stage figure {
+  min-width: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.logging-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 1.5rem 2.5rem rgba(0, 0, 0, 0.2);
+}
+
+.logging-stage figcaption {
+  margin-top: 0.6rem;
+  color: var(--ink-mute);
+  font-size: 0.8rem;
+}
+
 .chapter-stage::before {
   content: '';
   position: absolute;
@@ -2130,7 +2154,10 @@ section {
 #release-110-slide-2:checked ~ .release-slides .release-slide-2,
 #release-110-slide-3:checked ~ .release-slides .release-slide-3,
 #release-110-slide-4:checked ~ .release-slides .release-slide-4,
-#release-110-slide-5:checked ~ .release-slides .release-slide-5 {
+#release-110-slide-5:checked ~ .release-slides .release-slide-5,
+#release-110-slide-6:checked ~ .release-slides .release-slide-6,
+#release-110-slide-7:checked ~ .release-slides .release-slide-7,
+#release-110-slide-8:checked ~ .release-slides .release-slide-8 {
   opacity: 1;
   visibility: visible;
   transform: none;
@@ -2140,7 +2167,10 @@ section {
 #release-110-slide-2:checked ~ .release-slide-nav label[for="release-110-slide-2"],
 #release-110-slide-3:checked ~ .release-slide-nav label[for="release-110-slide-3"],
 #release-110-slide-4:checked ~ .release-slide-nav label[for="release-110-slide-4"],
-#release-110-slide-5:checked ~ .release-slide-nav label[for="release-110-slide-5"] {
+#release-110-slide-5:checked ~ .release-slide-nav label[for="release-110-slide-5"],
+#release-110-slide-6:checked ~ .release-slide-nav label[for="release-110-slide-6"],
+#release-110-slide-7:checked ~ .release-slide-nav label[for="release-110-slide-7"],
+#release-110-slide-8:checked ~ .release-slide-nav label[for="release-110-slide-8"] {
   border-color: color-mix(in srgb, var(--brand-teal) 55%, transparent);
   background: color-mix(in srgb, var(--brand-teal) 12%, transparent);
   color: var(--ink);
@@ -2390,6 +2420,13 @@ section {
   }
   .bento {
     grid-template-columns: minmax(0, 1fr);
+  }
+  .logging-stage {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .logging-stage figure {
+    width: min(100%, 280px);
   }
   .foot-grid {
     grid-template-columns: minmax(0, 1fr);

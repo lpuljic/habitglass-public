@@ -12,9 +12,8 @@
     return root.dataset.theme === 'light' ? 'light' : 'dark';
   }
 
-  /* Swap every screenshot for its real counterpart in the other appearance.
-     Both variants come from the same XCUITest run, so this is the app, not a
-     recolour. Overriding source.media pins our choice over the OS preference. */
+  /* Swap every screenshot for its captured counterpart in the other appearance.
+     Overriding source.media pins our choice over the OS preference. */
   function applyShots(theme) {
     var pics = document.querySelectorAll('picture[data-shot]');
     for (var i = 0; i < pics.length; i++) {
