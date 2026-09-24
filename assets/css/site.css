@@ -1033,6 +1033,11 @@ section {
   display: none;
 }
 
+.tour-step .text-link {
+  align-self: flex-start;
+  color: var(--accent);
+}
+
 .tour-stage {
   position: sticky;
   top: 0;
