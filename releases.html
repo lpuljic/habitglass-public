@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What’s new — HabitGlass</title>
-<meta name="description" content="See the latest HabitGlass features, improvements, and fixes.">
+<meta name="description" content="Every HabitGlass update since launch, newest first.">
 <link rel="canonical" href="https://habitglass.info/releases.html">
 <meta name="theme-color" content="#05070d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#eef3ff" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HabitGlass">
 <meta property="og:title" content="What’s new — HabitGlass">
-<meta property="og:description" content="Major features, thoughtful improvements, and important fixes in HabitGlass.">
+<meta property="og:description" content="Every HabitGlass update since launch, newest first.">
 <meta property="og:url" content="https://habitglass.info/releases.html">
 <meta property="og:image" content="https://habitglass.info/assets/og.jpg">
-<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icon-512.png" sizes="512x512">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/satoshi-900.woff2" as="font" type="font/woff2" crossorigin>
@@ -38,11 +38,14 @@
   <defs>
     <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
-    <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m6-7-7 7 7 7"/></symbol>
-    <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
     <symbol id="i-x" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></symbol>
     <symbol id="i-instagram" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
   </defs>
 </svg>
 
@@ -50,22 +53,55 @@
   <div class="shell">
     <div class="head-row">
       <a class="brand" href="index.html">
-        <img class="brand-mark" src="assets/icon.svg" alt="" width="32" height="32">
+        <img class="brand-mark" src="assets/brand-mark.webp" alt="" width="32" height="32">
         HabitGlass
       </a>
-      <div class="head-actions" style="margin-inline-start:auto">
-        <a class="back-link" href="index.html" style="margin-right:.75rem">
-          <svg aria-hidden="true"><use href="#i-back"/></svg> Home
-        </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html#tour">Tour</a>
+        <a href="index.html#features">Pro</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="index.html#privacy">Privacy</a>
+        <a href="releases.html" aria-current="page">Releases</a>
+        <a href="support.html">Support</a>
+      </nav>
+
+      <div class="head-actions">
         <div class="theme-toggle" role="group" aria-label="Appearance">
           <button type="button" data-set-theme="light" aria-pressed="false" title="Light appearance">
-            <svg aria-hidden="true"><use href="#i-sun"/></svg><span class="sr-only">Light</span>
+            <svg aria-hidden="true"><use href="#i-sun"/></svg>
+            <span class="sr-only">Light</span>
           </button>
           <button type="button" data-set-theme="dark" aria-pressed="true" title="Dark appearance">
-            <svg aria-hidden="true"><use href="#i-moon"/></svg><span class="sr-only">Dark</span>
+            <svg aria-hidden="true"><use href="#i-moon"/></svg>
+            <span class="sr-only">Dark</span>
           </button>
         </div>
+        <a class="btn btn-primary btn-sm" href="https://apps.apple.com/us/app/habit-glass-habit-tracker/id6807643942">
+          <svg width="16" height="16" aria-hidden="true"><use href="#i-apple"/></svg>
+          Download
+        </a>
+        <button class="menu-btn" type="button" data-menu-toggle aria-expanded="false" aria-controls="mobile-menu">
+          <svg class="icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
+          <svg class="icon-close" aria-hidden="true"><use href="#i-close"/></svg>
+          <span class="sr-only">Menu</span>
+        </button>
       </div>
+    </div>
+
+    <div class="mobile-menu glass" id="mobile-menu" hidden>
+      <ul>
+        <li><a href="index.html#tour">Tour</a></li>
+        <li><a href="index.html#features">Pro</a></li>
+        <li><a href="index.html#pricing">Pricing</a></li>
+        <li><a href="index.html#privacy">Privacy</a></li>
+        <li><a href="releases.html" aria-current="page">Releases</a></li>
+        <li><a href="support.html">Support</a></li>
+      </ul>
+      <a class="btn btn-primary" href="https://apps.apple.com/us/app/habit-glass-habit-tracker/id6807643942">
+        <svg width="18" height="18" aria-hidden="true"><use href="#i-apple"/></svg>
+        Download
+      </a>
     </div>
   </div>
 </header>
@@ -75,7 +111,7 @@
     <div class="shell release-hero-inner">
       <p class="hero-eyebrow"><span aria-hidden="true"></span>Product updates</p>
       <h1>HabitGlass keeps<br><span class="ramp">getting clearer.</span></h1>
-      <p class="lede">Major features, thoughtful improvements, and fixes worth knowing about. No filler, only changes you’ll notice.</p>
+      <p class="lede">Every HabitGlass update since launch, newest first.</p>
     </div>
   </section>
 
@@ -113,76 +149,70 @@
               </section>
             </div>
           </div>
-          <div class="release-slideshow" aria-label="HabitGlass v1.1.0 highlights">
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-1" checked>
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-2">
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-3">
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-4">
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-5">
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-6">
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-7">
-            <input class="release-slide-toggle" type="radio" name="release-110-slide" id="release-110-slide-8">
+          <div class="release-slideshow" data-slideshow role="region" aria-roledescription="carousel" aria-label="HabitGlass v1.1.0 screens">
 
             <div class="release-slides">
-              <figure class="release-slide release-slide-1">
+              <figure class="release-slide is-active" data-label="Cards">
                 <picture data-shot="home-current-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-current-framed-light.webp">
                   <img src="assets/shots/home-current-framed-dark.webp" width="900" height="1840" loading="lazy" alt="HabitGlass Home with Drink water, Meditate, and Read a Book cards and their monthly bubble clouds.">
                 </picture>
               </figure>
-              <figure class="release-slide release-slide-2">
+              <figure class="release-slide" data-label="Log Water">
                 <picture data-shot="log-water-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/log-water-framed-light.webp">
                   <img src="assets/shots/log-water-framed-dark.webp" width="900" height="1840" loading="lazy" alt="Log Water with a half-full bottle, daily goal, and controls for adding water.">
                 </picture>
               </figure>
-              <figure class="release-slide release-slide-3">
+              <figure class="release-slide" data-label="Read a Book">
                 <picture data-shot="log-reading-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/log-reading-framed-light.webp">
                   <img src="assets/shots/log-reading-framed-dark.webp" width="900" height="1840" loading="lazy" alt="Read a Book with a 3D copy of Atomic Habits, page controls, and an optional note.">
                 </picture>
               </figure>
-              <figure class="release-slide release-slide-4">
+              <figure class="release-slide" data-label="Water details">
                 <picture data-shot="water-detail-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/water-detail-framed-light.webp">
                   <img src="assets/shots/water-detail-framed-dark.webp" width="900" height="1840" loading="lazy" alt="Drink water details showing the daily goal, streaks, and history.">
                 </picture>
               </figure>
-              <figure class="release-slide release-slide-5">
+              <figure class="release-slide" data-label="Reading details">
                 <picture data-shot="read-book-detail-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/read-book-detail-framed-light.webp">
                   <img src="assets/shots/read-book-detail-framed-dark.webp" width="900" height="1840" loading="lazy" alt="Read a Book details with Atomic Habits, streaks, and the consistency calendar.">
                 </picture>
               </figure>
-              <figure class="release-slide release-slide-6">
+              <figure class="release-slide" data-label="Book tracking">
                 <picture data-shot="book-tracking-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/book-tracking-framed-light.webp">
                   <img src="assets/shots/book-tracking-framed-dark.webp" width="900" height="1840" loading="lazy" alt="Atomic Habits book details with reading progress and book actions.">
                 </picture>
               </figure>
-              <figure class="release-slide release-slide-7">
-                <picture data-shot="release-110-rows">
-                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-rows-light.webp">
-                  <img src="assets/shots/release-110-rows-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with compact Bubble rows and a small activity cloud beside each habit.">
+              <figure class="release-slide" data-label="Bubble rows">
+                <picture data-shot="release-110-rows-framed">
+                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-rows-framed-light.webp">
+                  <img src="assets/shots/release-110-rows-framed-dark.webp" width="900" height="1840" loading="lazy" alt="HabitGlass Home with compact Bubble rows and a small activity cloud beside each habit.">
                 </picture>
               </figure>
-              <figure class="release-slide release-slide-8">
-                <picture data-shot="release-110-tiles">
-                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-tiles-light.webp">
-                  <img src="assets/shots/release-110-tiles-dark.webp" width="820" height="1783" loading="lazy" alt="HabitGlass Home with Mini constellations arranged in a two-column grid.">
+              <figure class="release-slide" data-label="Mini constellations">
+                <picture data-shot="release-110-tiles-framed">
+                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-110-tiles-framed-light.webp">
+                  <img src="assets/shots/release-110-tiles-framed-dark.webp" width="900" height="1840" loading="lazy" alt="HabitGlass Home with Mini constellations arranged in a two-column grid.">
                 </picture>
               </figure>
             </div>
 
-            <div class="release-slide-nav" aria-label="Choose a v1.1.0 preview">
-              <label for="release-110-slide-1"><span>01</span>Cards</label>
-              <label for="release-110-slide-2"><span>02</span>Log Water</label>
-              <label for="release-110-slide-3"><span>03</span>Read a Book</label>
-              <label for="release-110-slide-4"><span>04</span>Water details</label>
-              <label for="release-110-slide-5"><span>05</span>Reading details</label>
-              <label for="release-110-slide-6"><span>06</span>Book tracking</label>
-              <label for="release-110-slide-7"><span>07</span>Bubble rows</label>
-              <label for="release-110-slide-8"><span>08</span>Mini constellations</label>
+            <div class="slide-controls">
+              <button class="slide-arrow" type="button" data-slide-prev aria-label="Previous screen">
+                <svg aria-hidden="true"><use href="#i-left"/></svg>
+              </button>
+              <div class="slide-meta">
+                <p class="slide-caption" aria-live="polite" data-slide-caption>Cards</p>
+                <div class="slide-dots" data-slide-dots></div>
+              </div>
+              <button class="slide-arrow" type="button" data-slide-next aria-label="Next screen">
+                <svg aria-hidden="true"><use href="#i-right"/></svg>
+              </button>
             </div>
           </div>
         </div>
@@ -205,42 +235,41 @@
               <section class="release-highlight-group" aria-label="New">
                 <h3 class="release-highlight-title"><span aria-hidden="true">✨</span>New</h3>
                 <ul class="launch-grid release-layout-highlights">
-                  <li>See clearer month and day labels in consistency views.</li>
-                  <li>Reorder habit cards to keep important routines close.</li>
+                  <li>Insights and habit cards now show clearer month and day labels in consistency views.</li>
+                  <li>Reorder habit cards to keep your most important routines within easy reach.</li>
                   <li>Create custom habit colors with the new color picker.</li>
-                  <li>Long-press hints reveal useful habit actions.</li>
+                  <li>Long-press hints make useful habit actions easier to discover.</li>
                 </ul>
               </section>
 
               <section class="release-highlight-group" aria-label="Improvements">
                 <h3 class="release-highlight-title"><span aria-hidden="true">💎</span>Improvements</h3>
                 <ul class="launch-grid release-layout-highlights">
-                  <li>Move completed habits to the bottom automatically.</li>
-                  <li>Enjoy a more polished Settings experience.</li>
-                  <li>See more consistent layouts across Category, Reminders, Repeat, and related sheets.</li>
-                  <li>Track multi-completion goals in notifications with progress such as “1 of 3.”</li>
+                  <li>Completed habits can move to the bottom of the list automatically.</li>
+                  <li>Refined the look and feel of Settings.</li>
+                  <li>Improved layout consistency across Category, Reminders, Repeat, and related sheets.</li>
+                  <li>Notifications now show progress, such as “1 of 3,” for habits with multiple daily completions.</li>
                 </ul>
               </section>
 
               <section class="release-highlight-group" aria-label="Fixes">
                 <h3 class="release-highlight-title"><span aria-hidden="true">🐞</span>Fixes</h3>
                 <ul class="launch-grid release-layout-highlights">
-                  <li>Calendar edits update history and stats immediately.</li>
+                  <li>Calendar edits now update habit history and statistics immediately.</li>
                   <li>Skip Intro now dismisses onboarding correctly.</li>
                   <li>Selected controls remain readable with light and custom habit colors.</li>
-                  <li>Prevented a crash when SwiftUI renders accent colors on Home and Settings.</li>
                   <li>Core habit, category, statistics, and consistency layouts now adapt to accessibility text sizes.</li>
-                  <li>Calendars and weekday selectors now follow the device's regional week order.</li>
+                  <li>Calendars and weekday selectors now follow the device’s regional week order.</li>
                   <li>Category sheets now expand correctly without repeated layout warnings.</li>
-                  <li>Reminder and habit-card state no longer gets stuck.</li>
+                  <li>Fixed cases where reminder and habit-card state could become stuck.</li>
                 </ul>
               </section>
             </div>
           </div>
 
-          <div class="release-slideshow release-slideshow-static" aria-label="HabitGlass v1.0.1 preview">
+          <div class="release-slideshow" aria-label="HabitGlass v1.0.1 preview">
             <div class="release-slides">
-              <figure class="release-slide">
+              <figure class="release-slide is-active">
                 <picture data-shot="month-current-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/month-current-framed-light.webp">
                   <img src="assets/shots/month-current-framed-dark.webp" width="900" height="1840" loading="lazy" alt="HabitGlass month calendar showing habit history and daily checkmarks.">
@@ -277,8 +306,7 @@
 
   <section class="band">
     <div class="shell">
-      <div class="release-closer glass reveal">
-        <span class="tile-icon" style="--tint:#8c5cff" aria-hidden="true"><svg><use href="#i-sparkle"/></svg></span>
+      <div class="release-closer reveal">
         <div>
           <h2>Have an idea for what comes next?</h2>
           <p>Feature requests and design gripes both get read.</p>
@@ -291,17 +319,56 @@
 
 <footer class="site-foot">
   <div class="shell">
-    <div class="foot-social">
-      <a href="https://x.com/habitglass" aria-label="HabitGlass on X">
-        <svg width="18" height="18" aria-hidden="true"><use href="#i-x"/></svg>
-      </a>
-      <a href="https://www.instagram.com/habit_glass/" aria-label="HabitGlass on Instagram">
-        <svg width="18" height="18" aria-hidden="true"><use href="#i-instagram"/></svg>
-      </a>
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="index.html">
+          <img class="brand-mark" src="assets/brand-mark.webp" alt="" width="32" height="32">
+          HabitGlass
+        </a>
+        <p class="foot-blurb">
+          A habit tracker for iPhone. Made by one person who uses it every morning.
+        </p>
+        <div class="foot-social">
+          <a href="https://x.com/habitglass" aria-label="HabitGlass on X">
+            <svg width="18" height="18" aria-hidden="true"><use href="#i-x"/></svg>
+          </a>
+          <a href="https://www.instagram.com/habit_glass/" aria-label="HabitGlass on Instagram">
+            <svg width="18" height="18" aria-hidden="true"><use href="#i-instagram"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h2>Product</h2>
+        <ul>
+          <li><a href="index.html#tour">Tour</a></li>
+          <li><a href="index.html#features">Pro</a></li>
+          <li><a href="index.html#pricing">Pricing</a></li>
+          <li><a href="index.html#faq">FAQ</a></li>
+          <li><a href="releases.html">Releases</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h2>Help</h2>
+        <ul>
+          <li><a href="support.html">Support</a></li>
+          <li><a href="mailto:feedback@habitglass.info?subject=HabitGlass%20feedback">Send feedback</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="foot-base" style="margin-top:0;padding-top:0;border:0">
+
+    <div class="foot-base">
       <span>&copy; <span data-year>2026</span> HabitGlass. Built by Lano Puljic.</span>
-      <span><a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a> &middot; <a href="support.html">Support</a></span>
+      <span>iPhone is a trademark of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc.</span>
     </div>
   </div>
 </footer>

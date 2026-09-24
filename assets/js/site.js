@@ -153,8 +153,9 @@
       for (var i = 0; i < spy.length; i++) {
         if (spy[i].section.offsetTop <= mark) winner = spy[i].link;
       }
-      /* Above the first section (hero) nothing has won yet — first link owns it. */
-      setActive(winner || (spy.length ? spy[0].link : null));
+      /* Above the first section (hero) nothing has won yet — first link owns it.
+         On other pages the link for the page itself stays lit. */
+      setActive(winner || nav.querySelector('[aria-current="page"]') || (spy.length ? spy[0].link : null));
     };
 
     syncSpy();
@@ -181,35 +182,47 @@
   } else {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        /* Toggle both ways: scrolling back up fades sections out again, so
-           returning to the hero never leaves stale content on screen. */
-        entry.target.classList.toggle('in', entry.isIntersecting);
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.08 });
     for (var t = 0; t < targets.length; t++) io.observe(targets[t]);
   }
 
-  /* -------------------------------------------------- constellation demo */
+  /* ---------------------------------------------------------- month demo */
+
+  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var PALETTE = ['#2973ff', '#8c5cff', '#3de0d9', '#ffad32', '#ff4f78', '#64d2ff', '#30d158'];
+
+  function makeOrb(tag) {
+    var el = document.createElement(tag);
+    el.className = 'orb';
+    return el;
+  }
 
   var field = document.querySelector('[data-field]');
   if (field) {
-    var COLS = 10;
-    var ROWS = 4;
-    var TOTAL = COLS * ROWS;
+    var TOTAL = +field.dataset.days || 35;
+    var OFFSET = +field.dataset.offset || 0;
     /* A plausible month: strong start, one wobble, back on it. */
     var seed = [
-      1, 1, 1, 1, 0, 1, 1, 1, 1, 1,
-      1, 1, 0, 1, 1, 1, 1, 0, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
-      1, 1, 1, 1, 1, 0, 0, 0, 0, 0
+      1, 1, 1, 1, 0, 1, 1,
+      1, 1, 1, 0, 1, 1, 1,
+      1, 0, 1, 1, 1, 1, 1,
+      1, 1, 1, 1, 1, 1, 0,
+      1, 1, 0, 0, 0, 0, 0
     ];
     var state = seed.slice(0, TOTAL);
     var bubbles = [];
 
+    for (var p = 0; p < OFFSET; p++) {
+      field.appendChild(document.createElement('span'));
+    }
     for (var i = 0; i < TOTAL; i++) {
-      var b = document.createElement('button');
+      var b = makeOrb('button');
       b.type = 'button';
-      b.className = 'bub';
+      b.classList.add('bub');
       b.dataset.i = i;
       b.setAttribute('aria-label', 'Day ' + (i + 1));
       b.setAttribute('aria-pressed', 'false');
@@ -223,17 +236,14 @@
       rate: document.querySelector('[data-out="rate"]')
     };
 
-    function render() {
+    var render = function () {
       var done = 0;
       var run = 0;
       var best = 0;
       for (var i = 0; i < TOTAL; i++) {
         var on = !!state[i];
-        var b = bubbles[i];
-        if (on !== b.classList.contains('on')) {
-          b.classList.toggle('on', on);
-          b.setAttribute('aria-pressed', String(on));
-        }
+        bubbles[i].classList.toggle('on', on);
+        bubbles[i].setAttribute('aria-pressed', String(on));
         if (on) {
           done++;
           run++;
@@ -245,7 +255,7 @@
       if (out.days) out.days.textContent = done;
       if (out.best) out.best.textContent = best;
       if (out.rate) out.rate.textContent = Math.round((done / TOTAL) * 100) + '%';
-    }
+    };
 
     field.addEventListener('click', function (e) {
       var b = e.target.closest('.bub');
@@ -256,6 +266,312 @@
     });
 
     render();
+  }
+
+  /* ------------------------------------------------------------ hero sky */
+
+  var sky = document.querySelector('[data-sky]');
+  if (sky) {
+    /* Seeded, so the constellation is the same shape on every visit. */
+    var rand = (function (a) {
+      return function () {
+        a = (a + 0x6d2b79f5) | 0;
+        var t = Math.imul(a ^ (a >>> 15), 1 | a);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    })(23);
+
+    var STEP = 7;
+    var stars = [];
+    for (var gx = STEP / 2; gx < 100; gx += STEP) {
+      for (var gy = STEP / 2; gy < 100; gy += STEP) {
+        var x = gx + (rand() - 0.5) * STEP * 0.8;
+        var y = gy + (rand() - 0.5) * STEP * 0.8;
+        var dx = (x - 50) / 50;
+        var dy = (y - 50) / 50;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        /* Leave the phone's footprint clear and let the edge thin out. */
+        if (dist > 1 || (Math.abs(x - 50) < 21 && Math.abs(y - 50) < 38)) continue;
+        if (rand() < dist * 0.55) continue;
+        var o = makeOrb('span');
+        o.style.left = x + '%';
+        o.style.top = y + '%';
+        o.style.setProperty('--s', Math.round(12 + rand() * 26 * (1.15 - dist * 0.55)) + 'px');
+        o.style.setProperty('--c', PALETTE[Math.floor(rand() * PALETTE.length)]);
+        o.style.setProperty('--t', Math.round(dist * 900 + rand() * 250) + 'ms');
+        if (rand() < 0.72) o.dataset.lit = '';
+        sky.appendChild(o);
+        if (o.dataset.lit !== undefined) stars.push({ x: x, y: y, t: dist * 900 });
+      }
+    }
+
+    /* Join each lit bubble to its nearest lit neighbour, so it reads as a
+       constellation rather than confetti. */
+    var NS = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    var seen = {};
+    for (var si = 0; si < stars.length; si++) {
+      var best = -1;
+      var bestD = 15;
+      for (var sj = 0; sj < stars.length; sj++) {
+        if (si === sj) continue;
+        var dd = Math.hypot(stars[si].x - stars[sj].x, stars[si].y - stars[sj].y);
+        if (dd < bestD) {
+          bestD = dd;
+          best = sj;
+        }
+      }
+      var key = Math.min(si, best) + '-' + Math.max(si, best);
+      if (best < 0 || seen[key]) continue;
+      seen[key] = true;
+      var line = document.createElementNS(NS, 'line');
+      line.setAttribute('x1', stars[si].x);
+      line.setAttribute('y1', stars[si].y);
+      line.setAttribute('x2', stars[best].x);
+      line.setAttribute('y2', stars[best].y);
+      line.setAttribute('pathLength', '1');
+      line.style.setProperty('--t', Math.round(Math.max(stars[si].t, stars[best].t) + 500) + 'ms');
+      svg.appendChild(line);
+    }
+    sky.insertBefore(svg, sky.firstChild);
+
+    var light = function () {
+      sky.classList.add('lit');
+      var lit = sky.querySelectorAll('[data-lit]');
+      for (var l = 0; l < lit.length; l++) lit[l].classList.add('on');
+    };
+    if (reduceMotion) light();
+    else setTimeout(light, 250);
+
+    if (!reduceMotion && matchMedia('(pointer: fine)').matches) {
+      var hero = sky.closest('.hero');
+      var skyTick = false;
+      hero.addEventListener('pointermove', function (e) {
+        if (skyTick) return;
+        skyTick = true;
+        requestAnimationFrame(function () {
+          skyTick = false;
+          sky.style.setProperty('--px', ((e.clientX / innerWidth) * 2 - 1).toFixed(3));
+          sky.style.setProperty('--py', ((e.clientY / innerHeight) * 2 - 1).toFixed(3));
+        });
+      });
+    }
+  }
+
+  /* ---------------------------------------------------------------- tour */
+
+  var steps = document.querySelectorAll('.tour-step');
+  var stage = document.querySelector('[data-tour-stage]');
+  if (steps.length && stage && 'IntersectionObserver' in window) {
+    var frames = stage.querySelectorAll('picture');
+    var GLOWS = ['#2973ff', '#2973ff', '#ffad32', '#8c5cff', '#8c5cff', '#3de0d9'];
+    var show = function (n) {
+      for (var i = 0; i < steps.length; i++) {
+        steps[i].classList.toggle('is-active', i === n);
+        if (frames[i]) frames[i].classList.toggle('is-active', i === n);
+      }
+      stage.parentNode.style.setProperty('--glow', GLOWS[n] || GLOWS[0]);
+    };
+    /* A step wins when it crosses the middle band of the viewport. */
+    var tourIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) show(+entry.target.dataset.step);
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    for (var st = 0; st < steps.length; st++) tourIO.observe(steps[st]);
+  }
+
+  /* ------------------------------------------------------------- compare */
+
+  var compare = document.querySelector('[data-compare]');
+  if (compare) {
+    var range = compare.querySelector('input');
+    range.addEventListener('input', function () {
+      compare.style.setProperty('--split', range.value + '%');
+    });
+  }
+
+  /* ------------------------------------------------------------ currency */
+
+  var CUR_STORE = 'hg-currency';
+  var curBtns = document.querySelectorAll('[data-currency]');
+  if (curBtns.length) {
+    var setCurrency = function (cur, persist) {
+      var prices = document.querySelectorAll('[data-price]');
+      for (var i = 0; i < prices.length; i++) {
+        prices[i].textContent = prices[i].dataset[cur];
+      }
+      for (var j = 0; j < curBtns.length; j++) {
+        curBtns[j].setAttribute('aria-pressed', String(curBtns[j].dataset.currency === cur));
+      }
+      if (persist) {
+        try {
+          localStorage.setItem(CUR_STORE, cur);
+        } catch (e) {}
+      }
+    };
+    var savedCur = null;
+    try {
+      savedCur = localStorage.getItem(CUR_STORE);
+    } catch (e) {}
+    setCurrency(savedCur === 'usd' ? 'usd' : 'aud', false);
+    for (var cb = 0; cb < curBtns.length; cb++) {
+      curBtns[cb].addEventListener('click', function (e) {
+        setCurrency(e.currentTarget.dataset.currency, true);
+      });
+    }
+  }
+
+  /* -------------------------------------------------------- closer month */
+
+  var strip = document.querySelector('[data-month-strip]');
+  if (strip) {
+    var dots = [];
+    for (var d = 0; d < 30; d++) {
+      var orb = makeOrb('span');
+      orb.style.setProperty('--c', PALETTE[Math.floor(d / 10)]);
+      orb.style.setProperty('--t', d * 45 + 'ms');
+      strip.appendChild(orb);
+      dots.push(orb);
+    }
+    var fill = function () {
+      for (var f = 0; f < dots.length; f++) dots[f].classList.add('on');
+    };
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      fill();
+    } else {
+      var stripIO = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        fill();
+        stripIO.disconnect();
+      }, { threshold: 0.6 });
+      stripIO.observe(strip);
+    }
+  }
+
+  /* ----------------------------------------------------------- tick demo */
+
+  /* Mirrors the app: ticks = floor(amount / share), but the last tick waits
+     until the goal itself is reached. */
+  var tickDemos = document.querySelectorAll('[data-tick-demo]');
+  for (var td = 0; td < tickDemos.length; td++) {
+    (function (demo) {
+      var goal = +demo.dataset.goal;
+      var n = +demo.dataset.n;
+      var unit = demo.dataset.unit;
+      var row = demo.querySelector('[data-tick-row]');
+      var countOut = demo.querySelector('[data-tick-count]');
+      var amountOut = demo.querySelector('[data-tick-amount]');
+      var adds = demo.querySelectorAll('[data-add]');
+      var amount = 0;
+      var shown = 0;
+      var ticks = [];
+
+      for (var i = 0; i < n; i++) {
+        var orb = makeOrb('span');
+        orb.style.setProperty('--c', getComputedStyle(demo).getPropertyValue('--c'));
+        row.appendChild(orb);
+        ticks.push(orb);
+      }
+
+      var fmt = function (v) {
+        return Math.round(v).toLocaleString('en-AU');
+      };
+
+      var render = function () {
+        var done = amount >= goal;
+        var filled = done ? n : Math.min(n - 1, Math.floor(amount / (goal / n)));
+        for (var i = 0; i < n; i++) {
+          ticks[i].style.setProperty('--t', Math.max(0, i - shown) * 70 + 'ms');
+          ticks[i].classList.toggle('on', i < filled);
+        }
+        shown = filled;
+        countOut.textContent = filled + '/' + n;
+        amountOut.textContent = done
+          ? fmt(amount) + ' ' + unit + '. Done for today.'
+          : fmt(amount) + ' of ' + fmt(goal) + ' ' + unit;
+        for (var a = 0; a < adds.length; a++) adds[a].disabled = done;
+      };
+
+      demo.addEventListener('click', function (e) {
+        var btn = e.target.closest('button');
+        if (!btn) return;
+        if (btn.hasAttribute('data-reset')) amount = 0;
+        else if (btn.dataset.add) amount += +btn.dataset.add;
+        render();
+      });
+
+      render();
+    })(tickDemos[td]);
+  }
+
+  /* ----------------------------------------------------- release slideshow */
+
+  var shows = document.querySelectorAll('[data-slideshow]');
+  for (var sh = 0; sh < shows.length; sh++) {
+    (function (show) {
+      var slides = show.querySelectorAll('.release-slide');
+      var caption = show.querySelector('[data-slide-caption]');
+      var dotsWrap = show.querySelector('[data-slide-dots]');
+      var current = 0;
+      var dots = [];
+
+      var go = function (n) {
+        var next = (n + slides.length) % slides.length;
+        var dir = n > current ? 1 : -1;
+        for (var i = 0; i < slides.length; i++) {
+          slides[i].style.setProperty('--from', dir * 16 + 'px');
+          slides[i].classList.toggle('is-active', i === next);
+          dots[i].setAttribute('aria-current', String(i === next));
+        }
+        current = next;
+        caption.textContent = slides[current].dataset.label;
+      };
+
+      for (var d = 0; d < slides.length; d++) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', slides[d].dataset.label);
+        dot.dataset.to = d;
+        dotsWrap.appendChild(dot);
+        dots.push(dot);
+      }
+
+      dotsWrap.addEventListener('click', function (e) {
+        var dot = e.target.closest('button');
+        if (dot) go(+dot.dataset.to);
+      });
+      show.querySelector('[data-slide-prev]').addEventListener('click', function () {
+        go(current - 1);
+      });
+      show.querySelector('[data-slide-next]').addEventListener('click', function () {
+        go(current + 1);
+      });
+      show.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowLeft') go(current - 1);
+        if (e.key === 'ArrowRight') go(current + 1);
+      });
+
+      var startX = null;
+      var stage = show.querySelector('.release-slides');
+      stage.addEventListener('pointerdown', function (e) {
+        startX = e.clientX;
+      });
+      stage.addEventListener('pointerup', function (e) {
+        if (startX === null) return;
+        var dx = e.clientX - startX;
+        startX = null;
+        if (Math.abs(dx) > 40) go(current + (dx < 0 ? 1 : -1));
+      });
+      stage.addEventListener('pointercancel', function () {
+        startX = null;
+      });
+
+      go(0);
+    })(shows[sh]);
   }
 
   /* Current year in footers, so nobody has to remember to bump it. */
