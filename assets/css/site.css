@@ -1849,6 +1849,79 @@ section {
   color: var(--ink);
 }
 
+.guide h4 {
+  margin-top: 1.9rem;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.guide h4 + p {
+  margin-top: 0.45rem;
+}
+
+/* App buttons named in the copy: Add 160 mL, Adjust, Complete. */
+.guide kbd {
+  white-space: nowrap;
+  padding: 0.1em 0.55em;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--glass-strong);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.9em;
+  font-weight: 700;
+}
+
+/* The in-app status badge, green like it is on the bottle. */
+.guide .state {
+  --status-accent: #30d158;
+  white-space: nowrap;
+  padding: 0.1em 0.55em;
+  border: 1px solid color-mix(in srgb, var(--status-accent) 32%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--status-accent) 12%, transparent);
+  color: var(--ink);
+  font-size: 0.9em;
+  font-weight: 700;
+}
+
+[data-theme='light'] .guide .state {
+  --status-accent: #0d8a3c;
+}
+
+/* Progress readouts like 2/13. */
+.guide .n {
+  color: var(--ink);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The worked example: goal ÷ reminders = one tick. */
+.guide .sum {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.5rem;
+  margin-top: 1.1rem;
+  padding: 0.8rem 0;
+  border-block: 1px solid var(--hairline);
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+}
+
+.guide .sum b {
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.guide .sum span {
+  color: var(--ink-faint);
+}
+
 .contact {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);

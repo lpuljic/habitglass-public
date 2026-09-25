@@ -213,15 +213,35 @@
             one sip per reminder. Say you want 2,000 mL a day with a reminder every hour
             from 7:30 am to 7:30 pm. That's 13 reminders, so each tick is about 160 mL.
           </p>
-          <p>
-            Tap <strong>Add Water</strong> and the card goes 1/13, 2/13 and so on. Finish a
-            500 mL bottle and it jumps 3 ticks at once. The last tick only fills when you
-            actually reach 2,000 mL. Then the day is done and the reminders stop.
+          <p class="sum" aria-label="2,000 millilitres divided by 13 reminders is about 160 millilitres a tick">
+            <b>2,000 mL</b><span aria-hidden="true">÷</span><b>13</b> reminders
+            <span aria-hidden="true">≈</span><b>160 mL</b> a tick
           </p>
+
+          <h4>Logging a sip</h4>
           <p>
-            Tap <strong>Complete</strong> on a reminder or the + on the widget to log a sip
+            Log Water opens with 160 mL ready, one reminder's share. Tap
+            <kbd>Add 160 mL</kbd> and the card goes <b class="n">1/13</b>,
+            <b class="n">2/13</b> and so on, or nudge the amount first in 50 mL steps.
+            Finish a 500 mL bottle and it jumps 3 ticks at once. The last tick only fills
+            when you actually reach 2,000 mL. The badge beside the bottle turns green and
+            reads <span class="state">Goal Met</span>, the day is done, and the reminders
+            stop. You can still log more after that.
+          </p>
+
+          <h4>Logged too much?</h4>
+          <p>
+            Tap <kbd>Adjust</kbd>, or the amount inside the bottle, to remove 100, 250 or
+            500 mL, remove a custom amount, or reset today. Resetting asks first and keeps
+            your notes and earlier days. To change the goal itself, edit the habit.
+          </p>
+
+          <h4>From a reminder or the widget</h4>
+          <p>
+            Tap <kbd>Complete</kbd> on a reminder or <kbd>+</kbd> on the widget to log a sip
             without opening the app. HabitGlass adds 160 mL, one reminder's share of your
-            2,000 mL goal.
+            2,000 mL goal, or just what's left if you're closer than that. Once the goal is
+            met, those taps don't add anything.
           </p>
         </article>
 
@@ -229,15 +249,22 @@
           <h3>Reading</h3>
           <p>
             Reading uses the same idea with pages or minutes. Set 30 pages a day with 6
-            reminders and each tick is 5 pages. Read 12 pages and you're on 2/6. The day
-            completes at 30.
+            reminders and each tick is 5 pages. Read 12 pages and you're on
+            <b class="n">2/6</b>. The day completes at 30.
           </p>
+          <p class="sum" aria-label="30 pages divided by 6 reminders is 5 pages a tick">
+            <b>30 pages</b><span aria-hidden="true">÷</span><b>6</b> reminders
+            <span aria-hidden="true">=</span><b>5 pages</b> a tick
+          </p>
+
+          <h4>Reading by the clock</h4>
           <p>
-            Prefer to read by the clock? Set a minutes goal and log the time you read.
-            Pages are optional, so you don't have to move your bookmark. If you finish a
-            book halfway through the day, its pages still count after you start the next
-            one.
+            Set a minutes goal and log the time you read. Pages are optional, so you don't
+            have to move your bookmark. If you finish a book halfway through the day, its
+            pages still count after you start the next one.
           </p>
+
+          <h4>From a reminder or the widget</h4>
           <p>
             A reading reminder or widget tap opens the reading log, so you can say exactly
             how much you read. Nothing gets checked off for you.
