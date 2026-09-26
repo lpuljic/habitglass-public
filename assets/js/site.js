@@ -190,6 +190,78 @@
     for (var t = 0; t < targets.length; t++) io.observe(targets[t]);
   }
 
+  var releaseEntries = document.querySelectorAll('.release-stream .release-entry');
+  for (var re = 0; re < releaseEntries.length; re++) {
+    (function (entry, index) {
+      var meta = entry.querySelector('.release-meta');
+      var card = entry.querySelector('.release-card');
+      var title = entry.querySelector('h2');
+      if (!meta || !card || !title) return;
+      var titleID = title.id;
+
+      var panel = document.createElement('div');
+      panel.className = 'release-panel';
+      panel.id = 'release-panel-' + titleID;
+      entry.insertBefore(panel, card);
+      while (panel.nextElementSibling) panel.appendChild(panel.nextElementSibling);
+
+      var button = document.createElement('button');
+      button.className = 'release-toggle';
+      button.type = 'button';
+      button.setAttribute('aria-expanded', String(index === 0));
+      button.setAttribute('aria-controls', panel.id);
+      var version = meta.querySelector('.release-version');
+      var status = meta.querySelector('.release-status');
+      var releaseDate = meta.querySelector('time');
+      button.setAttribute('aria-label', [version && version.textContent.trim(), title.textContent.trim(), status && status.textContent.trim()].filter(Boolean).join(', '));
+      button.innerHTML = '<span class="release-toggle-copy"><span class="release-toggle-line"><span class="release-version"></span><span class="release-toggle-title"></span></span><span class="release-toggle-details"></span><span class="release-toggle-teaser" aria-hidden="true"></span></span><svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>';
+      var line = button.querySelector('.release-toggle-line');
+      if (version) line.replaceChild(version, line.querySelector('.release-version'));
+      button.querySelector('.release-toggle-title').textContent = title.textContent.trim();
+      if (status) line.appendChild(status);
+      button.querySelector('.release-toggle-teaser').textContent = (entry.querySelector('.release-copy > .lede') || entry.querySelector('.release-card .lede') || title).textContent.trim();
+      var details = button.querySelector('.release-toggle-details');
+      if (releaseDate) details.appendChild(releaseDate);
+      var heading = document.createElement('h2');
+      heading.id = titleID;
+      heading.appendChild(button);
+      meta.after(heading);
+      meta.remove();
+      entry.classList.add('release-enhanced');
+      var panelTitle = panel.querySelector('h2');
+      if (panelTitle) {
+        panelTitle.hidden = true;
+        panelTitle.removeAttribute('id');
+        panelTitle.setAttribute('aria-hidden', 'true');
+      }
+      panel.hidden = index !== 0;
+      button.addEventListener('click', function () {
+        var expanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', String(!expanded));
+        panel.hidden = expanded;
+        if (!expanded) {
+          entry.classList.add('in');
+          if (io) io.unobserve(entry);
+        }
+      });
+    })(releaseEntries[re], re);
+  }
+
+  function openLinkedRelease() {
+    var target = document.getElementById(location.hash.slice(1));
+    if (!target) return;
+    var entry = target.closest('.release-entry');
+    var button = entry && entry.querySelector('.release-toggle');
+    var panel = entry && entry.querySelector('.release-panel');
+    if (!button || !panel) return;
+    button.setAttribute('aria-expanded', 'true');
+    panel.hidden = false;
+    entry.classList.add('in');
+    requestAnimationFrame(function () { target.scrollIntoView(); });
+  }
+  addEventListener('hashchange', openLinkedRelease);
+  openLinkedRelease();
+
   /* ---------------------------------------------------------- month demo */
 
   var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
