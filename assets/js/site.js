@@ -6,6 +6,116 @@
   var STORE = 'hg-theme';
   var SHOT_DIR = (root.dataset.assets || 'assets') + '/shots/';
 
+  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------------------------------------------------- screen parts */
+
+  /* Pieces of each capture that lift off the phone, in 900 × 1840 capture
+     pixels: [x, y, w, h, radius, move x, move y, scale, turn°]. Dark and
+     light captures share a layout, so one table serves both. Recapture a
+     screen and its boxes need re-measuring. */
+  var PARTS = {
+    home: [
+      [730, 170, 88, 88, 44, 0, -16, 1.3, 0],
+      [65, 528, 770, 248, 46, -50, -26, 1.05, -1.5],
+      [65, 802, 770, 257, 46, 46, -10, 1.04, 1.2],
+      [65, 1205, 770, 248, 46, -42, -6, 1.04, -1],
+      [65, 1479, 770, 248, 46, 50, 4, 1.04, 1.2]
+    ],
+    water: [
+      [222, 612, 256, 624, 40, -40, -20, 1.08, -4],
+      [498, 660, 84, 86, 18, 60, -20, 1.35, 6],
+      [92, 1358, 96, 96, 48, -16, -20, 1.25, 0],
+      [210, 1360, 480, 90, 45, 0, -24, 1.08, 0],
+      [710, 1358, 96, 96, 48, 16, -20, 1.25, 0],
+      [96, 1476, 708, 104, 52, 0, -10, 1.05, 0]
+    ],
+    book: [
+      [116, 586, 268, 428, 14, -40, -30, 1.12, -6],
+      [470, 770, 120, 70, 12, 30, -20, 1.3, 0],
+      [470, 840, 290, 42, 10, 30, -6, 1.1, 0],
+      [100, 1054, 700, 50, 25, 0, -12, 1.04, 0],
+      [98, 1148, 100, 100, 50, -20, -14, 1.2, 0],
+      [400, 1150, 100, 110, 16, 0, -20, 1.3, 0],
+      [700, 1148, 100, 100, 50, 20, -14, 1.2, 0],
+      [96, 1480, 708, 100, 50, 0, -10, 1.05, 0]
+    ],
+    detail: [
+      [74, 280, 752, 250, 30, 0, -30, 1.04, 0],
+      [74, 560, 362, 144, 26, -70, -20, 1.08, -3],
+      [462, 560, 362, 144, 26, 70, -20, 1.08, 3],
+      [74, 732, 362, 148, 26, -70, 4, 1.08, -2],
+      [462, 732, 362, 148, 26, 70, 4, 1.08, 2]
+    ],
+    create: [
+      [322, 326, 256, 256, 128, 0, -30, 1.15, 0],
+      [500, 500, 88, 88, 44, 30, 10, 1.3, 12]
+    ],
+    settings: [
+      [84, 298, 732, 186, 30, 0, -24, 1.05, 0],
+      [84, 596, 732, 114, 28, 24, 0, 1.03, 0],
+      [86, 830, 728, 100, 20, 40, 0, 1.03, 0],
+      [86, 934, 728, 100, 20, 56, 0, 1.03, 0],
+      [86, 1038, 728, 100, 20, 72, 0, 1.03, 0],
+      [86, 1142, 728, 100, 20, 88, 0, 1.03, 0],
+      [668, 1632, 124, 62, 31, 0, -14, 1.3, 0]
+    ]
+  };
+  /* The last seven days on the detail screen pop one by one, and the colour
+     swatches on New Habit fan up in an arc. */
+  [126, 192, 258, 326, 392, 458, 524].forEach(function (x) {
+    PARTS.detail.push([x - 27, 1307, 54, 54, 27, 0, -22, 1.4, 0]);
+  });
+  [130, 210, 290, 370, 450, 530, 610, 690, 768].forEach(function (x, i) {
+    PARTS.create.push([x - 38, 916, 76, 76, 38, (i - 4) * 5, -24 - 22 * Math.sin((Math.PI * i) / 8), 1.25, 0]);
+  });
+
+  function buildParts(key) {
+    var layer = document.createElement('div');
+    layer.className = 'parts';
+    layer.setAttribute('aria-hidden', 'true');
+    var list = PARTS[key];
+    for (var i = 0; i < list.length; i++) {
+      var p = list[i];
+      var vars = '--x:' + p[0] + ';--y:' + p[1] + ';--w:' + p[2] + ';--h:' + p[3] + ';--r:' + p[4];
+      var socket = document.createElement('span');
+      socket.className = 'socket';
+      socket.style.cssText = vars + ';--d:' + i;
+      var part = document.createElement('span');
+      part.className = 'part';
+      part.style.cssText = vars + ';--mx:' + p[5] + ';--my:' + p[6].toFixed(1) + ';--s:' + p[7] +
+        ';--rot:' + p[8] + 'deg;--d:' + i + ';--z:' + (6 + (p[7] - 1) * 40).toFixed(1);
+      layer.appendChild(socket);
+      layer.appendChild(part);
+    }
+    return layer;
+  }
+
+  var partPics = document.querySelectorAll('picture[data-parts]');
+  for (var pp = 0; pp < partPics.length; pp++) {
+    var pic = partPics[pp];
+    if (!PARTS[pic.dataset.parts]) continue;
+    var layer = buildParts(pic.dataset.parts);
+    layer.dataset.srcShot = pic.dataset.shot;
+    pic.after(layer);
+  }
+
+  /* On phones the tour shows each screen inline; its parts lift once, the
+     first time the screen is well into view. */
+  var inlineLayers = document.querySelectorAll('.tour-shot .parts');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    /* Nothing moves: the screenshots stand on their own. */
+  } else if (inlineLayers.length) {
+    var liftIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-lifted');
+        liftIO.unobserve(entry.target);
+      });
+    }, { threshold: 0.6 });
+    for (var il = 0; il < inlineLayers.length; il++) liftIO.observe(inlineLayers[il]);
+  }
+
   /* ---------------------------------------------------------------- theme */
 
   function currentTheme() {
@@ -21,6 +131,13 @@
       if (!src) continue;
       src.media = 'all';
       src.srcset = SHOT_DIR + pics[i].dataset.shot + '-' + theme + '.webp';
+    }
+    /* Parts and the card anatomy crop the same capture by background. */
+    var layers = document.querySelectorAll('[data-src-shot]');
+    for (var j = 0; j < layers.length; j++) {
+      /* Absolute, or the url() would resolve against the stylesheet. */
+      var href = new URL(SHOT_DIR + layers[j].dataset.srcShot + '-' + theme + '.webp', location.href).href;
+      layers[j].style.setProperty('--src', 'url("' + href + '")');
     }
   }
 
@@ -238,7 +355,56 @@
 
   /* --------------------------------------------------------------- reveal */
 
-  var targets = document.querySelectorAll('.reveal');
+  /* Big headings rise a word at a time. Words are wrapped in place, so
+     nested spans keep their styling; the ramp word moves as one piece
+     because its gradient spans the whole word. */
+  function splitWords(el) {
+    var n = 0;
+    var wrap = function (node) {
+      var w = document.createElement('span');
+      w.className = 'w';
+      var inner = document.createElement('span');
+      inner.style.setProperty('--i', n++);
+      w.appendChild(inner);
+      return { w: w, inner: inner };
+    };
+    var walk = function (parent) {
+      var kids = Array.prototype.slice.call(parent.childNodes);
+      for (var k = 0; k < kids.length; k++) {
+        var node = kids[k];
+        if (node.nodeType === 3) {
+          var bits = node.textContent.split(/(\s+)/);
+          var frag = document.createDocumentFragment();
+          for (var b = 0; b < bits.length; b++) {
+            if (!bits[b]) continue;
+            if (/^\s+$/.test(bits[b])) {
+              frag.appendChild(document.createTextNode(bits[b]));
+              continue;
+            }
+            var piece = wrap();
+            piece.inner.textContent = bits[b];
+            frag.appendChild(piece.w);
+          }
+          parent.replaceChild(frag, node);
+        } else if (node.nodeType === 1) {
+          if (node.classList.contains('ramp') || !/\s/.test(node.textContent.trim())) {
+            var whole = wrap();
+            parent.replaceChild(whole.w, node);
+            whole.inner.appendChild(node);
+          } else {
+            walk(node);
+          }
+        }
+      }
+    };
+    walk(el);
+    el.classList.add('split');
+  }
+
+  var heads = document.querySelectorAll('.hero h1, .section-head h2, .demo-copy h2, .compare-copy h2, .privacy h2, .closer h2');
+  for (var hd = 0; hd < heads.length; hd++) splitWords(heads[hd]);
+
+  var targets = document.querySelectorAll('.reveal, .split');
   if (!('IntersectionObserver' in window) ||
       matchMedia('(prefers-reduced-motion: reduce)').matches) {
     for (var r = 0; r < targets.length; r++) targets[r].classList.add('in');
@@ -327,7 +493,6 @@
 
   /* ------------------------------------------------------------ day bars */
 
-  var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   /* The app draws a month as one bar per day, and every motif on the site is
      a run of them. A seed spells the days out: 1 done, p partial, - rest,
      0 nothing logged, which reads as missed before today and open from today
@@ -753,11 +918,16 @@
   var stage = document.querySelector('[data-tour-stage]');
   if (steps.length && stage && 'IntersectionObserver' in window) {
     var frames = stage.querySelectorAll('picture');
+    var stageParts = stage.querySelectorAll('.parts');
     var GLOWS = ['#2973ff', '#2973ff', '#ffad32', '#8c5cff', '#8c5cff', '#3de0d9'];
     var show = function (n) {
       for (var i = 0; i < steps.length; i++) {
         steps[i].classList.toggle('is-active', i === n);
         if (frames[i]) frames[i].classList.toggle('is-active', i === n);
+        if (stageParts[i]) {
+          stageParts[i].classList.toggle('is-active', i === n);
+          stageParts[i].classList.toggle('is-lifted', i === n && !reduceMotion);
+        }
       }
       stage.parentNode.style.setProperty('--glow', GLOWS[n] || GLOWS[0]);
       /* Step 04, the detail screen, spreads its heatmap out behind the phone. */
@@ -774,6 +944,175 @@
       });
     }, { rootMargin: '-45% 0px -45% 0px' });
     for (var st = 0; st < steps.length; st++) tourIO.observe(steps[st]);
+
+    /* The phone tips toward the pointer; lifted parts travel further. */
+    var tourStage = stage.parentNode;
+    if (!reduceMotion && matchMedia('(hover: hover)').matches) {
+      tourStage.addEventListener('pointermove', function (e) {
+        var r = tourStage.getBoundingClientRect();
+        stage.style.setProperty('--px', (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
+        stage.style.setProperty('--py', (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
+      });
+      tourStage.addEventListener('pointerleave', function () {
+        stage.style.setProperty('--px', 0);
+        stage.style.setProperty('--py', 0);
+      });
+    }
+  }
+
+  /* -------------------------------------------------------- card anatomy */
+
+  /* The Drink water card from the Home capture, in card pixels (the card
+     sits at 65, 528 in the 900 × 1840 shot). Each part is a crop; the base
+     card has holes cut where they sit, so a lifted part leaves its socket
+     behind. The bars are real day bars, filled when the card goes back
+     together. [x, y, w, h, radius, move x, move y, scale, turn°] */
+  (function () {
+    var anatomy = document.querySelector('[data-anatomy]');
+    var anatomyCard = anatomy && anatomy.querySelector('[data-anatomy-card]');
+    if (!anatomyCard) return;
+    var A_PARTS = {
+      icon: [21.5, 20, 104, 104, 52, -30, -150, 1.35, -8],
+      progress: [135, 20, 476, 88, 12, 0, -165, 1.12, 0],
+      button: [645, 8, 116, 116, 58, 30, -150, 1.35, 8],
+      tally: [15, 142, 142, 32, 6, -25, 175, 1.3, 0],
+      streak: [635, 142, 120, 32, 6, 25, 175, 1.3, 0]
+    };
+    var BAR_BOX = [22.5, 188.5, 728, 34.5, 4];
+    var ORDER = ['icon', 'progress', 'button', 'tally', 'bars', 'streak'];
+
+    var rounded = function (b) {
+      var x = b[0], y = b[1], w = b[2], h = b[3], r = Math.min(b[4], w / 2, h / 2);
+      return 'M' + (x + r) + ' ' + y + 'H' + (x + w - r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + w) + ' ' + (y + r) +
+        'V' + (y + h - r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + w - r) + ' ' + (y + h) + 'H' + (x + r) +
+        'A' + r + ' ' + r + ' 0 0 1 ' + x + ' ' + (y + h - r) + 'V' + (y + r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + r) + ' ' + y + 'Z';
+    };
+    var holes = 'M0 0H770V248H0Z';
+    for (var hk in A_PARTS) holes += rounded(A_PARTS[hk]);
+    holes += rounded(BAR_BOX);
+    var maskSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 770 248" preserveAspectRatio="none">' +
+      '<path fill-rule="evenodd" d="' + holes + '"/></svg>';
+
+    anatomyCard.dataset.srcShot = 'home-current-framed';
+    anatomyCard.style.setProperty('--holes', 'url("data:image/svg+xml,' + encodeURIComponent(maskSvg) + '")');
+    var under = document.createElement('div');
+    under.className = 'anatomy-under';
+    var base = document.createElement('div');
+    base.className = 'anatomy-base';
+    anatomyCard.appendChild(under);
+    anatomyCard.appendChild(base);
+
+    var pieces = {};
+    for (var ak in A_PARTS) {
+      var ap = A_PARTS[ak];
+      var el = document.createElement('div');
+      el.className = 'apart';
+      el.style.cssText = '--x:' + ap[0] + ';--y:' + ap[1] + ';--w:' + ap[2] + ';--h:' + ap[3] + ';--r:' + ap[4];
+      anatomyCard.appendChild(el);
+      pieces[ak] = el;
+    }
+
+    /* September for Drink water: today (the 29th) part way, the 30th ahead. */
+    var aMonth = document.createElement('div');
+    aMonth.className = 'month';
+    var aDays = parseDays('1111111110111110110110101111p0', 28);
+    var aBars = [];
+    for (var ab = 0; ab < aDays.length; ab++) {
+      var abar = makeBar('span');
+      abar.style.setProperty('--t', ab * 22 + 'ms');
+      aMonth.appendChild(abar);
+      aBars.push(abar);
+    }
+    anatomyCard.appendChild(aMonth);
+    drawDays(aBars, aDays, true);
+    applyShots(currentTheme());
+
+    var notes = {};
+    var noteEls = anatomy.querySelectorAll('[data-note]');
+    for (var ne = 0; ne < noteEls.length; ne++) notes[noteEls[ne].dataset.note] = noteEls[ne];
+
+    var filled = false;
+    var fillCard = function () {
+      if (filled) return;
+      filled = true;
+      drawDays(aBars, aDays);
+    };
+
+    if (reduceMotion) {
+      anatomy.classList.add('is-still');
+      fillCard();
+    } else {
+      var clamp = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
+      var outBack = function (t) { var c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+      var inOut = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
+      var pin = anatomy.querySelector('.anatomy-pin');
+      var unit = 1;
+      var lift = 1;
+      var measure = function () {
+        unit = anatomyCard.offsetWidth / 770;
+        /* Fit the flight to the room the card has above and below it. */
+        var room = parseFloat(getComputedStyle(anatomyCard).marginTop) / unit;
+        lift = matchMedia('(max-width: 760px)').matches ? 0.5 : clamp((room - 110) / 165) * 0.6 + 0.4;
+      };
+      var place = function (el, m, e) {
+        el.style.setProperty('--e', e.toFixed(3));
+        el.style.transform = 'translate(' + (m[5] * e * unit).toFixed(1) + 'px,' + (m[6] * e * lift * unit).toFixed(1) +
+          'px) scale(' + (1 + (m[7] - 1) * e).toFixed(3) + ') rotate(' + (m[8] * e).toFixed(2) + 'deg)';
+      };
+      var frame = function () {
+        ticking = false;
+        var r = anatomy.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > innerHeight) return;
+        var p = clamp(-r.top / Math.max(1, anatomy.offsetHeight - pin.offsetHeight));
+        /* Apart over the first third, a short hold with the notes up, then
+           back together, finishing just before the pin lets go. */
+        var apart = clamp(p / 0.36);
+        var back = clamp((p - 0.5) / 0.42);
+        if (back > 0.9) fillCard();
+        for (var k = 0; k < ORDER.length; k++) {
+          var name = ORDER[k];
+          var out = outBack(clamp((apart - k * 0.07) / 0.6));
+          var home = inOut(clamp((back - (ORDER.length - 1 - k) * 0.05) / 0.72));
+          var e = out * (1 - home);
+          if (notes[name]) notes[name].style.setProperty('--e', clamp(e).toFixed(3));
+          if (name === 'bars') {
+            for (var bi = 0; bi < aBars.length; bi++) {
+              var spread = (bi - 14.5) * 3.2 * e * unit;
+              var rise = (70 + Math.sin(bi * 0.55) * 14) * e * lift * unit;
+              aBars[bi].style.transform = 'translate(' + spread.toFixed(1) + 'px,' + rise.toFixed(1) + 'px)';
+            }
+          } else {
+            place(pieces[name], A_PARTS[name], e);
+          }
+        }
+        base.style.transform = 'scale(' + (1 - 0.05 * clamp(apart) * (1 - back)).toFixed(3) + ')';
+      };
+      var ticking = false;
+      var request = function () {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(frame);
+      };
+      measure();
+      frame();
+      addEventListener('scroll', request, { passive: true });
+      addEventListener('resize', function () {
+        measure();
+        request();
+      });
+    }
+  })();
+
+  /* ---------------------------------------------------------------- perks */
+
+  /* The perk's top hairline lights up under the pointer. */
+  var perkList = document.querySelector('.perks');
+  if (perkList && matchMedia('(hover: hover)').matches) {
+    perkList.addEventListener('pointermove', function (e) {
+      var li = e.target.closest('li');
+      if (!li) return;
+      li.style.setProperty('--hx', (e.clientX - li.getBoundingClientRect().left).toFixed(0) + 'px');
+    });
   }
 
   /* ------------------------------------------------------------- compare */

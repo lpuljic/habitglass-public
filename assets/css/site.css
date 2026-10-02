@@ -57,6 +57,11 @@
 
   --shell: 1200px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* Damped springs sampled into linear(), the same feel as the app's
+     .spring(duration:bounce:). --spring overshoots ~16% for pops,
+     --spring-soft ~4% for things that travel. Use them for ~0.9s. */
+  --spring: linear(0, 0.033, 0.120, 0.243, 0.384, 0.532, 0.674, 0.803, 0.915, 1.005, 1.073, 1.121, 1.150, 1.162, 1.161, 1.150, 1.132, 1.110, 1.086, 1.062, 1.040, 1.021, 1.005, 0.992, 0.983, 0.977, 0.974, 0.973, 0.975, 0.977, 0.981, 0.984, 0.988, 0.992, 0.995, 0.998, 1);
+  --spring-soft: linear(0, 0.021, 0.077, 0.155, 0.246, 0.344, 0.442, 0.536, 0.623, 0.703, 0.773, 0.833, 0.884, 0.926, 0.960, 0.986, 1.006, 1.020, 1.029, 1.035, 1.038, 1.038, 1.037, 1.035, 1.032, 1.028, 1.024, 1.021, 1.017, 1.014, 1.011, 1.008, 1.006, 1.004, 1.002, 1.001, 1);
 }
 
 /* The hero film sits under the copy, edges feathered into the page mesh.
@@ -146,6 +151,8 @@
   --shadow-lift: 0 48px 100px -34px rgba(0, 0, 0, 0.92);
   --grain: 0.035;
   --head-fallback: rgba(5, 7, 13, 0.76);
+  --part-shadow: 0 22px 40px -14px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  --socket: rgba(3, 4, 8, 0.62);
   color-scheme: dark;
 }
 
@@ -179,6 +186,8 @@
   --shadow-lift: 0 40px 80px -36px rgba(23, 39, 82, 0.42);
   --grain: 0.018;
   --head-fallback: rgba(244, 248, 255, 0.78);
+  --part-shadow: 0 22px 40px -16px rgba(23, 39, 82, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.9);
+  --socket: rgba(214, 222, 240, 0.72);
   color-scheme: light;
 }
 
@@ -445,7 +454,7 @@ section {
   font-size: 1rem;
   letter-spacing: -0.012em;
   white-space: nowrap;
-  transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease),
+  transition: transform 0.7s var(--spring), box-shadow 0.22s var(--ease),
     background-color 0.22s var(--ease), border-color 0.22s var(--ease), opacity 0.22s var(--ease);
 }
 
@@ -453,8 +462,11 @@ section {
   transform: translateY(-1px);
 }
 
+/* Press in fast, spring back out on release. */
 .btn:active {
-  transform: translateY(0) scale(0.985);
+  transform: scale(0.96);
+  transition-duration: 0.08s;
+  transition-timing-function: var(--ease);
 }
 
 .btn-primary {
@@ -1132,7 +1144,7 @@ section {
 }
 
 .tour-step {
-  min-height: 78vh;
+  min-height: 60vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1256,6 +1268,310 @@ section {
 .tour-phone picture.is-active {
   opacity: 1;
   transform: none;
+}
+
+/* --------------------------------------------------------------------------
+   Screen parts. site.js lifts pieces of a real capture off the phone: each
+   .part is the same screenshot, cropped to one control by background
+   position, sitting exactly over itself until it lifts. The .socket left
+   behind darkens the spot it came from, so it reads as a part and not a
+   copy. Coordinates are 900 × 1840 capture pixels (see PARTS in site.js).
+   -------------------------------------------------------------------------- */
+
+.parts {
+  position: absolute;
+  inset: 0;
+  container-type: inline-size;
+  pointer-events: none;
+}
+
+.part,
+.socket {
+  position: absolute;
+  left: calc(var(--x) / 900 * 100%);
+  top: calc(var(--y) / 1840 * 100%);
+  width: calc(var(--w) / 900 * 100%);
+  height: calc(var(--h) / 1840 * 100%);
+  border-radius: calc(var(--r) / 9 * 1cqw);
+}
+
+.part {
+  background-image: var(--src);
+  background-size: calc(900 / var(--w) * 100%) calc(1840 / var(--h) * 100%);
+  background-position: calc(var(--x) / (900 - var(--w)) * 100%) calc(var(--y) / (1840 - var(--h)) * 100%);
+  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), translate 0.5s var(--ease);
+  will-change: transform;
+}
+
+.socket {
+  background: var(--socket);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.parts.is-lifted .part {
+  transform: translate(calc(var(--mx, 0) / 9 * 1cqw), calc(var(--my, 0) / 9 * 1cqw)) scale(var(--s, 1.06)) rotate(var(--rot, 0deg));
+  translate: calc(var(--px, 0) * var(--z, 8) * 1px) calc(var(--py, 0) * var(--z, 8) * 1px);
+  box-shadow: var(--part-shadow);
+  transition: transform 0.95s var(--spring), box-shadow 0.5s var(--ease), translate 0.5s var(--ease);
+  transition-delay: calc(0.18s + var(--d, 0) * 70ms), calc(0.18s + var(--d, 0) * 70ms), 0s;
+}
+
+.parts.is-lifted .socket {
+  opacity: 1;
+  transition-delay: calc(0.18s + var(--d, 0) * 70ms);
+}
+
+.tour-phone .parts {
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.tour-phone .parts.is-active {
+  opacity: 1;
+}
+
+/* The pinned phone tips toward the pointer, and lifted parts drift a little
+   further than the glass behind them, so the stack reads as depth. */
+.tour-phone {
+  transform: perspective(1600px) rotateY(calc(var(--px, 0) * 5deg)) rotateX(calc(var(--py, 0) * -5deg));
+  transition: transform 0.7s var(--ease);
+}
+
+.tour-shot {
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Card anatomy: a Home card taken apart while you scroll, then put back
+   together. The pin is tall so the scroll has room to scrub it.
+   -------------------------------------------------------------------------- */
+
+.anatomy {
+  height: 190vh;
+}
+
+.anatomy-pin {
+  position: sticky;
+  top: var(--head-h, 4.5rem);
+  height: calc(100vh - var(--head-h, 4.5rem));
+  height: calc(100svh - var(--head-h, 4.5rem));
+  display: grid;
+  align-items: center;
+  overflow: clip;
+}
+
+.anatomy-band {
+  padding-top: clamp(4.5rem, 9vw, 8rem);
+}
+
+.anatomy-band .section-head {
+  margin-bottom: 0;
+}
+
+.anatomy-stage {
+  --cw: min(100cqw, 46rem);
+  position: relative;
+  container-type: inline-size;
+}
+
+/* The margins are the room the parts fly into; site.js scales the flight
+   to whatever they come out at. */
+.anatomy-card {
+  --c: #0a84ff;
+  position: relative;
+  width: var(--cw);
+  aspect-ratio: 770 / 248;
+  margin: clamp(9rem, 27vh, 15rem) auto;
+}
+
+[data-theme='light'] .anatomy-card {
+  --c: #007aff;
+}
+
+.anatomy-card > * {
+  position: absolute;
+}
+
+/* The card's own surface, cut out wherever a part lifts away. */
+.anatomy-under,
+.anatomy-base {
+  inset: 0;
+  border-radius: calc(46 / 770 * var(--cw));
+}
+
+.anatomy-under {
+  background: var(--glass);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+
+.anatomy-base {
+  background-image: var(--src);
+  background-size: calc(900 / 770 * 100%) calc(1840 / 248 * 100%);
+  background-position: calc(65 / 130 * 100%) calc(528 / 1592 * 100%);
+  -webkit-mask: var(--holes) center / 100% 100% no-repeat;
+  mask: var(--holes) center / 100% 100% no-repeat;
+  box-shadow: var(--shadow-lift);
+}
+
+.anatomy-card .apart {
+  left: calc(var(--x) / 770 * 100%);
+  top: calc(var(--y) / 248 * 100%);
+  width: calc(var(--w) / 770 * 100%);
+  height: calc(var(--h) / 248 * 100%);
+  border-radius: calc(var(--r) / 770 * var(--cw));
+  background-image: var(--src);
+  background-size: calc(900 / var(--w) * 100%) calc(1840 / var(--h) * 100%);
+  background-position: calc((var(--x) + 65) / (900 - var(--w)) * 100%) calc((var(--y) + 528) / (1840 - var(--h)) * 100%);
+  box-shadow: 0 calc(var(--e, 0) * 26px) calc(var(--e, 0) * 44px) calc(var(--e, 0) * -14px) rgb(0 0 0 / 0.55);
+  will-change: transform;
+}
+
+[data-theme='light'] .anatomy-card .apart {
+  box-shadow: 0 calc(var(--e, 0) * 22px) calc(var(--e, 0) * 40px) calc(var(--e, 0) * -16px) rgb(23 39 82 / 0.32);
+}
+
+.anatomy-card .month {
+  left: calc(22.5 / 770 * 100%);
+  top: calc(188.5 / 248 * 100%);
+  width: calc(728 / 770 * 100%);
+  height: calc(34.5 / 248 * 100%);
+  gap: calc(7 / 770 * var(--cw));
+}
+
+.anatomy-card .month .bar {
+  height: 100%;
+  border-radius: calc(4 / 770 * var(--cw));
+}
+
+/* Notes sit in two rows, three above the card and three below, each over
+   the column its part flies into. */
+.anatomy-notes {
+  list-style: none;
+  padding: 0;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: var(--cw);
+  translate: -50% 0;
+  pointer-events: none;
+}
+
+.anatomy-notes li {
+  position: absolute;
+  width: min(15rem, 30%);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  opacity: calc(var(--e, 0) * 1.4 - 0.4);
+  transform: translateY(calc((1 - var(--e, 0)) * 10px));
+}
+
+.anatomy-notes strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.anatomy-notes li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: calc(var(--e, 0) * 2.25rem);
+  background: linear-gradient(var(--hairline-lit), transparent);
+}
+
+.anatomy-notes li:nth-child(-n + 3) {
+  top: 0;
+  padding-bottom: 2.75rem;
+}
+
+.anatomy-notes li:nth-child(-n + 3)::before {
+  bottom: 0.25rem;
+  transform-origin: bottom;
+  background: linear-gradient(transparent, var(--hairline-lit));
+}
+
+.anatomy-notes li:nth-child(n + 4) {
+  bottom: 0;
+  padding-top: 2.75rem;
+}
+
+.anatomy-notes li:nth-child(n + 4)::before {
+  top: 0.25rem;
+}
+
+.anatomy-notes li:nth-child(3n + 1) {
+  left: 0;
+}
+
+.anatomy-notes li:nth-child(3n + 2) {
+  left: 50%;
+  translate: -50% 0;
+}
+
+.anatomy-notes li:nth-child(3n) {
+  right: 0;
+  text-align: right;
+}
+
+.anatomy-notes li:nth-child(3n)::before {
+  left: auto;
+  right: 0;
+}
+
+.anatomy-notes li:nth-child(3n + 2)::before {
+  left: 50%;
+}
+
+.anatomy-notes li:nth-child(3n + 2) {
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .anatomy {
+    height: 160vh;
+  }
+  .anatomy-card {
+    margin-block: 4.5rem 4rem;
+  }
+  .anatomy-notes {
+    position: static;
+    width: auto;
+    translate: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+  }
+  .anatomy-notes li,
+  .anatomy-notes li:nth-child(n) {
+    position: static;
+    width: auto;
+    padding: 0;
+    translate: none;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+  .anatomy-notes li::before {
+    display: none;
+  }
+}
+
+/* Reduced motion: no pin, no scrub. The card sits whole with its notes. */
+.anatomy.is-still {
+  height: auto;
+}
+
+.anatomy.is-still .anatomy-pin {
+  position: static;
+  height: auto;
+  padding-block: clamp(3rem, 8vw, 6rem);
+}
+
+.anatomy.is-still .anatomy-notes li {
+  --e: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -1444,8 +1760,31 @@ section {
 }
 
 .perks li {
+  position: relative;
   padding-top: 1.5rem;
   border-top: 1px solid var(--hairline);
+  transition: transform 0.6s var(--spring);
+}
+
+/* The top hairline lights up under the pointer in the perk's tint. */
+.perks li::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: radial-gradient(9rem 1px at var(--hx, 50%) 0, var(--tint), transparent);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease);
+}
+
+.perks li:hover {
+  transform: translateY(-2px);
+}
+
+.perks li:hover::before {
+  opacity: 1;
 }
 
 /* Each perk shows itself in day bars instead of a stock icon. site.js
@@ -2992,14 +3331,50 @@ html:not(.js) .slide-controls {
 
 .js .reveal {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(28px) scale(0.985);
+  filter: blur(6px);
+  transition: opacity 0.6s var(--ease), transform 0.95s var(--spring-soft), filter 0.6s var(--ease);
   transition-delay: var(--delay, 0ms);
 }
 
 .js .reveal.in {
   opacity: 1;
   transform: none;
+  filter: none;
+}
+
+/* Headings rise a word at a time from under a mask, once. site.js wraps
+   each word in .w > span and sets --i. */
+.js .split .w {
+  display: inline-block;
+  overflow: clip;
+  overflow-clip-margin: 0.12em;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+  vertical-align: bottom;
+}
+
+.js .split .w > span {
+  display: inline-block;
+  transform: translateY(105%) rotate(4deg);
+  transform-origin: 0 100%;
+  transition: transform 0.9s var(--spring-soft);
+  transition-delay: calc(var(--delay, 0ms) + var(--i) * 55ms);
+}
+
+.js .split.in .w > span {
+  transform: none;
+}
+
+/* The hero's ramp word sweeps through its gradient once as it lands. */
+.js .hero h1.split .ramp {
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  transition: background-position 1.6s var(--ease) 0.5s;
+}
+
+.js .hero h1.split.in .ramp {
+  background-position: 0 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -3095,9 +3470,11 @@ html:not(.js) .slide-controls {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .js .reveal {
+  .js .reveal,
+  .js .split .w > span {
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }
 

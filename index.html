@@ -152,21 +152,21 @@
     <div class="shell">
       <div class="hero-copy">
         <h1>Thirty days, <span class="ramp">filled</span>.</h1>
-        <p class="lede">
+        <p class="lede reveal" style="--delay:260ms">
           Every card ends in a run of days. Fill enough of them and the month reads
           itself, no chart and no arithmetic.
         </p>
-        <div class="cta-row">
+        <div class="cta-row reveal" style="--delay:360ms">
           <a class="btn btn-primary" href="https://apps.apple.com/us/app/habit-glass-habit-tracker/id6807643942">
             <svg width="18" height="18" aria-hidden="true"><use href="#i-apple"/></svg>
             Download on the App Store
           </a>
           <a class="btn btn-ghost" href="#tour">Take the tour</a>
         </div>
-        <p class="cta-note">Free for three habits. No account.</p>
+        <p class="cta-note reveal" style="--delay:440ms">Free for three habits. No account.</p>
       </div>
 
-      <figure id="film" class="film">
+      <figure id="film" class="film reveal" style="--delay:520ms">
         <div class="film-frame">
           <video class="film-player" data-intro-film data-film="habitglass-intro" playsinline preload="auto" muted
                poster="assets/video/habitglass-intro-poster-dark.jpg" aria-label="Introducing HabitGlass, a 17-second film"
@@ -186,6 +186,34 @@
           the goal reads Goal met. Keep it. A consistency grid lights up, seven days get checked and a widget swings in,
           then everything pulls into the HabitGlass icon. HabitGlass, habit tracker for iPhone. No spoken dialogue.</figcaption>
       </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================= anatomy -->
+  <section class="anatomy-band" aria-labelledby="anatomy-heading">
+    <div class="shell">
+      <div class="section-head reveal">
+        <h2 id="anatomy-heading">Everything on one card.</h2>
+        <p class="lede">The Drink water card from Home, taken apart as you scroll and put back together.</p>
+      </div>
+    </div>
+    <div class="anatomy" data-anatomy>
+      <div class="anatomy-pin">
+        <div class="shell">
+          <div class="anatomy-stage">
+            <div class="anatomy-card" data-anatomy-card role="img"
+                 aria-label="The Drink water card: icon, 750 of 2,000 mL with a progress bar, an add button with a progress ring, 23 of 28 days, a 4 day streak and a bar for each day of September."></div>
+            <ol class="anatomy-notes">
+              <li data-note="icon"><strong>Icon</strong>An SF Symbol or emoji, in the habit's colour.</li>
+              <li data-note="progress"><strong>Today so far</strong>750 of 2,000 mL, with the gauge beside it.</li>
+              <li data-note="button"><strong>Log it</strong>One tap. The ring closes as you near the goal.</li>
+              <li data-note="tally"><strong>The month's tally</strong>Days done out of the days that were due.</li>
+              <li data-note="bars"><strong>A bar per day</strong>Today is ringed, the live run stays lit.</li>
+              <li data-note="streak"><strong>Streak</strong>Counted against the schedule, so rest days don't break it.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -255,7 +283,7 @@
               <li>A run of day squares and a streak on every card</li>
             </ul>
             <div class="tour-shot">
-              <picture data-shot="home-current-framed">
+              <picture data-shot="home-current-framed" data-parts="home">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-current-framed-light.webp">
                 <img src="assets/shots/home-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Home with Drink water and Read a Book waiting under Due today, Meditate and Morning run under Done, each card carrying a month of day squares and a streak.">
               </picture>
@@ -278,7 +306,7 @@
               <svg width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg>
             </a>
             <div class="tour-shot">
-              <picture data-shot="log-water-framed">
+              <picture data-shot="log-water-framed" data-parts="water">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/log-water-framed-light.webp">
                 <img src="assets/shots/log-water-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Log Water sheet with the bottle just over a third full at 750 mL, the 2 litre goal beside it, and an Add 200 mL button.">
               </picture>
@@ -298,7 +326,7 @@
               <svg width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg>
             </a>
             <div class="tour-shot">
-              <picture data-shot="log-book-framed">
+              <picture data-shot="log-book-framed" data-parts="book">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/log-book-framed-light.webp">
                 <img src="assets/shots/log-book-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Read a Book sheet with a 3D copy of Atomic Habits, page 0 to 20 of 323, 0 of 5 pages today, and a Save button.">
               </picture>
@@ -318,7 +346,7 @@
               <li>Tap any day to backfill it or attach a note</li>
             </ul>
             <div class="tour-shot">
-              <picture data-shot="detail-current-framed">
+              <picture data-shot="detail-current-framed" data-parts="detail">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/detail-current-framed-light.webp">
                 <img src="assets/shots/detail-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Meditate details showing streak and completion stats, a consistency heatmap, and history.">
               </picture>
@@ -338,7 +366,7 @@
               <li>Every day, set weekdays, X times a week, or every N days</li>
             </ul>
             <div class="tour-shot">
-              <picture data-shot="create-current-framed">
+              <picture data-shot="create-current-framed" data-parts="create">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/create-current-framed-light.webp">
                 <img src="assets/shots/create-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="The New Habit sheet with icon, name, colour swatches, repeat, tracking, daily goal and start date.">
               </picture>
@@ -357,7 +385,7 @@
               <li>A delete-everything button that really deletes everything</li>
             </ul>
             <div class="tour-shot">
-              <picture data-shot="settings-current-framed">
+              <picture data-shot="settings-current-framed" data-parts="settings">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/settings-current-framed-light.webp">
                 <img src="assets/shots/settings-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Settings with Pro, iCloud sync, backup options, Theme, and Home Layout.">
               </picture>
@@ -368,27 +396,27 @@
         <div class="tour-stage" aria-hidden="true">
           <div class="tour-heat" data-tour-heat></div>
           <div class="tour-phone" data-tour-stage>
-            <picture data-shot="home-current-framed" class="is-active">
+            <picture data-shot="home-current-framed" data-parts="home" class="is-active">
               <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-current-framed-light.webp">
               <img src="assets/shots/home-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="">
             </picture>
-            <picture data-shot="log-water-framed">
+            <picture data-shot="log-water-framed" data-parts="water">
               <source media="(prefers-color-scheme: light)" srcset="assets/shots/log-water-framed-light.webp">
               <img src="assets/shots/log-water-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="">
             </picture>
-            <picture data-shot="log-book-framed">
+            <picture data-shot="log-book-framed" data-parts="book">
               <source media="(prefers-color-scheme: light)" srcset="assets/shots/log-book-framed-light.webp">
               <img src="assets/shots/log-book-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="">
             </picture>
-            <picture data-shot="detail-current-framed">
+            <picture data-shot="detail-current-framed" data-parts="detail">
               <source media="(prefers-color-scheme: light)" srcset="assets/shots/detail-current-framed-light.webp">
               <img src="assets/shots/detail-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="">
             </picture>
-            <picture data-shot="create-current-framed">
+            <picture data-shot="create-current-framed" data-parts="create">
               <source media="(prefers-color-scheme: light)" srcset="assets/shots/create-current-framed-light.webp">
               <img src="assets/shots/create-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="">
             </picture>
-            <picture data-shot="settings-current-framed">
+            <picture data-shot="settings-current-framed" data-parts="settings">
               <source media="(prefers-color-scheme: light)" srcset="assets/shots/settings-current-framed-light.webp">
               <img src="assets/shots/settings-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="">
             </picture>
