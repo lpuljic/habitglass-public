@@ -865,6 +865,7 @@ section {
 }
 
 [data-theme='light'] .tour-phone img,
+[data-theme='light'] .tour-shot,
 [data-theme='light'] .compare-stage {
   filter: drop-shadow(0 34px 44px rgba(23, 39, 82, 0.22));
 }
@@ -1534,8 +1535,14 @@ section {
   .anatomy {
     height: 160vh;
   }
+  /* A touch narrower so the icon and ring have room to swing out, and margins
+     in card pixels: the top row rises ~190 above the card, the tally and
+     streak drop ~125 below it. */
+  .anatomy-stage {
+    --cw: 90cqw;
+  }
   .anatomy-card {
-    margin-block: 4.5rem 4rem;
+    margin-block: calc(var(--cw) * 190 / 770) calc(var(--cw) * 125 / 770 + 1.5rem);
   }
   .anatomy-notes {
     position: static;
@@ -3408,12 +3415,16 @@ html:not(.js) .slide-controls {
   .tour-step {
     min-height: 0;
     opacity: 1;
-    padding-block: 2.5rem;
+    padding-block: 3rem;
+  }
+  .tour-step + .tour-step {
+    border-top: 1px solid var(--hairline);
   }
   .tour-shot {
+    order: -1;
     display: block;
-    width: min(290px, 78vw);
-    margin: 2.25rem auto 0;
+    width: min(250px, 68vw);
+    margin: 0 auto 2rem;
     filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.4));
   }
   .plans {

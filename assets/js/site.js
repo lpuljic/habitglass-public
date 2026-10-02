@@ -226,8 +226,11 @@
     if (btn) setTheme(btn.dataset.setTheme, true);
   });
 
-  /* Warm the other appearance so the flip is instant. */
+  /* Warm the other appearance so the flip is instant. Skipped on phones and
+     Save-Data, where it would roughly double the image weight. */
   var warm = function () {
+    var conn = navigator.connection;
+    if (!matchMedia('(min-width: 901px)').matches || (conn && conn.saveData)) return;
     var other = currentTheme() === 'dark' ? 'light' : 'dark';
     var pics = document.querySelectorAll('picture[data-shot]');
     for (var i = 0; i < pics.length; i++) {
@@ -1050,9 +1053,16 @@
       var lift = 1;
       var measure = function () {
         unit = anatomyCard.offsetWidth / 770;
+        /* Phones stack the notes under the card and size its margins for the
+           whole flight, so the parts fly full distance. Any shorter and the
+           tally and streak drop straight onto the bars. */
+        if (matchMedia('(max-width: 760px)').matches) {
+          lift = 1;
+          return;
+        }
         /* Fit the flight to the room the card has above and below it. */
         var room = parseFloat(getComputedStyle(anatomyCard).marginTop) / unit;
-        lift = matchMedia('(max-width: 760px)').matches ? 0.5 : clamp((room - 110) / 165) * 0.6 + 0.4;
+        lift = clamp((room - 110) / 165) * 0.6 + 0.4;
       };
       var place = function (el, m, e) {
         el.style.setProperty('--e', e.toFixed(3));
