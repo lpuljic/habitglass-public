@@ -975,9 +975,9 @@
     var anatomyCard = anatomy && anatomy.querySelector('[data-anatomy-card]');
     if (!anatomyCard) return;
     var A_PARTS = {
-      icon: [21.5, 20, 104, 104, 52, -30, -150, 1.35, -8],
-      progress: [135, 20, 476, 88, 12, 0, -165, 1.12, 0],
-      button: [645, 8, 116, 116, 58, 30, -150, 1.35, 8],
+      icon: [21.5, 20, 104, 104, 52, -36, -150, 1.25, -8],
+      progress: [135, 20, 476, 88, 12, 0, -165, 1.06, 0],
+      button: [645, 8, 116, 116, 58, 36, -150, 1.25, 8],
       tally: [15, 142, 142, 32, 6, -25, 175, 1.3, 0],
       streak: [635, 142, 120, 32, 6, 25, 175, 1.3, 0]
     };
@@ -1028,6 +1028,17 @@
     }
     anatomyCard.appendChild(aMonth);
     drawDays(aBars, aDays, true);
+
+    /* Phones list the notes under the card, so each part carries the number
+       of its note. Shown by CSS at phone widths only. */
+    var marks = {};
+    for (var mk = 0; mk < ORDER.length; mk++) {
+      var mEl = document.createElement('span');
+      mEl.className = 'anatomy-mark';
+      mEl.textContent = mk + 1;
+      anatomyCard.appendChild(mEl);
+      marks[ORDER[mk]] = mEl;
+    }
     applyShots(currentTheme());
 
     var notes = {};
@@ -1064,6 +1075,15 @@
         var room = parseFloat(getComputedStyle(anatomyCard).marginTop) / unit;
         lift = clamp((room - 110) / 165) * 0.6 + 0.4;
       };
+      /* Pin a number to the outer edge of a part as it flies, in card pixels:
+         above the top row, below the bars and the bottom row. */
+      var mark = function (el, b, dx, dy, s, e) {
+        var down = dy > 0;
+        el.dataset.dir = down ? 'down' : 'up';
+        el.style.setProperty('--e', clamp(e).toFixed(3));
+        el.style.setProperty('--mx', (b[0] + b[2] / 2 + dx).toFixed(1));
+        el.style.setProperty('--my', (b[1] + b[3] / 2 + dy + (down ? 1 : -1) * (b[3] * s) / 2).toFixed(1));
+      };
       var place = function (el, m, e) {
         el.style.setProperty('--e', e.toFixed(3));
         el.style.transform = 'translate(' + (m[5] * e * unit).toFixed(1) + 'px,' + (m[6] * e * lift * unit).toFixed(1) +
@@ -1091,8 +1111,12 @@
               var rise = (70 + Math.sin(bi * 0.55) * 14) * e * lift * unit;
               aBars[bi].style.transform = 'translate(' + spread.toFixed(1) + 'px,' + rise.toFixed(1) + 'px)';
             }
+            /* The middle bars drop about 84 card pixels at full flight. */
+            mark(marks.bars, BAR_BOX, 0, 84 * e * lift, 1, e);
           } else {
-            place(pieces[name], A_PARTS[name], e);
+            var mp = A_PARTS[name];
+            place(pieces[name], mp, e);
+            mark(marks[name], mp, mp[5] * e, mp[6] * e * lift, 1 + (mp[7] - 1) * e, e);
           }
         }
         base.style.transform = 'scale(' + (1 - 0.05 * clamp(apart) * (1 - back)).toFixed(3) + ')';

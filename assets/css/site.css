@@ -1542,7 +1542,43 @@ section {
     --cw: 90cqw;
   }
   .anatomy-card {
-    margin-block: calc(var(--cw) * 190 / 770) calc(var(--cw) * 125 / 770 + 1.5rem);
+    margin-block: calc(var(--cw) * 225 / 770) calc(var(--cw) * 125 / 770 + 3rem);
+  }
+  /* Numbers tie each flying part to its note in the list below. */
+  .anatomy-card .anatomy-mark,
+  .anatomy-notes strong::before {
+    display: inline-grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+  .anatomy-card .anatomy-mark {
+    left: calc(var(--mx, 0) / 770 * 100%);
+    top: calc(var(--my, 0) / 248 * 100%);
+    translate: -50% calc(-100% - 0.375rem);
+    opacity: calc(var(--e, 0) * 1.4 - 0.4);
+    pointer-events: none;
+  }
+  .anatomy-card .anatomy-mark[data-dir='down'] {
+    translate: -50% 0.375rem;
+  }
+  .anatomy-notes {
+    counter-reset: note;
+  }
+  .anatomy-notes li {
+    counter-increment: note;
+  }
+  .anatomy-notes strong::before {
+    content: counter(note);
+    margin-right: 0.5rem;
+    vertical-align: 0.1em;
   }
   .anatomy-notes {
     position: static;
@@ -1579,6 +1615,16 @@ section {
 
 .anatomy.is-still .anatomy-notes li {
   --e: 1;
+}
+
+/* Desktop has leader lines instead, and a still card has nothing to number. */
+.anatomy-mark,
+.anatomy.is-still .anatomy-mark {
+  display: none;
+}
+
+.anatomy.is-still .anatomy-notes strong::before {
+  content: none;
 }
 
 /* --------------------------------------------------------------------------
