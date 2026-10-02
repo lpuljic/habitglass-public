@@ -1,7 +1,7 @@
 /* ==========================================================================
    HabitGlass — marketing site
-   Art direction follows the app: Liquid Glass over a mesh gradient, bubbles
-   instead of squares, blue -> violet -> teal lifted straight off the app icon.
+   Art direction follows the app: Liquid Glass over a mesh gradient, a month
+   drawn as a bar per day, blue -> violet -> teal lifted straight off the app icon.
    Dark is the default; light mirrors the app's pastel mesh.
    ========================================================================== */
 
@@ -49,6 +49,7 @@
   --brand-ramp-text: var(--brand-ramp);
   --hero-ramp-text: linear-gradient(104deg, #ffd36a 0%, #ff758f 31%, #c38cff 64%, #73d9ff 100%);
 
+  --radius-xs: 3px;
   --radius-sm: 12px;
   --radius: 20px;
   --radius-lg: 28px;
@@ -56,6 +57,65 @@
 
   --shell: 1200px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* The hero film sits under the copy, edges feathered into the page mesh.
+   It autoplays muted on load, once, with no player chrome; sound and
+   replay are explicit buttons. Reduced motion stays on the poster. Dark
+   and light cuts swap with the theme toggle. */
+.film {
+  position: relative;
+  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+}
+
+.film-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  container-type: inline-size;
+}
+
+.film-player {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+
+.film-float {
+  position: absolute;
+  right: 4%;
+  bottom: 7%;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.film-float button {
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.45rem 0.9rem;
+}
+
+.film-float button:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .film-float {
+    position: static;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+  }
 }
 
 /* Dark (default) */
@@ -82,7 +142,7 @@
   --btn: #ffffff;
   --btn-ink: #080b14;
 
-  --bubble-off: rgba(255, 255, 255, 0.07);
+  --bar-off: rgba(255, 255, 255, 0.07);
   --shadow-lift: 0 48px 100px -34px rgba(0, 0, 0, 0.92);
   --grain: 0.035;
   --head-fallback: rgba(5, 7, 13, 0.76);
@@ -115,7 +175,7 @@
   --btn: #0b1020;
   --btn-ink: #ffffff;
 
-  --bubble-off: rgba(11, 22, 55, 0.07);
+  --bar-off: rgba(11, 22, 55, 0.07);
   --shadow-lift: 0 40px 80px -36px rgba(23, 39, 82, 0.42);
   --grain: 0.018;
   --head-fallback: rgba(244, 248, 255, 0.78);
@@ -443,6 +503,28 @@ section {
   border-bottom: 1px solid transparent;
 }
 
+/* The page as a month: a day fills for each thirtieth of the page you've
+   read, and stays filled. Index only. */
+.scroll-month {
+  --c: var(--accent);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  gap: 3px;
+  pointer-events: none;
+}
+
+.scroll-month .bar {
+  --bh: 2px;
+  border-radius: 999px;
+}
+
+.scroll-month .bar[data-s='open']::after {
+  border: 0;
+  background: var(--hairline);
+}
+
 .site-head.is-stuck {
   background: var(--head-fallback);
   background: color-mix(in srgb, var(--bg) 74%, transparent);
@@ -508,7 +590,7 @@ section {
   width: var(--nav-w, 0);
   transform: translateX(var(--nav-x, 0));
   border-radius: 2px;
-  /* Same ramp as the hero word "constellation"; hero var flips with theme. */
+  /* Same ramp as the hero word "filled"; hero var flips with theme. */
   background: var(--hero-ramp-text);
   box-shadow: 0 0 10px color-mix(in srgb, var(--brand-violet) 55%, transparent);
   opacity: 0;
@@ -676,17 +758,17 @@ section {
    Hero
    -------------------------------------------------------------------------- */
 
+/* The hero owns the first screen: it fills the viewport under the sticky
+   header, so the next section starts below the fold. */
 .hero {
-  padding-top: clamp(3rem, 7vw, 6rem);
-  padding-bottom: clamp(4rem, 8vw, 7rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - var(--head-h, 4.5rem));
+  min-height: calc(100svh - var(--head-h, 4.5rem));
+  padding-top: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
   overflow-x: clip;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(3rem, 7vw, 6.5rem);
-  align-items: center;
 }
 
 .hero h1 {
@@ -695,6 +777,33 @@ section {
   font-size: clamp(2.9rem, 5.8vw, 4.9rem);
   line-height: 0.98;
   letter-spacing: -0.045em;
+}
+
+.hero h1:first-child {
+  margin-top: 0;
+}
+
+/* Headline left, pitch right, so the film starts above the fold. */
+@media (min-width: 901px) {
+  .hero-copy {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-rows: auto auto auto;
+    column-gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: end;
+  }
+  .hero-copy h1 {
+    grid-row: 1 / 4;
+    align-self: end;
+  }
+  .hero-copy .lede,
+  .hero-copy .cta-row,
+  .hero-copy .cta-note {
+    grid-column: 2;
+  }
+  .hero .hero-copy .lede {
+    margin-top: 0;
+  }
 }
 
 .hero h1 .ramp {
@@ -736,33 +845,6 @@ section {
   color: var(--ink-mute);
 }
 
-.hero-stage {
-  position: relative;
-  display: grid;
-  place-items: center;
-  isolation: isolate;
-}
-
-.hero-stage::before {
-  content: '';
-  position: absolute;
-  width: 70%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--brand-ramp);
-  filter: blur(110px);
-  opacity: 0.2;
-  z-index: -1;
-}
-
-.device {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  margin-inline: auto;
-}
-
-.device img,
 .tour-phone img,
 .tour-shot img,
 .compare-stage img {
@@ -770,92 +852,94 @@ section {
   height: auto;
 }
 
-.device-hero {
-  max-width: 340px;
-  filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.45));
-}
-
-[data-theme='light'] .device-hero,
-[data-theme='light'] .tour-phone,
+[data-theme='light'] .tour-phone img,
 [data-theme='light'] .compare-stage {
   filter: drop-shadow(0 34px 44px rgba(23, 39, 82, 0.22));
 }
 
-/* The constellation. site.js scatters bubbles across this layer and lights
-   them up from the centre out; the pointer nudges it for a little depth. */
-.sky {
-  position: absolute;
-  inset: -14% -32% -14% -20%;
-  z-index: 0;
-  pointer-events: none;
-  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent);
-  mask-image: radial-gradient(closest-side, #000 62%, transparent);
-  transform: translate3d(calc(var(--px, 0) * -14px), calc(var(--py, 0) * -14px), 0);
-  transition: transform 0.9s var(--ease);
-}
-
-.sky .orb {
-  position: absolute;
-  width: var(--s);
-  aspect-ratio: 1;
-  translate: -50% -50%;
-}
-
-.sky svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.sky line {
-  stroke: var(--ink);
-  stroke-opacity: 0.16;
-  stroke-width: 1;
-  vector-effect: non-scaling-stroke;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  transition: stroke-dashoffset 1.2s var(--ease) var(--t, 0ms);
-}
-
-.sky.lit line {
-  stroke-dashoffset: 0;
-}
-
 /* --------------------------------------------------------------------------
-   Glass bubble. One look for the hero sky, the demo month and the closer.
+   Day bar. The app draws a month as one bar per day under every card, so it
+   is the site's one motif: the demo, the ticks, the closer and
+   the 404. States follow the app's MonthDay and differ in shape, not only
+   colour: filled when done, filled part way when partial, an outline when
+   missed or open, a short outline when still to come, a dash on rest days.
+   Today adds a ring. Colour via --c; days outside the live streak step back.
    -------------------------------------------------------------------------- */
 
-.orb {
-  --c: var(--brand-violet);
+.bar {
+  --fill: 0;
   position: relative;
-  border-radius: 50%;
-  background: var(--bubble-off);
-  box-shadow: inset 0 0 0 1px var(--hairline);
+  display: block;
+  height: var(--bh, 1.5rem);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
 }
 
-.orb::before {
+.bar::before,
+.bar::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background:
-    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.92) 0, rgba(255, 255, 255, 0) 24%),
-    radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--c) 78%, white) 0, var(--c) 52%, color-mix(in srgb, var(--c) 55%, black) 100%);
-  box-shadow:
-    inset 0 -3px 8px rgba(0, 0, 0, 0.28),
-    inset 0 1px 1px rgba(255, 255, 255, 0.55),
-    0 8px 24px -8px var(--c);
-  opacity: 0;
-  transform: scale(0.55);
-  transition: opacity 0.45s var(--ease), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}
+
+.bar::before {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 65%, white), var(--c));
+  transform: scaleY(var(--fill));
+  transform-origin: bottom;
+  opacity: 0.7;
+  transition: transform 0.5s var(--ease), opacity 0.3s var(--ease);
   transition-delay: var(--t, 0ms);
 }
 
-.orb.on::before {
+.bar.lit::before {
   opacity: 1;
-  transform: none;
+}
+
+.bar.lit[data-s='done']::before {
+  box-shadow: 0 0 6px color-mix(in srgb, var(--c) 45%, transparent);
+}
+
+.bar[data-s='done'],
+.bar[data-s='partial'] {
+  background: color-mix(in srgb, var(--c) 12%, transparent);
+}
+
+.bar[data-s='missed']::after,
+.bar[data-s='open']::after {
+  border: 1px solid color-mix(in srgb, var(--ink-mute) 60%, transparent);
+}
+
+.bar.future::after {
+  inset: 36% 0;
+}
+
+.bar[data-s='rest']::after {
+  inset: calc(50% - 1px) 0;
+  border-radius: 999px;
+  background: var(--ink-mute);
+}
+
+.bar.today {
+  outline: 1.5px solid var(--c);
+  outline-offset: 2.5px;
+}
+
+/* A month: bars side by side, a day each, the way a card ends in the app. */
+.month {
+  display: flex;
+  align-items: center;
+  gap: clamp(2px, 0.4vw, 4px);
+}
+
+.month .bar {
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 /* --------------------------------------------------------------------------
@@ -916,35 +1000,85 @@ section {
   font-weight: 500;
 }
 
-.weekdays,
-.field {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: clamp(0.45rem, 1.3vw, 0.8rem);
+.habit-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.15rem 1rem;
 }
 
-.weekdays {
-  margin: 1.25rem 0 0.75rem;
-  text-align: center;
-  font-size: 0.75rem;
-  font-weight: 500;
+.habit-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.habit-sub {
+  font-size: 0.875rem;
   color: var(--ink-mute);
 }
 
-.bub {
-  aspect-ratio: 1;
-  padding: 0;
+/* The card's tally and streak, as the app sets them over the strip. */
+.habit-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+}
+
+.habit-meta b {
+  color: var(--ink);
+}
+
+.habit-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.habit-streak svg {
+  width: 14px;
+  height: 14px;
+  color: var(--c);
+}
+
+/* The demo strip. A bar is only 10-15px wide, so the whole strip is the tap
+   target: a press lands on the nearest day and a drag paints across them.
+   Padding gives it a 44px-tall hit area; vertical swipes still scroll. */
+.field {
+  --bh: clamp(1.75rem, 3vw, 2.25rem);
+  padding-block: 0.6rem;
   cursor: pointer;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
-  transition: transform 0.3s var(--ease);
 }
 
-.bub:hover {
-  transform: scale(1.08);
+.field button.bar {
+  cursor: pointer;
+  transition: translate 0.2s var(--ease);
 }
 
-.bub:active {
-  transform: scale(0.94);
+@media (hover: hover) {
+  .field button.bar:hover {
+    translate: 0 -1px;
+  }
+}
+
+.field .bar:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.field .bar.future,
+.field .bar[data-s='rest'] {
+  cursor: default;
 }
 
 .demo-hint {
@@ -1064,7 +1198,51 @@ section {
   position: relative;
   width: min(340px, 82%, calc(78vh * 900 / 1840));
   aspect-ratio: 900 / 1840;
+}
+
+.tour-phone img {
   filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.45));
+}
+
+/* Step 04 is the detail screen, so its consistency heatmap spreads out
+   behind the phone: months of squares, sparse at first, then the habit
+   taking hold. It fills once, the first time the step comes up, and fades
+   with the step like the screenshots do. */
+.tour-heat {
+  --cell: clamp(12px, 1.25vw, 18px);
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, var(--cell));
+  grid-auto-columns: var(--cell);
+  gap: calc(var(--cell) * 0.3);
+  translate: -50% -50%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease);
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent);
+  mask-image: radial-gradient(closest-side, #000 55%, transparent);
+}
+
+.tour-stage.heat-on .tour-heat {
+  opacity: 0.7;
+}
+
+.tour-heat .bar,
+.mini-heat .bar {
+  height: auto;
+  align-self: stretch;
+  border-radius: 25%;
+  background: var(--bar-off);
+}
+
+.tour-heat .bar[data-s='done'],
+.tour-heat .bar[data-s='partial'],
+.mini-heat .bar[data-s='done'],
+.mini-heat .bar[data-s='partial'] {
+  background: color-mix(in srgb, var(--c) 12%, transparent);
 }
 
 .tour-phone picture {
@@ -1109,7 +1287,8 @@ section {
   color: var(--ink-soft);
 }
 
-/* Both rows size their bubbles off the 13-across fit, so water and reading match. */
+/* Both rows size their squares off the 13-across fit, so water and reading
+   match. Squares, like the app's Tiles and week strip. */
 .tick-row {
   display: grid;
   grid-template-columns: repeat(var(--n), min(2rem, calc((100% - 12 * 0.4rem) / 13)));
@@ -1117,8 +1296,10 @@ section {
   margin-top: 1.5rem;
 }
 
-.tick-row .orb {
+.tick-row .bar {
+  height: auto;
   aspect-ratio: 1;
+  border-radius: 25%;
 }
 
 .tick-status {
@@ -1267,10 +1448,189 @@ section {
   border-top: 1px solid var(--hairline);
 }
 
-.perks svg {
-  width: 22px;
-  height: 22px;
-  color: var(--tint);
+/* Each perk shows itself in day bars instead of a stock icon. site.js
+   draws them and fills them when the list comes into view. */
+.mini {
+  --c: var(--tint);
+  display: flex;
+  align-items: center;
+  height: 3.25rem;
+  max-width: 11.5rem;
+}
+
+.mini .month {
+  flex: 1;
+  gap: 2px;
+}
+
+.mini .bar {
+  --bh: 1.5rem;
+}
+
+.mini-widget {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 7.25rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  background: var(--bar-off);
+}
+
+.mini-widget b {
+  font-size: 0.75rem;
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-widget b span {
+  color: var(--ink-mute);
+  font-weight: 700;
+}
+
+.mini-widget .bar {
+  --bh: 0.8rem;
+}
+
+.mini-heat {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 0.38rem);
+  grid-auto-columns: 0.38rem;
+  gap: 0.09rem;
+  align-content: center;
+  width: auto;
+}
+
+/* iCloud: the month and its mirror image. */
+.mini-sync {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 3px;
+  width: 9rem;
+}
+
+.mini-sync .month + .month {
+  flex: none;
+  transform: scaleY(-1);
+  opacity: 0.35;
+  -webkit-mask-image: linear-gradient(to top, #000, transparent 90%);
+  mask-image: linear-gradient(to top, #000, transparent 90%);
+}
+
+.mini-sync .bar {
+  --bh: 1.2rem;
+}
+
+.mini-ticks {
+  display: grid;
+  grid-template-columns: repeat(var(--n), 1.6rem);
+  gap: 0.3rem;
+  align-content: center;
+}
+
+.mini-ticks .bar {
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 25%;
+}
+
+.mini-ticks small {
+  font-size: 0.625rem;
+  color: var(--ink-mute);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.mini-goals {
+  gap: 0.6rem;
+}
+
+.mini-goals .month {
+  flex: none;
+  width: 7rem;
+}
+
+.mini-goals .bar {
+  --bh: 2rem;
+}
+
+.mini-goals b,
+.mini-export small {
+  font-size: 0.8125rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Export: the same days, as the numbers that go in the file. */
+.mini-export {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 0.25rem 3px;
+  align-content: center;
+  width: 9rem;
+}
+
+.mini-export small {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 500;
+  font-size: 0.6875rem;
+  color: var(--ink-mute);
+  text-align: center;
+}
+
+/* Notes: one missed day with its reason pinned above it. */
+.mini-notes {
+  position: relative;
+  align-items: flex-end;
+  padding-bottom: 0.2rem;
+  width: 9rem;
+}
+
+.mini-note {
+  position: absolute;
+  top: 0;
+  left: var(--at);
+  translate: -50% 0;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  background: var(--bar-off);
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.mini-notes .bar {
+  --bh: 1.35rem;
+}
+
+.mini-notes .bar.noted {
+  outline: 1.5px solid var(--c);
+  outline-offset: 2px;
+}
+
+.mini-many {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 4px;
+  width: 9rem;
+  -webkit-mask-image: linear-gradient(to bottom, #000 40%, transparent);
+  mask-image: linear-gradient(to bottom, #000 40%, transparent);
+}
+
+.mini-many .month {
+  flex: none;
+}
+
+.mini-many .bar {
+  --bh: 0.42rem;
+  border-radius: 1px;
 }
 
 .perks h3 {
@@ -1292,6 +1652,29 @@ section {
 .pricing-head {
   margin-inline: auto;
   text-align: center;
+}
+
+/* The yearly price spread over the days it pays for. */
+.per-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  font-size: 0.9375rem;
+  color: var(--ink-mute);
+}
+
+.per-day .month {
+  --c: var(--accent);
+  --bh: 1.1rem;
+  width: min(18rem, 100%);
+}
+
+.per-day b {
+  color: var(--ink);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
 }
 
 .currency {
@@ -1432,6 +1815,78 @@ section {
   transform: translateX(3px);
 }
 
+/* The privacy picture: the months live inside the phone, and only two
+   thin lines leave it. */
+.vault {
+  display: flex;
+  align-items: center;
+  margin-top: 2.75rem;
+  max-width: 30rem;
+}
+
+.vault-phone {
+  flex: none;
+  width: 9.5rem;
+  padding: 0.9rem 0.8rem 1rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+}
+
+.vault-phone p {
+  margin-bottom: 0.7rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--ink-mute);
+  text-align: center;
+}
+
+.vault-runs {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.vault-runs .bar {
+  --bh: 0.9rem;
+}
+
+.vault-runs .month {
+  gap: 2px;
+}
+
+.vault-wires {
+  display: grid;
+  gap: 1.1rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.wire {
+  position: relative;
+  padding-left: 3.25rem;
+  font-size: 0.8125rem;
+  color: var(--ink-mute);
+}
+
+.wire span {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.wire::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 2.75rem;
+  border-top: 1.5px dotted var(--ink-mute);
+}
+
+.wire-opt::before {
+  border-top-style: dashed;
+  opacity: 0.5;
+}
+
 .privacy-list {
   list-style: none;
   padding: 0;
@@ -1561,16 +2016,49 @@ section {
   pointer-events: none;
 }
 
-.month-strip {
+/* The closer shows three habits at once, each stopping where its month
+   actually stands: a record, not a progress bar someone maxed out. */
+.month-wall {
   display: grid;
-  grid-template-columns: repeat(15, minmax(0, 1fr));
-  gap: clamp(0.35rem, 1vw, 0.6rem);
-  max-width: 36rem;
+  gap: 1rem;
+  max-width: 38rem;
   margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
 }
 
-.month-strip .orb {
-  aspect-ratio: 1;
+.wall-row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr) 3rem;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: var(--ink-mute);
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.wall-row .month {
+  --bh: 1.35rem;
+}
+
+.wall-tally {
+  text-align: right;
+  font-weight: 700;
+}
+
+.wall-tally b {
+  color: var(--ink);
+}
+
+@media (max-width: 560px) {
+  .wall-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem 1rem;
+  }
+
+  .wall-row .month {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
 }
 
 .closer h2 {
@@ -2481,8 +2969,8 @@ html:not(.js) .slide-controls {
    -------------------------------------------------------------------------- */
 
 /* `place-content: center` on a grid sizes the column to max-content, and the
-   bubble field's max-content is nearly zero (aspect-ratio items, no intrinsic
-   width), so it collapsed to a speck. Flex column instead. */
+   month's max-content is nearly zero (flex-1 bars, no intrinsic width), so
+   it collapsed to a speck. Flex column instead. */
 .oops {
   min-height: 68vh;
   display: flex;
@@ -2494,7 +2982,7 @@ html:not(.js) .slide-controls {
 }
 
 .oops .field {
-  width: min(22rem, 100%);
+  width: min(26rem, 100%);
   margin-top: 0.25rem;
 }
 
@@ -2529,7 +3017,6 @@ html:not(.js) .slide-controls {
 }
 
 @media (max-width: 900px) {
-  .hero-grid,
   .demo,
   .tour-grid,
   .ticks-grid,
@@ -2539,12 +3026,6 @@ html:not(.js) .slide-controls {
   .privacy,
   .plans {
     grid-template-columns: minmax(0, 1fr);
-  }
-  .hero-grid {
-    gap: 3rem;
-  }
-  .device-hero {
-    max-width: 300px;
   }
   .tour-stage {
     display: none;
@@ -2580,9 +3061,6 @@ html:not(.js) .slide-controls {
   .hero h1 {
     max-width: 100%;
     font-size: clamp(2.5rem, 12.5vw, 3.25rem);
-  }
-  .device-hero {
-    width: min(64vw, 240px);
   }
   .perks {
     grid-template-columns: minmax(0, 1fr);

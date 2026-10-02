@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>HabitGlass — a habit tracker for iOS 26</title>
-<meta name="description" content="One tap fills a bubble. A month of them becomes a constellation you would rather not leave half finished. HabitGlass is a habit tracker built on iOS 26 Liquid Glass, and your data stays on your phone.">
+<meta name="description" content="Every card ends in a run of days. Fill enough of them and the month reads itself. HabitGlass is a habit tracker built on iOS 26 Liquid Glass, and your data stays on your phone.">
 <link rel="canonical" href="https://habitglass.info/">
 <meta name="theme-color" content="#05070d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f4f8ff" media="(prefers-color-scheme: light)">
@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="HabitGlass">
 <meta property="og:title" content="HabitGlass — a habit tracker for iOS 26">
-<meta property="og:description" content="One tap fills a bubble. A month of them becomes a constellation you would rather not leave half finished. On-device by default.">
+<meta property="og:description" content="Every card ends in a run of days. Fill enough of them and the month reads itself. On-device by default.">
 <meta property="og:url" content="https://habitglass.info/">
 <meta property="og:image" content="https://habitglass.info/assets/og.jpg">
 <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
 <meta property="og:image:type" content="image/jpeg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HabitGlass — a habit tracker for iOS 26">
-<meta name="twitter:description" content="One tap fills a bubble. A month of them becomes a constellation you would rather not leave half finished.">
+<meta name="twitter:description" content="Every card ends in a run of days. Fill enough of them and the month reads itself.">
 <meta name="twitter:image" content="https://habitglass.info/assets/og.jpg">
 
 <link rel="icon" href="assets/icon-512.png" sizes="512x512">
@@ -54,7 +54,7 @@
   "operatingSystem": "iOS 26",
   "url": "https://habitglass.info/",
   "installUrl": "https://apps.apple.com/us/app/habit-glass-habit-tracker/id6807643942",
-  "description": "A habit tracker for iOS 26. Schedule-aware streaks, a month-by-month grid, Home Screen widgets, and habit data that stays on your device.",
+  "description": "A habit tracker for iOS 26. Schedule-aware streaks, a month you can read at a glance, Home Screen widgets, and habit data that stays on your device.",
   "author": { "@type": "Person", "name": "Lano Puljic" }
 }
 </script>
@@ -76,6 +76,7 @@
     <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1Z"/><path d="m9 12 2 2 4-4"/></symbol>
     <symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></symbol>
     <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24" fill="currentColor"><path d="M12.6 2.2c.4 3.1 2.2 4.9 3.9 6.8 1.5 1.7 2.9 3.5 2.9 6.3A7.3 7.3 0 0 1 12 22a7.3 7.3 0 0 1-7.4-6.9c0-2.6 1.2-4.5 2.8-6 .2 1.9 1 3.3 2.3 4-.2-4.3 1.2-8.3 2.9-10.9Z"/></symbol>
     <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
     <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 16v-4M12 16V8M17 16v-6"/></symbol>
     <symbol id="i-tag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.42l8.7 8.7a2.43 2.43 0 0 0 3.42 0l6.58-6.58a2.43 2.43 0 0 0 0-3.42Z"/><path d="M7.5 7.5h.01"/></symbol>
@@ -149,35 +150,42 @@
   <!-- ================================================================ hero -->
   <section class="hero">
     <div class="shell">
-      <div class="hero-grid">
-        <div class="hero-copy">
-          <p class="hero-eyebrow">For iPhone, built on iOS 26 Liquid Glass</p>
-          <h1>Your habits, as a <span class="ramp">constellation</span>.</h1>
-          <p class="lede">
-            Every day you show up fills a glass bubble. A month of them becomes a
-            picture you'd rather not leave half finished.
-          </p>
-          <div class="cta-row">
-            <a class="btn btn-primary" href="https://apps.apple.com/us/app/habit-glass-habit-tracker/id6807643942">
-              <svg width="18" height="18" aria-hidden="true"><use href="#i-apple"/></svg>
-              Download on the App Store
-            </a>
-            <a class="btn btn-ghost" href="#tour">Take the tour</a>
-          </div>
-          <p class="cta-note">Free for three habits. No account.</p>
+      <div class="hero-copy">
+        <h1>Thirty days, <span class="ramp">filled</span>.</h1>
+        <p class="lede">
+          Every card ends in a run of days. Fill enough of them and the month reads
+          itself, no chart and no arithmetic.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="https://apps.apple.com/us/app/habit-glass-habit-tracker/id6807643942">
+            <svg width="18" height="18" aria-hidden="true"><use href="#i-apple"/></svg>
+            Download on the App Store
+          </a>
+          <a class="btn btn-ghost" href="#tour">Take the tour</a>
         </div>
-
-        <div class="hero-stage">
-          <div class="sky" data-sky aria-hidden="true"></div>
-          <div class="device device-hero">
-            <picture data-shot="home-current-framed">
-              <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-current-framed-light.webp">
-              <img src="assets/shots/home-current-framed-dark.webp" width="900" height="1840" fetchpriority="high"
-                   alt="HabitGlass Home with Drink water, Meditate, and Read a Book cards and their monthly bubble clouds.">
-            </picture>
-          </div>
-        </div>
+        <p class="cta-note">Free for three habits. No account.</p>
       </div>
+
+      <figure id="film" class="film">
+        <div class="film-frame">
+          <video class="film-player" data-intro-film data-film="habitglass-intro" playsinline preload="auto" muted
+               poster="assets/video/habitglass-intro-poster-dark.jpg" aria-label="Introducing HabitGlass, a 17-second film"
+               aria-describedby="film-description">
+            <source src="assets/video/habitglass-intro-dark.mp4" type="video/mp4">
+            <track kind="captions" src="assets/video/habitglass-intro.vtt" srclang="en" label="English">
+            <p><a href="assets/video/habitglass-intro-dark.mp4">Download the HabitGlass film</a>.</p>
+          </video>
+        </div>
+        <div class="film-float" role="group" aria-label="Film controls">
+          <button type="button" data-film-replay>Pause</button>
+          <button type="button" data-film-sound>Sound on</button>
+        </div>
+        <figcaption class="sr-only" id="film-description">An upbeat electronic score, timed to the motion. A single day bar
+          is tapped and fills, then a month of bars grows into the Meditate card. Tap it. The card drops into the Home
+          screen beside Drink water, Read a Book and Morning run. Fill it. A water bottle fills from 750 to 2,000 mL and
+          the goal reads Goal met. Keep it. A consistency grid lights up, seven days get checked and a widget swings in,
+          then everything pulls into the HabitGlass icon. HabitGlass, habit tracker for iPhone. No spoken dialogue.</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -186,10 +194,11 @@
     <div class="shell">
       <div class="demo">
         <div class="demo-copy reveal">
-          <h2>The grid is the whole point.</h2>
+          <h2>Your month in one row.</h2>
           <p class="lede">
             Miss a day and the gap sits there in plain sight instead of hiding inside a
-            chart. Tap a few days below. That's the app.
+            chart. Weekends are rest days here, so they don't break the run. Tap or drag
+            across a few days. That's the app.
           </p>
           <dl class="demo-readout">
             <div>
@@ -206,12 +215,17 @@
             </div>
           </dl>
         </div>
-        <div class="month-card glass reveal" style="--delay:80ms">
-          <p class="month-title">September <span>2026</span></p>
-          <div class="weekdays" aria-hidden="true">
-            <span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>
+        <div class="month-card glass reveal" style="--delay:80ms;--c:#ff4f78">
+          <div class="habit-top">
+            <p class="habit-name">Morning run</p>
+            <p class="habit-sub">Weekdays, September 2026</p>
           </div>
-          <div class="field" data-field data-days="30" data-offset="1" role="group" aria-label="Interactive demo: a month of one habit"></div>
+          <p class="habit-meta">
+            <span><b data-out="done">0</b>/<span data-out="due">0</span> days</span>
+            <span class="habit-streak"><svg aria-hidden="true"><use href="#i-flame"/></svg><span data-out="streak">0 days</span></span>
+          </p>
+          <div class="month field" data-field data-seed="1111--11011--11111--11011--100" data-today="29" data-first="1"
+               style="--c:#ff4f78" role="group" aria-label="Interactive demo: September for a weekday habit. Weekends are rest days."></div>
           <p class="demo-hint">Nothing here is saved or sent.</p>
         </div>
       </div>
@@ -238,12 +252,12 @@
             <ul class="dots">
               <li>A check button sized for a thumb, with haptics behind it</li>
               <li>Counters for habits you do more than once a day</li>
-              <li>This month's completion rate on every card</li>
+              <li>A run of day squares and a streak on every card</li>
             </ul>
             <div class="tour-shot">
               <picture data-shot="home-current-framed">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-current-framed-light.webp">
-                <img src="assets/shots/home-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Home with Drink water, Meditate, and Read a Book cards, each showing a bubble field and progress.">
+                <img src="assets/shots/home-current-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Home with Drink water and Read a Book waiting under Due today, Meditate and Morning run under Done, each card carrying a month of day squares and a streak.">
               </picture>
             </div>
           </li>
@@ -266,7 +280,7 @@
             <div class="tour-shot">
               <picture data-shot="log-water-framed">
                 <source media="(prefers-color-scheme: light)" srcset="assets/shots/log-water-framed-light.webp">
-                <img src="assets/shots/log-water-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Log Water sheet with the bottle at 1.4 of 2 litres, the goal beside it, and an Add 200 mL button.">
+                <img src="assets/shots/log-water-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Log Water sheet with the bottle just over a third full at 750 mL, the 2 litre goal beside it, and an Add 200 mL button.">
               </picture>
             </div>
           </li>
@@ -352,6 +366,7 @@
         </ol>
 
         <div class="tour-stage" aria-hidden="true">
+          <div class="tour-heat" data-tour-heat></div>
           <div class="tour-phone" data-tour-stage>
             <picture data-shot="home-current-framed" class="is-active">
               <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-current-framed-light.webp">
@@ -470,49 +485,49 @@
       <div class="section-head reveal">
         <h2>Pro opens the rest.</h2>
         <p class="lede">
-          Three habits, every schedule type, schedule-aware streaks and the month grid are
+          Three habits, every schedule type, schedule-aware streaks and the month strip are
           free for good. Pro adds these.
         </p>
       </div>
 
       <ul class="perks">
         <li class="reveal" style="--tint:#ff453a">
-          <svg aria-hidden="true"><use href="#i-grid"/></svg>
+          <div class="mini" data-mini="widget" aria-hidden="true"></div>
           <h3>Home Screen widgets</h3>
-          <p>A bubble field or streak count, and you can check a habit off without opening the app.</p>
+          <p>A month tally or a streak count, and you can check a habit off without opening the app.</p>
         </li>
         <li class="reveal" style="--tint:#5e5ce6;--delay:50ms">
-          <svg aria-hidden="true"><use href="#i-chart"/></svg>
+          <div class="mini" data-mini="insights" aria-hidden="true"></div>
           <h3>Insights</h3>
           <p>A check-in calendar across every habit and a streak leaderboard, so you can see which one is slipping.</p>
         </li>
         <li class="reveal" style="--tint:#3de0d9;--delay:100ms">
-          <svg aria-hidden="true"><use href="#i-cloud"/></svg>
+          <div class="mini" data-mini="sync" aria-hidden="true"></div>
           <h3>iCloud sync</h3>
           <p>Off by default. Switch it on and habits mirror through your own private iCloud database.</p>
         </li>
         <li class="reveal" style="--tint:#ff9f0a;--delay:150ms">
-          <svg aria-hidden="true"><use href="#i-bell"/></svg>
+          <div class="mini" data-mini="reminders" aria-hidden="true"></div>
           <h3>Reminders</h3>
           <p>Repeat every 30 minutes to 4 hours, or send follow-up nudges. They stop once today's goal is done.</p>
         </li>
         <li class="reveal" style="--tint:#30d158">
-          <svg aria-hidden="true"><use href="#i-target"/></svg>
+          <div class="mini" data-mini="goals" aria-hidden="true"></div>
           <h3>Daily goals</h3>
           <p>Set a target of three, eight or twelve, and the card fills as you tap.</p>
         </li>
         <li class="reveal" style="--tint:#64d2ff;--delay:50ms">
-          <svg aria-hidden="true"><use href="#i-export"/></svg>
+          <div class="mini" data-mini="export" aria-hidden="true"></div>
           <h3>Export and import</h3>
           <p>Full-fidelity JSON out and back in, plus CSV for spreadsheets.</p>
         </li>
         <li class="reveal" style="--tint:#ff375f;--delay:100ms">
-          <svg aria-hidden="true"><use href="#i-pencil"/></svg>
+          <div class="mini" data-mini="notes" aria-hidden="true"></div>
           <h3>Per-day notes</h3>
           <p>Tap a day in the grid and write down why it went well, or why it didn't.</p>
         </li>
         <li class="reveal" style="--tint:#bf5af2;--delay:150ms">
-          <svg aria-hidden="true"><use href="#i-tag"/></svg>
+          <div class="mini" data-mini="unlimited" aria-hidden="true"></div>
           <h3>Unlimited habits</h3>
           <p>As many as you like, grouped into your own categories.</p>
         </li>
@@ -526,6 +541,10 @@
       <div class="section-head pricing-head reveal">
         <h2>Less than a coffee a month.</h2>
         <p class="lede">Start free. Subscribe when three habits isn't enough, or pay once and be done.</p>
+        <p class="per-day" data-per-day hidden>
+          <span class="month" aria-hidden="true"></span>
+          <span>Pro yearly comes to about <b data-per-day-price></b> a day.</span>
+        </p>
         <div class="currency" role="group" aria-label="Currency">
           <button type="button" data-currency="aud" aria-pressed="true">AUD</button>
           <button type="button" data-currency="usd" aria-pressed="false">USD</button>
@@ -598,6 +617,16 @@
             Read the privacy policy
             <svg width="16" height="16" aria-hidden="true"><use href="#i-arrow"/></svg>
           </a>
+          <div class="vault" aria-hidden="true">
+            <div class="vault-phone">
+              <p>On this iPhone</p>
+              <div class="vault-runs" data-vault></div>
+            </div>
+            <div class="vault-wires">
+              <p class="wire"><span>RevenueCat</span> paid, yes or no</p>
+              <p class="wire wire-opt"><span>Your iCloud</span> only if you switch it on</p>
+            </div>
+          </div>
         </div>
         <ul class="privacy-list reveal" style="--delay:80ms">
           <li>
@@ -714,7 +743,7 @@
   <section class="band closer-band">
     <div class="shell">
       <div class="closer" data-closer>
-        <div class="month-strip" data-month-strip aria-hidden="true"></div>
+        <div class="month-wall" data-month-wall aria-hidden="true"></div>
         <h2><span>Day one is boring.</span> Day thirty is the whole point.</h2>
         <p class="lede">Three habits are free. Open the app and tap.</p>
         <div class="cta-row">

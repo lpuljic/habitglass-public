@@ -34,6 +34,7 @@
   function setTheme(theme, persist) {
     root.dataset.theme = theme;
     applyShots(theme);
+    applyFilm(theme);
     syncToggle(theme);
     if (persist) {
       try {
@@ -42,6 +43,62 @@
         /* private browsing, whatever */
       }
     }
+  }
+
+  /* --------------------------------------------------------------- film */
+
+  /* The hero film autoplays muted on load, once, with no player chrome.
+     Sound and replay are explicit buttons. Reduced motion stays on the
+     poster. Each appearance has its own cut; a theme flip keeps the place. */
+
+  var film = document.querySelector('[data-intro-film]');
+  var filmReplay = document.querySelector('[data-film-replay]');
+  var filmSound = document.querySelector('[data-film-sound]');
+  var FILM_DIR = (root.dataset.assets || 'assets') + '/video/';
+
+  function applyFilm(theme) {
+    if (!film) return;
+    var src = FILM_DIR + film.dataset.film + '-' + theme + '.mp4';
+    film.poster = FILM_DIR + film.dataset.film + '-poster-' + theme + '.jpg';
+    var source = film.querySelector('source');
+    if (source.getAttribute('src') === src) return;
+    var at = film.currentTime;
+    var playing = !film.paused && !film.ended;
+    var ended = film.ended;
+    source.setAttribute('src', src);
+    film.load();
+    if (!at && !ended) return;
+    film.addEventListener('loadedmetadata', function () {
+      film.currentTime = ended ? film.duration : at;
+      if (playing) film.play().catch(function () {});
+    }, { once: true });
+  }
+
+  if (film && filmReplay && filmSound) {
+    film.controls = false;
+    film.removeAttribute('controls');
+    film.loop = false;
+    film.muted = true;
+    var syncFilm = function () {
+      filmReplay.textContent = film.ended ? 'Replay' : film.paused ? 'Play' : 'Pause';
+      filmSound.textContent = film.muted ? 'Sound on' : 'Mute';
+    };
+    ['play', 'pause', 'ended', 'seeking', 'emptied', 'volumechange'].forEach(function (type) {
+      film.addEventListener(type, syncFilm);
+    });
+    filmReplay.addEventListener('click', function () {
+      if (film.ended) film.currentTime = 0;
+      if (film.paused) film.play().catch(function () {});
+      else film.pause();
+    });
+    filmSound.addEventListener('click', function () {
+      if (film.ended) film.currentTime = 0;
+      film.muted = !film.muted;
+      if (!film.muted && film.paused) film.play().catch(function () {});
+    });
+    applyFilm(currentTheme());
+    syncFilm();
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) film.play().catch(function () {});
   }
 
   syncToggle(currentTheme());
@@ -72,6 +129,12 @@
     };
     onScroll();
     addEventListener('scroll', onScroll, { passive: true });
+    /* The hero fills the screen under the header, so it needs its height. */
+    var measureHead = function () {
+      document.documentElement.style.setProperty('--head-h', head.offsetHeight + 'px');
+    };
+    measureHead();
+    addEventListener('resize', measureHead);
   }
 
   var menuBtn = document.querySelector('[data-menu-toggle]');
@@ -262,174 +325,425 @@
   addEventListener('hashchange', openLinkedRelease);
   openLinkedRelease();
 
-  /* ---------------------------------------------------------- month demo */
+  /* ------------------------------------------------------------ day bars */
 
   var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var PALETTE = ['#2973ff', '#8c5cff', '#3de0d9', '#ffad32', '#ff4f78', '#64d2ff', '#30d158'];
+  /* The app draws a month as one bar per day, and every motif on the site is
+     a run of them. A seed spells the days out: 1 done, p partial, - rest,
+     0 nothing logged, which reads as missed before today and open from today
+     on. States and the live streak follow the app's MonthDay. */
+  function parseDays(seed, today) {
+    var days = [];
+    for (var i = 0; i < seed.length; i++) {
+      var ch = seed.charAt(i);
+      var s = ch === '1' ? 'done' : ch === 'p' ? 'partial' : ch === '-' ? 'rest' : i < today ? 'missed' : 'open';
+      days.push({ s: s, r: ch === 'p' ? 0.4 : 0, today: i === today, future: i > today });
+    }
+    return days;
+  }
 
-  function makeOrb(tag) {
+  /* The streak that's still alive: done days join, rest days and today while
+     it's open don't break it, a miss (or a partial day that's over) does.
+     Returns its span and how many done days it holds. */
+  function liveRun(days) {
+    var from = -1;
+    var to = -1;
+    var count = 0;
+    for (var i = 0; i < days.length; i++) {
+      var d = days[i];
+      if (d.s === 'done') {
+        if (from < 0) from = i;
+        to = i;
+        count++;
+      } else if (d.s === 'missed' || (d.s === 'partial' && !d.today)) {
+        from = to = -1;
+        count = 0;
+      }
+    }
+    return { from: from, to: to, count: count };
+  }
+
+  function bestRun(days) {
+    var run = 0;
+    var best = 0;
+    for (var i = 0; i < days.length; i++) {
+      if (days[i].s === 'done') best = Math.max(best, ++run);
+      else if (days[i].s !== 'rest' && !days[i].today) run = 0;
+    }
+    return best;
+  }
+
+  /* "18/20 days": due days so far, counting today only once it's done. */
+  function tally(days) {
+    var done = 0;
+    var due = 0;
+    for (var i = 0; i < days.length; i++) {
+      var d = days[i];
+      if (d.s === 'done') done++;
+      if (d.s === 'done' || (!d.today && !d.future && d.s !== 'rest')) due++;
+    }
+    return { done: done, due: due };
+  }
+
+  function makeBar(tag, color) {
     var el = document.createElement(tag);
-    el.className = 'orb';
+    el.className = 'bar';
+    if (color) el.style.setProperty('--c', color);
     return el;
   }
 
+  /* `hold` draws the state but leaves the fill empty, for runs that fill in
+     when they come into view. */
+  function drawDays(bars, days, hold) {
+    var link = liveRun(days);
+    for (var i = 0; i < days.length; i++) {
+      var d = days[i];
+      var el = bars[i];
+      el.dataset.s = d.s;
+      el.classList.toggle('today', d.today);
+      el.classList.toggle('future', d.future);
+      /* Days outside the live streak step back, as they do on the card. */
+      el.classList.toggle('lit', d.today || (link.to - link.from >= 1 && i >= link.from && i <= link.to));
+      el.style.setProperty('--fill', hold ? 0 : d.s === 'done' ? 1 : d.s === 'partial' ? d.r : 0);
+      if (el.tagName === 'BUTTON') el.setAttribute('aria-pressed', String(d.s === 'done'));
+    }
+    return link;
+  }
+
+  function plural(n, unit) {
+    return n + ' ' + unit + (n === 1 ? '' : 's');
+  }
+
+  /* ---------------------------------------------------------- month demo */
+
   var field = document.querySelector('[data-field]');
   if (field) {
-    var TOTAL = +field.dataset.days || 35;
-    var OFFSET = +field.dataset.offset || 0;
-    /* A plausible month: strong start, one wobble, back on it. */
-    var seed = [
-      1, 1, 1, 1, 0, 1, 1,
-      1, 1, 1, 0, 1, 1, 1,
-      1, 0, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 0,
-      1, 1, 0, 0, 0, 0, 0
-    ];
-    var state = seed.slice(0, TOTAL);
-    var bubbles = [];
+    var TODAY = (+field.dataset.today || field.dataset.seed.length) - 1;
+    var DAY_NAMES = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    /* Weekday of the first day, Monday 0. 1 September 2026 is a Tuesday. */
+    var FIRST = field.dataset.first ? +field.dataset.first : -1;
+    var monthDays = parseDays(field.dataset.seed, TODAY);
+    var bars = [];
+    var taps = [];
 
-    for (var p = 0; p < OFFSET; p++) {
-      field.appendChild(document.createElement('span'));
-    }
-    for (var i = 0; i < TOTAL; i++) {
-      var b = makeOrb('button');
-      b.type = 'button';
-      b.classList.add('bub');
-      b.dataset.i = i;
-      b.setAttribute('aria-label', 'Day ' + (i + 1));
-      b.setAttribute('aria-pressed', 'false');
+    for (var i = 0; i < monthDays.length; i++) {
+      var d = monthDays[i];
+      var tappable = !d.future && d.s !== 'rest';
+      var b = makeBar(tappable ? 'button' : 'span');
+      if (tappable) {
+        b.type = 'button';
+        b.tabIndex = d.today ? 0 : -1;
+        b.dataset.i = i;
+        b.setAttribute(
+          'aria-label',
+          (FIRST >= 0 ? DAY_NAMES[(FIRST + i) % 7] + ' ' + (i + 1) + ' September' : 'Day ' + (i + 1)) +
+            (d.today ? ', today' : '')
+        );
+        taps.push(b);
+      }
       field.appendChild(b);
-      bubbles.push(b);
+      bars.push(b);
     }
 
-    var out = {
-      days: document.querySelector('[data-out="days"]'),
-      best: document.querySelector('[data-out="best"]'),
-      rate: document.querySelector('[data-out="rate"]')
+    var out = {};
+    var outs = document.querySelectorAll('[data-out]');
+    for (var o = 0; o < outs.length; o++) out[outs[o].dataset.out] = outs[o];
+    var put = function (key, value) {
+      if (out[key]) out[key].textContent = value;
     };
 
     var render = function () {
-      var done = 0;
-      var run = 0;
-      var best = 0;
-      for (var i = 0; i < TOTAL; i++) {
-        var on = !!state[i];
-        bubbles[i].classList.toggle('on', on);
-        bubbles[i].setAttribute('aria-pressed', String(on));
-        if (on) {
-          done++;
-          run++;
-          if (run > best) best = run;
-        } else {
-          run = 0;
-        }
-      }
-      if (out.days) out.days.textContent = done;
-      if (out.best) out.best.textContent = best;
-      if (out.rate) out.rate.textContent = Math.round((done / TOTAL) * 100) + '%';
+      var link = drawDays(bars, monthDays);
+      var t = tally(monthDays);
+      put('done', t.done);
+      put('due', t.due);
+      put('streak', plural(link.count, 'day'));
+      put('days', t.done);
+      put('best', bestRun(monthDays));
+      put('rate', (t.due ? Math.round((t.done / t.due) * 100) : 0) + '%');
     };
 
-    field.addEventListener('click', function (e) {
-      var b = e.target.closest('.bub');
-      if (!b) return;
-      var i = +b.dataset.i;
-      state[i] = state[i] ? 0 : 1;
+    var setDay = function (i, on) {
+      var day = monthDays[i];
+      var next = on ? 'done' : day.today ? 'open' : 'missed';
+      if (day.s === next) return;
+      day.s = next;
       render();
+    };
+
+    /* A press lands on the nearest tappable day, so the gaps between bars
+       count too, and a drag paints that day's new state across the rest. */
+    var nearest = function (x) {
+      var best = null;
+      var bestD = Infinity;
+      for (var n = 0; n < taps.length; n++) {
+        var r = taps[n].getBoundingClientRect();
+        var dist = Math.abs(x - (r.left + r.width / 2));
+        if (dist < bestD) {
+          bestD = dist;
+          best = taps[n];
+        }
+      }
+      return best ? +best.dataset.i : -1;
+    };
+
+    var painting = null;
+    field.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      var i = nearest(e.clientX);
+      if (i < 0) return;
+      painting = monthDays[i].s !== 'done';
+      setDay(i, painting);
+      field.setPointerCapture(e.pointerId);
+    });
+    field.addEventListener('pointermove', function (e) {
+      if (painting === null) return;
+      setDay(nearest(e.clientX), painting);
+    });
+    var stopPaint = function () {
+      painting = null;
+    };
+    field.addEventListener('pointerup', stopPaint);
+    field.addEventListener('pointercancel', stopPaint);
+
+    /* Keyboard: Enter or Space toggles (a click with no pointer behind it),
+       arrows move between days. Pointer clicks are handled above. */
+    field.addEventListener('click', function (e) {
+      var btn = e.target.closest('button.bar');
+      if (!btn || e.detail !== 0) return;
+      var i = +btn.dataset.i;
+      setDay(i, monthDays[i].s !== 'done');
+    });
+    field.addEventListener('keydown', function (e) {
+      var step = { ArrowRight: 1, ArrowLeft: -1, Home: -taps.length, End: taps.length }[e.key];
+      if (!step) return;
+      var at = taps.indexOf(document.activeElement);
+      if (at < 0) return;
+      e.preventDefault();
+      var next = taps[Math.max(0, Math.min(taps.length - 1, at + step))];
+      taps[at].tabIndex = -1;
+      next.tabIndex = 0;
+      next.focus();
     });
 
     render();
   }
 
-  /* ------------------------------------------------------------ hero sky */
+  /* ------------------------------------------------------- small months */
 
-  var sky = document.querySelector('[data-sky]');
-  if (sky) {
-    /* Seeded, so the constellation is the same shape on every visit. */
-    var rand = (function (a) {
-      return function () {
-        a = (a + 0x6d2b79f5) | 0;
-        var t = Math.imul(a ^ (a >>> 15), 1 | a);
-        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-      };
-    })(23);
-
-    var STEP = 7;
-    var stars = [];
-    for (var gx = STEP / 2; gx < 100; gx += STEP) {
-      for (var gy = STEP / 2; gy < 100; gy += STEP) {
-        var x = gx + (rand() - 0.5) * STEP * 0.8;
-        var y = gy + (rand() - 0.5) * STEP * 0.8;
-        var dx = (x - 50) / 50;
-        var dy = (y - 50) / 50;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        /* Leave the phone's footprint clear and let the edge thin out. */
-        if (dist > 1 || (Math.abs(x - 50) < 21 && Math.abs(y - 50) < 38)) continue;
-        if (rand() < dist * 0.55) continue;
-        var o = makeOrb('span');
-        o.style.left = x + '%';
-        o.style.top = y + '%';
-        o.style.setProperty('--s', Math.round(12 + rand() * 26 * (1.15 - dist * 0.55)) + 'px');
-        o.style.setProperty('--c', PALETTE[Math.floor(rand() * PALETTE.length)]);
-        o.style.setProperty('--t', Math.round(dist * 900 + rand() * 250) + 'ms');
-        if (rand() < 0.72) o.dataset.lit = '';
-        sky.appendChild(o);
-        if (o.dataset.lit !== undefined) stars.push({ x: x, y: y, t: dist * 900 });
-      }
-    }
-
-    /* Join each lit bubble to its nearest lit neighbour, so it reads as a
-       constellation rather than confetti. */
-    var NS = 'http://www.w3.org/2000/svg';
-    var svg = document.createElementNS(NS, 'svg');
-    svg.setAttribute('viewBox', '0 0 100 100');
-    svg.setAttribute('preserveAspectRatio', 'none');
-    var seen = {};
-    for (var si = 0; si < stars.length; si++) {
-      var best = -1;
-      var bestD = 15;
-      for (var sj = 0; sj < stars.length; sj++) {
-        if (si === sj) continue;
-        var dd = Math.hypot(stars[si].x - stars[sj].x, stars[si].y - stars[sj].y);
-        if (dd < bestD) {
-          bestD = dd;
-          best = sj;
-        }
-      }
-      var key = Math.min(si, best) + '-' + Math.max(si, best);
-      if (best < 0 || seen[key]) continue;
-      seen[key] = true;
-      var line = document.createElementNS(NS, 'line');
-      line.setAttribute('x1', stars[si].x);
-      line.setAttribute('y1', stars[si].y);
-      line.setAttribute('x2', stars[best].x);
-      line.setAttribute('y2', stars[best].y);
-      line.setAttribute('pathLength', '1');
-      line.style.setProperty('--t', Math.round(Math.max(stars[si].t, stars[best].t) + 500) + 'ms');
-      svg.appendChild(line);
-    }
-    sky.insertBefore(svg, sky.firstChild);
-
-    var light = function () {
-      sky.classList.add('lit');
-      var lit = sky.querySelectorAll('[data-lit]');
-      for (var l = 0; l < lit.length; l++) lit[l].classList.add('on');
+  /* Seeded, so the made-up months look the same on every visit. */
+  function seeded(n) {
+    return function () {
+      n = (n * 16807) % 2147483647;
+      return n / 2147483647;
     };
-    if (reduceMotion) light();
-    else setTimeout(light, 250);
+  }
 
-    if (!reduceMotion && matchMedia('(pointer: fine)').matches) {
-      var hero = sky.closest('.hero');
-      var skyTick = false;
-      hero.addEventListener('pointermove', function (e) {
-        if (skyTick) return;
-        skyTick = true;
-        requestAnimationFrame(function () {
-          skyTick = false;
-          sky.style.setProperty('--px', ((e.clientX / innerWidth) * 2 - 1).toFixed(3));
-          sky.style.setProperty('--py', ((e.clientY / innerHeight) * 2 - 1).toFixed(3));
-        });
-      });
+  /* Draws a seed into `box` as a row of bars, held empty until filled. */
+  function miniMonth(box, seed, color, today) {
+    var row = document.createElement('div');
+    row.className = 'month';
+    var days = parseDays(seed, today === undefined ? seed.length : today);
+    var bars = [];
+    for (var i = 0; i < days.length; i++) {
+      var b = makeBar('span', color);
+      b.style.setProperty('--t', i * 22 + 'ms');
+      row.appendChild(b);
+      bars.push(b);
+    }
+    drawDays(bars, days, true);
+    box.appendChild(row);
+    return { bars: bars, days: days, row: row };
+  }
+
+  function fillOnView(el, runs) {
+    var fill = function () {
+      for (var i = 0; i < runs.length; i++) drawDays(runs[i].bars, runs[i].days);
+    };
+    if (reduceMotion || !('IntersectionObserver' in window)) return fill();
+    var io = new IntersectionObserver(function (entries) {
+      if (!entries[0].isIntersecting) return;
+      fill();
+      io.disconnect();
+    }, { threshold: 0.5 });
+    io.observe(el);
+  }
+
+  /* A heatmap: weeks as columns of seven squares, filled more often as the
+     habit takes hold. */
+  function heat(box, weeks, color, rand) {
+    var seed = '';
+    for (var i = 0; i < weeks * 7; i++) {
+      var p = 0.2 + 0.75 * Math.pow(Math.floor(i / 7) / (weeks - 1), 0.7);
+      seed += rand() < p ? '1' : '0';
+    }
+    var days = parseDays(seed, seed.length);
+    var bars = [];
+    for (var j = 0; j < days.length; j++) {
+      var b = makeBar('span', color);
+      b.style.setProperty('--t', Math.floor(j / 7) * 30 + 'ms');
+      box.appendChild(b);
+      bars.push(b);
+    }
+    drawDays(bars, days, true);
+    return { bars: bars, days: days };
+  }
+
+  /* Pro perks: each one shown as the bars it adds, not a stock icon. */
+  var MINIS = {
+    widget: function (box) {
+      var t = document.createElement('b');
+      box.appendChild(t);
+      var run = miniMonth(box, '11110111111110111110', null, 19);
+      var n = tally(run.days);
+      t.innerHTML = n.done + '<span>/' + n.due + '</span>';
+      return [run];
+    },
+    insights: function (box) {
+      return [heat(box, 16, null, seeded(7))];
+    },
+    sync: function (box) {
+      return [miniMonth(box, '111011111111'), miniMonth(box, '111011111111')];
+    },
+    reminders: function (box) {
+      /* Goal of three: the 3pm and 5pm nudges never go out. */
+      var times = ['9am', '11am', '1pm', '3pm', '5pm'];
+      box.style.setProperty('--n', times.length);
+      var run = miniMonth(box, '111--');
+      box.removeChild(run.row);
+      for (var i = 0; i < run.bars.length; i++) box.appendChild(run.bars[i]);
+      for (var j = 0; j < times.length; j++) {
+        var small = document.createElement('small');
+        small.textContent = times[j];
+        box.appendChild(small);
+      }
+      return [run];
+    },
+    goals: function (box) {
+      var run = miniMonth(box, '11111000');
+      var b = document.createElement('b');
+      b.textContent = '5/8';
+      box.appendChild(b);
+      return [run];
+    },
+    export: function (box) {
+      var seed = '1101111011';
+      var run = miniMonth(box, seed);
+      box.removeChild(run.row);
+      for (var i = 0; i < run.bars.length; i++) box.appendChild(run.bars[i]);
+      for (var j = 0; j < seed.length; j++) {
+        var small = document.createElement('small');
+        small.textContent = seed.charAt(j);
+        box.appendChild(small);
+      }
+      return [run];
+    },
+    notes: function (box) {
+      var run = miniMonth(box, '11111111011111');
+      run.bars[8].classList.add('noted');
+      var note = document.createElement('span');
+      note.className = 'mini-note';
+      note.textContent = 'Rained';
+      note.style.setProperty('--at', ((8.5 / 14) * 100).toFixed(1) + '%');
+      box.appendChild(note);
+      return [run];
+    },
+    unlimited: function (box) {
+      var colors = ['#bf5af2', '#2973ff', '#ff9f0a', '#30d158', '#ff375f'];
+      var r = seeded(11);
+      var runs = [];
+      for (var i = 0; i < colors.length; i++) {
+        var seed = '';
+        for (var j = 0; j < 20; j++) seed += r() < 0.8 ? '1' : '0';
+        runs.push(miniMonth(box, seed, colors[i]));
+      }
+      return runs;
+    }
+  };
+  var minis = document.querySelectorAll('[data-mini]');
+  for (var mi = 0; mi < minis.length; mi++) {
+    var kind = minis[mi].dataset.mini;
+    var make = MINIS[kind];
+    if (!make) continue;
+    minis[mi].classList.add('mini-' + ({ insights: 'heat', reminders: 'ticks', unlimited: 'many' }[kind] || kind));
+    fillOnView(minis[mi], make(minis[mi]));
+  }
+
+  /* Pro yearly, spread over the days it pays for. Runs before the currency
+     block so the toggle rewrites it with the other prices. */
+  var perDay = document.querySelector('[data-per-day]');
+  var yearly = document.querySelector('.plan-featured [data-price]');
+  if (perDay && yearly) {
+    var cents = function (price, mark) {
+      return Math.round((parseFloat(price.replace(/[^0-9.]/g, '')) * 100) / 365) + mark;
+    };
+    var pd = perDay.querySelector('[data-per-day-price]');
+    pd.setAttribute('data-price', '');
+    pd.dataset.aud = cents(yearly.dataset.aud, 'c');
+    pd.dataset.usd = cents(yearly.dataset.usd, '¢');
+    pd.textContent = pd.dataset.aud;
+    var pdRow = perDay.querySelector('.month');
+    var pdRun = miniMonth(pdRow, new Array(31).join('1'));
+    pdRow.parentNode.replaceChild(pdRun.row, pdRow);
+    pdRun.row.setAttribute('aria-hidden', 'true');
+    perDay.hidden = false;
+    fillOnView(perDay, [pdRun]);
+  }
+
+  /* Privacy: the months stay on the phone. */
+  var vault = document.querySelector('[data-vault]');
+  if (vault) {
+    fillOnView(vault, [
+      miniMonth(vault, '11110111111011', '#2973ff'),
+      miniMonth(vault, '11--11111--110', '#e5894a'),
+      miniMonth(vault, '11111111111111', '#9b5fd6')
+    ]);
+  }
+
+  /* The page as a month in the header: a day for each thirtieth of the way
+     down, following the scroll both ways. */
+  var siteHead = document.querySelector('.site-head');
+  if (siteHead && document.querySelector('[data-month-wall]')) {
+    var sm = miniMonth(siteHead, new Array(31).join('0'), null, 0);
+    sm.row.className = 'month scroll-month';
+    sm.row.setAttribute('aria-hidden', 'true');
+    for (var sb = 0; sb < sm.bars.length; sb++) {
+      sm.bars[sb].style.removeProperty('--t');
+      sm.bars[sb].classList.remove('today', 'future', 'lit');
+      sm.bars[sb].dataset.s = 'open';
+    }
+    var ticking = false;
+    var paintRead = function () {
+      ticking = false;
+      var max = document.documentElement.scrollHeight - innerHeight;
+      var n = max > 0 ? Math.round((scrollY / max) * sm.bars.length) : 0;
+      for (var i = 0; i < sm.bars.length; i++) {
+        var on = i < n;
+        sm.bars[i].dataset.s = on ? 'done' : 'open';
+        sm.bars[i].classList.toggle('lit', on);
+        sm.bars[i].style.setProperty('--fill', on ? 1 : 0);
+      }
+    };
+    addEventListener('scroll', function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(paintRead);
+      }
+    }, { passive: true });
+    paintRead();
+  }
+
+  var heatBox = document.querySelector('[data-tour-heat]');
+  var fillHeat = null;
+  if (heatBox) {
+    var heatRun = heat(heatBox, 26, '#9b5fd6', seeded(31));
+    heatBox.setAttribute('aria-hidden', 'true');
+    fillHeat = function () {
+      drawDays(heatRun.bars, heatRun.days);
+    };
+    if (reduceMotion) {
+      fillHeat();
+      fillHeat = null;
     }
   }
 
@@ -446,6 +760,12 @@
         if (frames[i]) frames[i].classList.toggle('is-active', i === n);
       }
       stage.parentNode.style.setProperty('--glow', GLOWS[n] || GLOWS[0]);
+      /* Step 04, the detail screen, spreads its heatmap out behind the phone. */
+      stage.parentNode.classList.toggle('heat-on', n === 3);
+      if (n === 3 && fillHeat) {
+        fillHeat();
+        fillHeat = null;
+      }
     };
     /* A step wins when it crosses the middle band of the viewport. */
     var tourIO = new IntersectionObserver(function (entries) {
@@ -497,30 +817,60 @@
     }
   }
 
-  /* -------------------------------------------------------- closer month */
+  /* --------------------------------------------------------- closer wall */
 
-  var strip = document.querySelector('[data-month-strip]');
-  if (strip) {
-    var dots = [];
-    for (var d = 0; d < 30; d++) {
-      var orb = makeOrb('span');
-      orb.style.setProperty('--c', PALETTE[Math.floor(d / 10)]);
-      orb.style.setProperty('--t', d * 45 + 'ms');
-      strip.appendChild(orb);
-      dots.push(orb);
+  /* Three habits on 29 September, each where its month actually stands:
+     water part way through today, reading on weekdays with a slip, and a
+     meditation run that hasn't missed. */
+  var wall = document.querySelector('[data-month-wall]');
+  if (wall) {
+    var HABITS = [
+      { name: 'Drink water', c: '#2973ff', seed: '1111111011111111110111111111p0' },
+      { name: 'Read a Book', c: '#e5894a', seed: '1111--11111--11011--11111--100' },
+      { name: 'Meditate', c: '#9b5fd6', seed: '111111111111111111111111111110' }
+    ];
+    var rows = [];
+    for (var h = 0; h < HABITS.length; h++) {
+      var habit = HABITS[h];
+      var line = document.createElement('div');
+      line.className = 'wall-row';
+      var name = document.createElement('span');
+      name.textContent = habit.name;
+      var month = document.createElement('div');
+      month.className = 'month';
+      var count = document.createElement('span');
+      count.className = 'wall-tally';
+      line.appendChild(name);
+      line.appendChild(month);
+      line.appendChild(count);
+      wall.appendChild(line);
+
+      var days = parseDays(habit.seed, 28);
+      var rowBars = [];
+      for (var wd = 0; wd < days.length; wd++) {
+        var wb = makeBar('span', habit.c);
+        wb.style.setProperty('--t', h * 140 + wd * 24 + 'ms');
+        month.appendChild(wb);
+        rowBars.push(wb);
+      }
+      drawDays(rowBars, days, true);
+      var ct = tally(days);
+      count.innerHTML = '<b>' + ct.done + '</b>/' + ct.due;
+      rows.push({ bars: rowBars, days: days });
     }
-    var fill = function () {
-      for (var f = 0; f < dots.length; f++) dots[f].classList.add('on');
+
+    var fillWall = function () {
+      for (var w = 0; w < rows.length; w++) drawDays(rows[w].bars, rows[w].days);
     };
     if (reduceMotion || !('IntersectionObserver' in window)) {
-      fill();
+      fillWall();
     } else {
-      var stripIO = new IntersectionObserver(function (entries) {
+      var wallIO = new IntersectionObserver(function (entries) {
         if (!entries[0].isIntersecting) return;
-        fill();
-        stripIO.disconnect();
+        fillWall();
+        wallIO.disconnect();
       }, { threshold: 0.6 });
-      stripIO.observe(strip);
+      wallIO.observe(wall);
     }
   }
 
@@ -543,10 +893,10 @@
       var ticks = [];
 
       for (var i = 0; i < n; i++) {
-        var orb = makeOrb('span');
-        orb.style.setProperty('--c', getComputedStyle(demo).getPropertyValue('--c'));
-        row.appendChild(orb);
-        ticks.push(orb);
+        var tick = makeBar('span', getComputedStyle(demo).getPropertyValue('--c'));
+        tick.classList.add('lit');
+        row.appendChild(tick);
+        ticks.push(tick);
       }
 
       var fmt = function (v) {
@@ -558,7 +908,8 @@
         var filled = done ? n : Math.min(n - 1, Math.floor(amount / (goal / n)));
         for (var i = 0; i < n; i++) {
           ticks[i].style.setProperty('--t', Math.max(0, i - shown) * 70 + 'ms');
-          ticks[i].classList.toggle('on', i < filled);
+          ticks[i].dataset.s = i < filled ? 'done' : 'open';
+          ticks[i].style.setProperty('--fill', i < filled ? 1 : 0);
         }
         shown = filled;
         countOut.textContent = filled + '/' + n;
