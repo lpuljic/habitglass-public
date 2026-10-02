@@ -121,28 +121,40 @@
       <article class="release-entry release-launch reveal" aria-labelledby="release-120">
         <div class="release-meta">
           <span class="release-version">v1.2.0</span>
-          <span class="release-status"><span aria-hidden="true"></span>Coming soon</span>
+          <span class="release-status release-status-released"><svg aria-hidden="true"><use href="#i-check"/></svg>Released</span>
+          <time datetime="2026-10">October 2026</time>
         </div>
         <div class="release-card release-layouts glass">
           <div class="release-copy">
-            <p class="kicker">In the works</p>
-            <h2 id="release-120">Feedback you can feel.</h2>
-            <p class="lede">Feel a tap when you open or leave habit details or edit a habit. Turn HabitGlass haptics off with one switch.</p>
+            <p class="kicker">The Home update</p>
+            <h2 id="release-120">A calmer start. A clearer Home.</h2>
+            <p class="lede">A new welcome, a Home that keeps today apart from this week, and Insights that show how you're doing.</p>
             <div class="release-highlight-groups">
               <section class="release-highlight-group" aria-label="New features">
                 <h3 class="release-highlight-title"><span aria-hidden="true">✨</span>New Features</h3>
                 <ul class="launch-grid release-layout-highlights">
-                  <li>Get tactile feedback when opening or leaving habit details, or editing habits. Turn off HabitGlass haptics in Settings.</li>
-                  <li>See today's water and reading goals on every Home card, plus a week strip that ticks off each day for weekly and set-day habits.</li>
-                  <li>See how you're doing in the redesigned Insights: your completion, the trend against the previous period, and a Coach's Take, for 7 days up to a year.</li>
-                  <li>Tap any day in the Insights calendar to see what you finished. Perfect days glow, and partial days fill a ring.</li>
+                  <li>A new welcome: a trail of light climbs toward sunrise as you set up your first habits and try your first check-in.</li>
+                  <li>Redesigned Insights show your completion, the trend against the previous period, and a Coach's Take, from 7 days up to a year. Tap any day in the calendar to see what you finished.</li>
+                  <li>Home now sorts weekly goals into This week, habits that aren't due into Not today, and finished habits into Done, so a 3-times-a-week habit no longer counts against today. Turn on Collapse Done in Settings › Home Layout to fold finished habits away until tomorrow.</li>
+                  <li>Habit cards lead with today's progress, your current streak, and your month as daily bars, in every Home layout and in widgets. Water and reading goals show on every card.</li>
+                  <li>Choose your theme, app color, and app icon under Appearance. Keep the original icon or pick a new Light or Dark plant icon.</li>
+                  <li>After you add a habit, HabitGlass offers to set a daily reminder for it.</li>
+                  <li>Fix a reading log from the Adjust menu: undo the last log, remove pages or minutes, or reset today. Your bookmark moves back with removed pages.</li>
+                  <li>Feel a tap when opening or leaving habit details, or editing habits. Turn off haptics in Settings.</li>
                 </ul>
               </section>
               <section class="release-highlight-group" aria-label="Improvements">
                 <h3 class="release-highlight-title"><span aria-hidden="true">💎</span>Improvements</h3>
                 <ul class="launch-grid release-layout-highlights">
-                  <li>Theme, Home Layout, Reminders, and Haptics now live together under Preferences.</li>
-                  <li>Fix a reading log from the Adjust menu: undo the last log, remove pages or minutes, or reset today. Your bookmark moves back with removed pages.</li>
+                  <li>Habit cards and widgets count your month in days, like 22/27 days, and weekly goals count the weeks you hit, like 3/4 weeks.</li>
+                  <li>Bubble rows and Mini constellations are now called Rows and Tiles.</li>
+                  <li>Insights, habit details, and widgets feel quicker, especially with a long history.</li>
+                </ul>
+              </section>
+              <section class="release-highlight-group" aria-label="Fixes">
+                <h3 class="release-highlight-title"><span aria-hidden="true">🐞</span>Fixes</h3>
+                <ul class="launch-grid release-layout-highlights">
+                  <li>Reminders you set up before allowing notifications now start as soon as you allow them, without reopening the app.</li>
                 </ul>
               </section>
             </div>
@@ -151,7 +163,13 @@
           <div class="release-slideshow" data-slideshow role="region" aria-roledescription="carousel" aria-label="HabitGlass v1.2.0 screens">
 
             <div class="release-slides">
-              <figure class="release-slide is-active" data-label="Insights">
+              <figure class="release-slide is-active" data-label="Home">
+                <picture data-shot="home-current-framed">
+                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/home-current-framed-light.webp">
+                  <img src="assets/shots/home-current-framed-dark.webp" width="900" height="1840" loading="lazy" alt="HabitGlass Home under Today, with Drink water and Read a Book due, Meditate and Morning run done, and each card showing its month as daily bars with a streak.">
+                </picture>
+              </figure>
+              <figure class="release-slide" data-label="Insights">
                 <picture data-shot="release-120-insights-framed">
                   <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-120-insights-framed-light.webp">
                   <img src="assets/shots/release-120-insights-framed-dark.webp" width="900" height="1840" loading="lazy" alt="Insights at 81% complete for the last 30 days, up 57 points, with a Coach's Take naming the strongest, most improved, and weakest habits.">
@@ -169,12 +187,6 @@
                   <img src="assets/shots/release-120-calendar-framed-dark.webp" width="900" height="1840" loading="lazy" alt="The Insights check-in calendar for September, with glowing perfect days, part-filled rings, and Monday's habits listed below.">
                 </picture>
               </figure>
-              <figure class="release-slide" data-label="Preferences">
-                <picture data-shot="release-120-preferences-framed">
-                  <source media="(prefers-color-scheme: light)" srcset="assets/shots/release-120-preferences-framed-light.webp">
-                  <img src="assets/shots/release-120-preferences-framed-dark.webp" width="900" height="1840" loading="lazy" alt="HabitGlass Settings with Theme, Home Layout, Haptics, and Reminders grouped under Preferences.">
-                </picture>
-              </figure>
             </div>
 
             <div class="slide-controls">
@@ -182,7 +194,7 @@
                 <svg aria-hidden="true"><use href="#i-left"/></svg>
               </button>
               <div class="slide-meta">
-                <p class="slide-caption" aria-live="polite" data-slide-caption>Insights</p>
+                <p class="slide-caption" aria-live="polite" data-slide-caption>Home</p>
                 <div class="slide-dots" data-slide-dots></div>
               </div>
               <button class="slide-arrow" type="button" data-slide-next aria-label="Next screen">
