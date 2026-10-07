@@ -1370,6 +1370,29 @@
     })(shows[sh]);
   }
 
+  var releaseVideo = document.querySelector('[data-release-video]');
+  if (releaseVideo) {
+    releaseVideo.muted = true;
+    releaseVideo.addEventListener('play', function () {
+      releaseVideo.controls = false;
+    });
+    releaseVideo.addEventListener('pause', function () {
+      releaseVideo.controls = true;
+    });
+    releaseVideo.addEventListener('ended', function () {
+      releaseVideo.controls = true;
+    });
+    releaseVideo.addEventListener('click', function () {
+      if (!releaseVideo.controls && !releaseVideo.paused) releaseVideo.pause();
+    });
+    releaseVideo.addEventListener('keydown', function (event) {
+      if (releaseVideo.controls || (event.key !== ' ' && event.key !== 'Enter')) return;
+      event.preventDefault();
+      releaseVideo.pause();
+    });
+    if (!reduceMotion) releaseVideo.play().catch(function () {});
+  }
+
   /* Current year in footers, so nobody has to remember to bump it. */
   var years = document.querySelectorAll('[data-year]');
   for (var y = 0; y < years.length; y++) {
