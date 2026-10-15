@@ -2673,29 +2673,47 @@ section {
 }
 
 /* --------------------------------------------------------------------------
-   Support
+   Support and guides
    -------------------------------------------------------------------------- */
 
-.support-hero {
+.support-hero,
+.guides-hero {
   padding-block: clamp(3.5rem, 8vw, 6.5rem) 0;
   text-align: center;
 }
 
-.support-hero h1 {
+.support-hero h1,
+.guides-hero h1 {
   font-size: clamp(2.75rem, 6vw, 4.5rem);
 }
 
-.support-hero .lede {
+.support-hero .lede,
+.guides-hero .lede {
   max-width: 32rem;
   margin: 1.25rem auto 0;
 }
 
-.support-hero .cta-row {
+.support-hero .cta-row,
+.guides-foot .cta-row {
   justify-content: center;
 }
 
-.support .band {
+.support .band,
+.guides .band {
   padding-block: clamp(3rem, 6vw, 5rem);
+}
+
+.guides-foot {
+  text-align: center;
+}
+
+.guides-foot h2 {
+  font-size: clamp(1.75rem, 3.6vw, 2.5rem);
+}
+
+.guides-foot .lede {
+  max-width: 32rem;
+  margin: 1rem auto 0;
 }
 
 .support-head {
@@ -2703,25 +2721,70 @@ section {
   text-align: center;
 }
 
-.guide {
+/* Guides: a sidebar of topics and one guide at a time. Without script every
+   guide shows, one after another. */
+.guides-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: 13rem minmax(0, 1fr);
   gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
 }
 
-.guide article {
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--hairline);
+.guides-nav {
+  position: sticky;
+  top: 6rem;
 }
 
-.guide h3 {
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
+.guides-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--hairline);
+}
+
+.guides-nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding-left: 1.1rem;
+  color: var(--ink-mute);
+  font-weight: 500;
+  transition: color 0.2s var(--ease);
+}
+
+.guides-nav a:hover,
+.guides-nav a[aria-current='true'] {
+  color: var(--ink);
+}
+
+/* The nav's teal bar, standing up beside the open guide. */
+.guides-nav a[aria-current='true']::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 0.55rem;
+  bottom: 0.55rem;
+  width: 2px;
+  border-radius: 999px;
+  background: var(--brand-teal);
+}
+
+.guide {
+  max-width: 40rem;
+}
+
+/* Only without script, where every guide shows in a column. */
+html:not(.js) .guide article + article {
+  margin-top: 3.5rem;
+}
+
+.guide h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.25rem);
 }
 
 .guide p {
   margin-top: 0.9rem;
-  max-width: 34rem;
   color: var(--ink-soft);
 }
 
@@ -2729,15 +2792,15 @@ section {
   color: var(--ink);
 }
 
-.guide h4 {
+.guide h3 {
   margin-top: 1.9rem;
-  font-size: 1rem;
+  font-size: 1.0625rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
 
-.guide h4 + p {
+.guide h3 + p {
   margin-top: 0.45rem;
 }
 
@@ -3496,12 +3559,38 @@ html:not(.js) .slide-controls {
   .demo,
   .tour-grid,
   .ticks-grid,
-  .guide,
+  .guides-layout,
   .contact,
   .compare,
   .privacy,
   .plans {
     grid-template-columns: minmax(0, 1fr);
+  }
+  /* The sidebar folds into a row of pills above the guide. */
+  .guides-layout {
+    gap: 2rem;
+  }
+  .guides-nav {
+    position: static;
+  }
+  .guides-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-left: 0;
+  }
+  .guides-nav a {
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+  }
+  .guides-nav a[aria-current='true'] {
+    background: var(--glass-strong);
+  }
+  .guides-nav a[aria-current='true']::before {
+    content: none;
   }
   .tour-stage {
     display: none;

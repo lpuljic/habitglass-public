@@ -2,6 +2,13 @@
 (function () {
   'use strict';
 
+  /* Water and reading help moved from Support to Guides, and the app's
+     Settings still links to the old anchor. */
+  if (location.hash === '#tracking' && /\/support(\.html)?$/.test(location.pathname)) {
+    location.replace('guides.html#water');
+    return;
+  }
+
   var root = document.documentElement;
   var STORE = 'hg-theme';
   var SHOT_DIR = (root.dataset.assets || 'assets') + '/shots/';
@@ -493,6 +500,43 @@
   }
   addEventListener('hashchange', openLinkedRelease);
   openLinkedRelease();
+
+  /* -------------------------------------------------------------- guides */
+
+  /* One guide at a time, picked from the sidebar. The hash names it, so a
+     shared link or the back button opens the right one. */
+  var guides = document.querySelectorAll('[data-guide]');
+  var guideLinks = document.querySelectorAll('[data-guide-link]');
+  var guideLayout = document.querySelector('.guides-layout');
+
+  function showGuide(id) {
+    var target = document.getElementById(id);
+    if (!target || !target.hasAttribute('data-guide')) target = guides[0];
+    for (var g = 0; g < guides.length; g++) guides[g].hidden = guides[g] !== target;
+    for (var l = 0; l < guideLinks.length; l++) {
+      if (guideLinks[l].getAttribute('href') === '#' + target.id) {
+        guideLinks[l].setAttribute('aria-current', 'true');
+      } else {
+        guideLinks[l].removeAttribute('aria-current');
+      }
+    }
+  }
+
+  if (guides.length) {
+    for (var gl = 0; gl < guideLinks.length; gl++) {
+      guideLinks[gl].addEventListener('click', function (event) {
+        event.preventDefault();
+        var id = this.getAttribute('href').slice(1);
+        history.pushState(null, '', '#' + id);
+        showGuide(id);
+        if (guideLayout.getBoundingClientRect().top < 0) {
+          guideLayout.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        }
+      });
+    }
+    addEventListener('popstate', function () { showGuide(location.hash.slice(1)); });
+    showGuide(location.hash.slice(1));
+  }
 
   /* ------------------------------------------------------------ day bars */
 
