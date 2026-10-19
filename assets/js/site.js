@@ -860,6 +860,18 @@
       box.appendChild(note);
       return [run];
     },
+    health: function (box) {
+      /* Health fills the week on its own. Today is still on its way. */
+      var run = miniMonth(box, '11111p', null, 5);
+      var b = document.createElement('b');
+      b.textContent = '6,240';
+      box.appendChild(b);
+      return [run];
+    },
+    pause: function (box) {
+      /* A week away, then straight back on: the run carries through. */
+      return [miniMonth(box, '11111-----1111')];
+    },
     unlimited: function (box) {
       var colors = ['#bf5af2', '#2973ff', '#ff9f0a', '#30d158', '#ff375f'];
       var r = seeded(11);
@@ -877,7 +889,7 @@
     var kind = minis[mi].dataset.mini;
     var make = MINIS[kind];
     if (!make) continue;
-    minis[mi].classList.add('mini-' + ({ insights: 'heat', reminders: 'ticks', unlimited: 'many' }[kind] || kind));
+    minis[mi].classList.add('mini-' + ({ insights: 'heat', reminders: 'ticks', unlimited: 'many', health: 'goals' }[kind] || kind));
     fillOnView(minis[mi], make(minis[mi]));
   }
 

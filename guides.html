@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guides — HabitGlass</title>
-<meta name="description" content="How HabitGlass counts quit, time, water and reading habits, and which reminders are free and which are Pro.">
+<meta name="description" content="How HabitGlass counts quit, limit, time, water and reading habits, and which reminders are free and which are Pro.">
 <link rel="canonical" href="https://habitglass.info/guides.html">
 <meta name="theme-color" content="#05070d" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#eef3ff" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Guides — HabitGlass">
-<meta property="og:description" content="How quit, time, water and reading habits count in HabitGlass.">
+<meta property="og:description" content="How quit, limit, time, water and reading habits count in HabitGlass.">
 <meta property="og:url" content="https://habitglass.info/guides.html">
 <meta property="og:image" content="https://habitglass.info/assets/og.jpg">
 <link rel="icon" href="assets/icon-512.png" sizes="512x512">
@@ -112,8 +112,9 @@
   <section class="shell guides-hero">
     <h1>How each habit counts.</h1>
     <p class="lede">
-      Most habits are a tap a day. Quit, time, water and reading habits keep score their
-      own way, so here's what fills a day and what a reminder or widget tap does.
+      Most habits are a tap a day. Quit, limit, time, water, reading and Apple Health
+      habits keep score their own way, so here's what fills a day and what a reminder or
+      widget tap does.
     </p>
   </section>
 
@@ -122,9 +123,11 @@
       <nav class="guides-nav" aria-label="Guides">
         <ul>
           <li><a href="#quit" data-guide-link>Quit habits</a></li>
+          <li><a href="#limit" data-guide-link>Limit habits</a></li>
           <li><a href="#time" data-guide-link>Time habits</a></li>
           <li><a href="#water" data-guide-link>Water</a></li>
           <li><a href="#reading" data-guide-link>Reading</a></li>
+          <li><a href="#health" data-guide-link>Apple Health</a></li>
           <li><a href="#reminders" data-guide-link>Reminders</a></li>
         </ul>
       </nav>
@@ -173,6 +176,58 @@
           <p>
             Quit habits get one daily reminder, without repeats or follow-ups. Tapping it,
             or the habit on a widget, opens the check-in. Nothing gets logged for you.
+          </p>
+        </article>
+
+        <article id="limit" data-guide>
+          <h2>Limit habits</h2>
+          <p>
+            For something you want to cut back on rather than stop, like no more than 2
+            coffees a day. Set a <kbd>Daily Limit</kbd> when you create the habit and log each
+            one. A day only counts against you once you go over.
+          </p>
+          <p class="sum" aria-label="With a limit of 2, 2 coffees is on track and 3 is over">
+            Limit <b>2</b> <span aria-hidden="true">·</span> <b>2</b> coffees
+            <span aria-hidden="true">=</span> on track <span aria-hidden="true">·</span>
+            <b>3</b> <span aria-hidden="true">=</span> over
+          </p>
+
+          <h3>Logging one</h3>
+          <p>
+            Tap <kbd>+</kbd> on the card to open <kbd>Log Occurrences</kbd>, step the count up,
+            add a note if it helps, and save. The card shows where you are, like
+            <b class="n">1 / 2</b> within limit.
+          </p>
+
+          <h3>Today stays open</h3>
+          <p>
+            Being at or under the limit only counts once the day is over, so a third coffee
+            at night still goes in. Going over counts straight away and ends the streak. Every
+            day before it stays in your history.
+          </p>
+
+          <h3>Didn't log anything?</h3>
+          <p>
+            A day with nothing logged is zero, which is within any limit. Like a quit habit,
+            you only miss a day by going over.
+          </p>
+
+          <h3>Changing the limit</h3>
+          <p>
+            Edit the habit to change it. The new limit starts today, and earlier days keep the
+            limit they had, so tightening it doesn't rescore last week.
+          </p>
+
+          <h3>Fixing an earlier day</h3>
+          <p>
+            Open the habit and tap any day in its history to set that day's total.
+          </p>
+
+          <h3>From a reminder or the widget</h3>
+          <p>
+            Limit habits get one daily reminder, without repeats or follow-ups, and it still
+            comes on days you've logged some. Tapping it, or the habit on a widget, opens
+            <kbd>Log Occurrences</kbd>.
           </p>
         </article>
 
@@ -275,6 +330,64 @@
           </p>
         </article>
 
+        <article id="health" data-guide>
+          <h2>Apple Health</h2>
+          <p>
+            Link a habit to Apple Health and it checks itself off once Health shows the goal
+            met. Pick one reading: steps, active energy, exercise minutes or workouts. Apple
+            Health habits are part of Pro.
+          </p>
+          <p class="sum" aria-label="7,400 steps in the morning plus 2,600 in the evening is 10,000, so the day is done">
+            <b>7,400</b><span aria-hidden="true">+</span><b>2,600</b> steps
+            <span aria-hidden="true">=</span><b>10,000</b> done
+          </p>
+
+          <h3>Setting one up</h3>
+          <p>
+            In the habit, tap <kbd>Tracking</kbd>, choose <kbd>Apple Health</kbd>, then pick
+            the reading and a daily goal. For workouts, choose which types count, or leave it
+            on <kbd>Any Workout</kbd>. Every matching workout that day adds up, so two short
+            runs can make one goal. HabitGlass explains what it reads, then Health asks for
+            access to that reading and nothing else.
+          </p>
+
+          <h3>When it checks off</h3>
+          <p>
+            As soon as the numbers reach Health. A Watch can take a while to sync, so
+            HabitGlass looks again at the last two days too. It also works with the app
+            closed, but Health stays locked while your iPhone is, so sometimes the tick only
+            lands when you next open the app.
+          </p>
+
+          <h3>Checking in by hand</h3>
+          <p>
+            Left the Watch at home? Tap the check-in button as usual. The card says
+            <kbd>checked in by hand</kbd> next to what Health has so far. Health only ever
+            adds check-ins, so it never takes yours back.
+          </p>
+
+          <h3>From a reminder or the widget</h3>
+          <p>
+            Reminders come at the times you set, 7 pm for a new habit, and stop once Health
+            shows you're done. There are no repeats or follow-up nudges, since a locked
+            iPhone can't always tell in time. <kbd>Complete</kbd> on a reminder, or a widget
+            tap, checks the day in by hand.
+          </p>
+
+          <h3>Your Health data</h3>
+          <p>
+            HabitGlass only reads, and only on your iPhone. Readings are never saved, synced
+            to iCloud or put in backups. What syncs is the check-in itself, like any other.
+            To change access, open the Health app, tap your profile picture, then Apps.
+          </p>
+
+          <h3>If Pro ends</h3>
+          <p>
+            The habit and its history stay, and you check it in by hand. You can switch it to
+            any other tracking type.
+          </p>
+        </article>
+
         <article id="reminders" data-guide>
           <h2>Reminders</h2>
           <p>
@@ -312,10 +425,17 @@
             reminder if you haven't finished, and stop as soon as you do.
           </p>
 
-          <h3>Quit habits</h3>
+          <h3>Quit and limit habits</h3>
           <p>
-            A quit habit gets one daily reminder, without repeats or follow-ups. With Pro you
-            can still write its text.
+            Quit and limit habits get one daily reminder, without repeats or follow-ups. With
+            Pro you can still write its text.
+          </p>
+
+          <h3>Apple Health habits</h3>
+          <p>
+            Apple Health habits keep every set time you add, but the day still takes one
+            check-off, and there are no repeats or follow-ups. Each reminder stops once Health
+            shows the goal met.
           </p>
 
           <h3>If Pro ends</h3>
