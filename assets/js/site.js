@@ -15,114 +15,6 @@
 
   var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---------------------------------------------------------- screen parts */
-
-  /* Pieces of each capture that lift off the phone, in 900 × 1840 capture
-     pixels: [x, y, w, h, radius, move x, move y, scale, turn°]. Dark and
-     light captures share a layout, so one table serves both. Recapture a
-     screen and its boxes need re-measuring. */
-  var PARTS = {
-    home: [
-      [730, 170, 88, 88, 44, 0, -16, 1.3, 0],
-      [65, 528, 770, 248, 46, -50, -26, 1.05, -1.5],
-      [65, 802, 770, 257, 46, 46, -10, 1.04, 1.2],
-      [65, 1205, 770, 248, 46, -42, -6, 1.04, -1],
-      [65, 1479, 770, 248, 46, 50, 4, 1.04, 1.2]
-    ],
-    water: [
-      [222, 612, 256, 624, 40, -40, -20, 1.08, -4],
-      [498, 660, 84, 86, 18, 60, -20, 1.35, 6],
-      [92, 1358, 96, 96, 48, -16, -20, 1.25, 0],
-      [210, 1360, 480, 90, 45, 0, -24, 1.08, 0],
-      [710, 1358, 96, 96, 48, 16, -20, 1.25, 0],
-      [96, 1476, 708, 104, 52, 0, -10, 1.05, 0]
-    ],
-    book: [
-      [116, 586, 268, 428, 14, -40, -30, 1.12, -6],
-      [470, 770, 120, 70, 12, 30, -20, 1.3, 0],
-      [470, 840, 290, 42, 10, 30, -6, 1.1, 0],
-      [100, 1054, 700, 50, 25, 0, -12, 1.04, 0],
-      [98, 1148, 100, 100, 50, -20, -14, 1.2, 0],
-      [400, 1150, 100, 110, 16, 0, -20, 1.3, 0],
-      [700, 1148, 100, 100, 50, 20, -14, 1.2, 0],
-      [96, 1480, 708, 100, 50, 0, -10, 1.05, 0]
-    ],
-    detail: [
-      [74, 280, 752, 250, 30, 0, -30, 1.04, 0],
-      [74, 560, 362, 144, 26, -70, -20, 1.08, -3],
-      [462, 560, 362, 144, 26, 70, -20, 1.08, 3],
-      [74, 732, 362, 148, 26, -70, 4, 1.08, -2],
-      [462, 732, 362, 148, 26, 70, 4, 1.08, 2]
-    ],
-    create: [
-      [322, 326, 256, 256, 128, 0, -30, 1.15, 0],
-      [500, 500, 88, 88, 44, 30, 10, 1.3, 12]
-    ],
-    settings: [
-      [84, 298, 732, 186, 30, 0, -24, 1.05, 0],
-      [84, 596, 732, 114, 28, 24, 0, 1.03, 0],
-      [86, 830, 728, 100, 20, 40, 0, 1.03, 0],
-      [86, 934, 728, 100, 20, 56, 0, 1.03, 0],
-      [86, 1038, 728, 100, 20, 72, 0, 1.03, 0],
-      [86, 1142, 728, 100, 20, 88, 0, 1.03, 0],
-      [668, 1632, 124, 62, 31, 0, -14, 1.3, 0]
-    ]
-  };
-  /* The last seven days on the detail screen pop one by one, and the colour
-     swatches on New Habit fan up in an arc. */
-  [126, 192, 258, 326, 392, 458, 524].forEach(function (x) {
-    PARTS.detail.push([x - 27, 1307, 54, 54, 27, 0, -22, 1.4, 0]);
-  });
-  [130, 210, 290, 370, 450, 530, 610, 690, 768].forEach(function (x, i) {
-    PARTS.create.push([x - 38, 916, 76, 76, 38, (i - 4) * 5, -24 - 22 * Math.sin((Math.PI * i) / 8), 1.25, 0]);
-  });
-
-  function buildParts(key) {
-    var layer = document.createElement('div');
-    layer.className = 'parts';
-    layer.setAttribute('aria-hidden', 'true');
-    var list = PARTS[key];
-    for (var i = 0; i < list.length; i++) {
-      var p = list[i];
-      var vars = '--x:' + p[0] + ';--y:' + p[1] + ';--w:' + p[2] + ';--h:' + p[3] + ';--r:' + p[4];
-      var socket = document.createElement('span');
-      socket.className = 'socket';
-      socket.style.cssText = vars + ';--d:' + i;
-      var part = document.createElement('span');
-      part.className = 'part';
-      part.style.cssText = vars + ';--mx:' + p[5] + ';--my:' + p[6].toFixed(1) + ';--s:' + p[7] +
-        ';--rot:' + p[8] + 'deg;--d:' + i + ';--z:' + (6 + (p[7] - 1) * 40).toFixed(1);
-      layer.appendChild(socket);
-      layer.appendChild(part);
-    }
-    return layer;
-  }
-
-  var partPics = document.querySelectorAll('picture[data-parts]');
-  for (var pp = 0; pp < partPics.length; pp++) {
-    var pic = partPics[pp];
-    if (!PARTS[pic.dataset.parts]) continue;
-    var layer = buildParts(pic.dataset.parts);
-    layer.dataset.srcShot = pic.dataset.shot;
-    pic.after(layer);
-  }
-
-  /* On phones the tour shows each screen inline; its parts lift once, the
-     first time the screen is well into view. */
-  var inlineLayers = document.querySelectorAll('.tour-shot .parts');
-  if (reduceMotion || !('IntersectionObserver' in window)) {
-    /* Nothing moves: the screenshots stand on their own. */
-  } else if (inlineLayers.length) {
-    var liftIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-lifted');
-        liftIO.unobserve(entry.target);
-      });
-    }, { threshold: 0.6 });
-    for (var il = 0; il < inlineLayers.length; il++) liftIO.observe(inlineLayers[il]);
-  }
-
   /* ---------------------------------------------------------------- theme */
 
   function currentTheme() {
@@ -139,13 +31,6 @@
       src.media = 'all';
       src.srcset = SHOT_DIR + pics[i].dataset.shot + '-' + theme + '.webp';
     }
-    /* Parts and the card anatomy crop the same capture by background. */
-    var layers = document.querySelectorAll('[data-src-shot]');
-    for (var j = 0; j < layers.length; j++) {
-      /* Absolute, or the url() would resolve against the stylesheet. */
-      var href = new URL(SHOT_DIR + layers[j].dataset.srcShot + '-' + theme + '.webp', location.href).href;
-      layers[j].style.setProperty('--src', 'url("' + href + '")');
-    }
   }
 
   function syncToggle(theme) {
@@ -158,7 +43,6 @@
   function setTheme(theme, persist) {
     root.dataset.theme = theme;
     applyShots(theme);
-    applyFilm(theme);
     syncToggle(theme);
     if (persist) {
       try {
@@ -167,62 +51,6 @@
         /* private browsing, whatever */
       }
     }
-  }
-
-  /* --------------------------------------------------------------- film */
-
-  /* The hero film autoplays muted on load, once, with no player chrome.
-     Sound and replay are explicit buttons. Reduced motion stays on the
-     poster. Each appearance has its own cut; a theme flip keeps the place. */
-
-  var film = document.querySelector('[data-intro-film]');
-  var filmReplay = document.querySelector('[data-film-replay]');
-  var filmSound = document.querySelector('[data-film-sound]');
-  var FILM_DIR = (root.dataset.assets || 'assets') + '/video/';
-
-  function applyFilm(theme) {
-    if (!film) return;
-    var src = FILM_DIR + film.dataset.film + '-' + theme + '.mp4';
-    film.poster = FILM_DIR + film.dataset.film + '-poster-' + theme + '.jpg';
-    var source = film.querySelector('source');
-    if (source.getAttribute('src') === src) return;
-    var at = film.currentTime;
-    var playing = !film.paused && !film.ended;
-    var ended = film.ended;
-    source.setAttribute('src', src);
-    film.load();
-    if (!at && !ended) return;
-    film.addEventListener('loadedmetadata', function () {
-      film.currentTime = ended ? film.duration : at;
-      if (playing) film.play().catch(function () {});
-    }, { once: true });
-  }
-
-  if (film && filmReplay && filmSound) {
-    film.controls = false;
-    film.removeAttribute('controls');
-    film.loop = false;
-    film.muted = true;
-    var syncFilm = function () {
-      filmReplay.textContent = film.ended ? 'Replay' : film.paused ? 'Play' : 'Pause';
-      filmSound.textContent = film.muted ? 'Sound on' : 'Mute';
-    };
-    ['play', 'pause', 'ended', 'seeking', 'emptied', 'volumechange'].forEach(function (type) {
-      film.addEventListener(type, syncFilm);
-    });
-    filmReplay.addEventListener('click', function () {
-      if (film.ended) film.currentTime = 0;
-      if (film.paused) film.play().catch(function () {});
-      else film.pause();
-    });
-    filmSound.addEventListener('click', function () {
-      if (film.ended) film.currentTime = 0;
-      film.muted = !film.muted;
-      if (!film.muted && film.paused) film.play().catch(function () {});
-    });
-    applyFilm(currentTheme());
-    syncFilm();
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) film.play().catch(function () {});
   }
 
   syncToggle(currentTheme());
@@ -280,6 +108,25 @@
     addEventListener('keydown', function (e) {
       if (e.key === 'Escape') setMenu(false);
     });
+  }
+
+  /* The scan code behaves like a tooltip: Escape puts it away until the
+     pointer or focus leaves the button. */
+  var qrButtons = document.querySelectorAll('.has-qr');
+  if (qrButtons.length) {
+    var showQR = function (e) {
+      e.currentTarget.classList.remove('qr-off');
+    };
+    addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      for (var q = 0; q < qrButtons.length; q++) {
+        if (qrButtons[q].matches(':hover, :focus-visible')) qrButtons[q].classList.add('qr-off');
+      }
+    });
+    for (var qb = 0; qb < qrButtons.length; qb++) {
+      qrButtons[qb].addEventListener('pointerleave', showQR);
+      qrButtons[qb].addEventListener('blur', showQR);
+    }
   }
 
   /* --------------------------------------------------------- nav underline */
@@ -366,8 +213,8 @@
   /* --------------------------------------------------------------- reveal */
 
   /* Big headings rise a word at a time. Words are wrapped in place, so
-     nested spans keep their styling; the ramp word moves as one piece
-     because its gradient spans the whole word. */
+     nested spans keep their styling; an element with no space in it, like
+     the italic word, moves as one piece. */
   function splitWords(el) {
     var n = 0;
     var wrap = function (node) {
@@ -397,7 +244,8 @@
           }
           parent.replaceChild(frag, node);
         } else if (node.nodeType === 1) {
-          if (node.classList.contains('ramp') || !/\s/.test(node.textContent.trim())) {
+          if (node.tagName === 'BR') continue;
+          if (!/\s/.test(node.textContent.trim())) {
             var whole = wrap();
             parent.replaceChild(whole.w, node);
             whole.inner.appendChild(node);
@@ -411,7 +259,7 @@
     el.classList.add('split');
   }
 
-  var heads = document.querySelectorAll('.hero h1, .section-head h2, .demo-copy h2, .compare-copy h2, .privacy h2, .closer h2');
+  var heads = document.querySelectorAll('.hero h1, .guides-hero h1, .support-hero h1, .release-hero h1, .doc-head h1, .section-head h2, .wordmark');
   for (var hd = 0; hd < heads.length; hd++) splitWords(heads[hd]);
 
   var targets = document.querySelectorAll('.reveal, .split');
@@ -626,6 +474,129 @@
     return n + ' ' + unit + (n === 1 ? '' : 's');
   }
 
+  /* Returns a redraw for a month whose days follow the scroll. The walk starts
+     as the month comes up from the bottom of the screen and reaches today at
+     `stop` of the way down, or wherever the month sits when the page runs
+     out. Days the walk hasn't reached are still to come. */
+  function walkDays(month, bars, seed, today, stop) {
+    var last = seed.replace(/0+$/, '').length;
+    var shown = -1;
+    return function () {
+      var top = month.getBoundingClientRect().top;
+      var left = document.documentElement.scrollHeight - innerHeight - scrollY;
+      var end = Math.max(innerHeight * stop, top - left);
+      var p = (innerHeight - top) / Math.max(1, innerHeight - end);
+      var k = Math.round(Math.min(1, Math.max(0, p)) * last);
+      if (k === shown) return;
+      shown = k;
+      var walked = seed.slice(0, k) + seed.slice(k).replace(/./g, '0');
+      drawDays(bars, parseDays(walked, Math.min(k, today)));
+    };
+  }
+
+  /* Editorial illustrations share the day renderer, not screenshot geometry.
+     Each month fills once, unless it has data-scrub: then today's ring walks
+     the month with the scroll, leaving each day as the seed has it, and walks
+     back on the way up like the header month. data-scrub is how far up the
+     screen the month is when the walk reaches today. A new app capture never
+     changes this choreography. */
+  var scrubs = [];
+  var editorialMonths = document.querySelectorAll('[data-editorial-days]');
+  for (var em = 0; em < editorialMonths.length; em++) {
+    (function (month, index) {
+      var seed = month.dataset.editorialDays;
+      var today = +month.dataset.today;
+      var scrub = 'scrub' in month.dataset && !reduceMotion;
+      var days = parseDays(seed, today);
+      var bars = [];
+      for (var day = 0; day < days.length; day++) {
+        var bar = makeBar('span');
+        if (!scrub) bar.style.setProperty('--t', (index < 3 ? index * 140 : 0) + day * 24 + 'ms');
+        month.appendChild(bar);
+        bars.push(bar);
+      }
+      if (month.parentElement.classList.contains('ribbon')) month.parentElement.classList.add('has-days');
+      if (scrub) {
+        scrubs.push(walkDays(month, bars, seed, today, +month.dataset.scrub || 0.5));
+      } else {
+        drawDays(bars, days, !reduceMotion);
+        var fill = function () { drawDays(bars, days); };
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          fill();
+        } else {
+          var observer = new IntersectionObserver(function (entries) {
+            if (!entries[0].isIntersecting) return;
+            observer.disconnect();
+            requestAnimationFrame(function () { requestAnimationFrame(fill); });
+          }, { threshold: 0.15 });
+          observer.observe(month);
+        }
+      }
+      /* A passing pointer makes the interlude respond like a row of keys. */
+      if (month.closest('.month-interlude')) {
+        month.addEventListener('pointerover', function (event) {
+          if (event.pointerType !== 'mouse' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          var at = bars.indexOf(event.target);
+          if (at < 0) return;
+          bars.slice(Math.max(0, at - 1), at + 2).forEach(function (bar) {
+            bar.getAnimations().forEach(function (animation) { animation.cancel(); });
+            bar.animate([{ transform: 'scaleY(1)' }, { transform: 'scaleY(1.18)', offset: .35 }, { transform: 'scaleY(1)' }], { duration: 650, easing: 'ease-out' });
+          });
+        });
+      }
+    })(editorialMonths[em], em);
+  }
+
+  if (scrubs.length) {
+    var walking = false;
+    var walk = function () {
+      walking = false;
+      for (var s = 0; s < scrubs.length; s++) scrubs[s]();
+    };
+    var queueWalk = function () {
+      if (walking) return;
+      walking = true;
+      requestAnimationFrame(walk);
+    };
+    walk();
+    addEventListener('scroll', queueWalk, { passive: true });
+    addEventListener('resize', queueWalk);
+  }
+
+  /* The tour: the point crossing the middle of the screen is the one being
+     read. Its screen shows on the phone, its caption under it, and the phone
+     turns a little towards it. Pointing at a point reads it too. */
+  var story = document.querySelector('.product-story');
+  var points = story ? story.querySelectorAll('.story-point') : [];
+  if (points.length && 'IntersectionObserver' in window) {
+    var stepped = story.querySelectorAll('.story-screen [data-step]');
+    var readPoint = function (n) {
+      if (story.dataset.step === String(n)) return;
+      for (var p = 0; p < points.length; p++) points[p].classList.toggle('is-active', p === n);
+      for (var q = 0; q < stepped.length; q++) {
+        var on = stepped[q].dataset.step === String(n);
+        stepped[q].classList.toggle('is-active', on);
+        stepped[q].setAttribute('aria-hidden', String(!on));
+      }
+      story.dataset.step = n;
+    };
+    readPoint(0);
+    story.classList.add('is-reading');
+    var pointIO = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) readPoint(Array.prototype.indexOf.call(points, entry.target));
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    for (var sp = 0; sp < points.length; sp++) {
+      pointIO.observe(points[sp]);
+      (function (n) {
+        points[n].addEventListener('pointerenter', function (e) {
+          if (e.pointerType === 'mouse') readPoint(n);
+        });
+      })(sp);
+    }
+  }
+
   /* ---------------------------------------------------------- month demo */
 
   var field = document.querySelector('[data-field]');
@@ -831,23 +802,22 @@
       }
       return [run];
     },
+    unlimited: function (box) {
+      var colors = ['var(--day-lilac)', 'var(--day-blue)', 'var(--day-amber)', 'var(--day-green)', 'var(--day-pink)'];
+      var r = seeded(11);
+      var runs = [];
+      for (var i = 0; i < colors.length; i++) {
+        var seed = '';
+        for (var j = 0; j < 20; j++) seed += r() < 0.8 ? '1' : '0';
+        runs.push(miniMonth(box, seed, colors[i]));
+      }
+      return runs;
+    },
     goals: function (box) {
       var run = miniMonth(box, '11111000');
       var b = document.createElement('b');
       b.textContent = '5/8';
       box.appendChild(b);
-      return [run];
-    },
-    export: function (box) {
-      var seed = '1101111011';
-      var run = miniMonth(box, seed);
-      box.removeChild(run.row);
-      for (var i = 0; i < run.bars.length; i++) box.appendChild(run.bars[i]);
-      for (var j = 0; j < seed.length; j++) {
-        var small = document.createElement('small');
-        small.textContent = seed.charAt(j);
-        box.appendChild(small);
-      }
       return [run];
     },
     notes: function (box) {
@@ -860,28 +830,9 @@
       box.appendChild(note);
       return [run];
     },
-    health: function (box) {
-      /* Health fills the week on its own. Today is still on its way. */
-      var run = miniMonth(box, '11111p', null, 5);
-      var b = document.createElement('b');
-      b.textContent = '6,240';
-      box.appendChild(b);
-      return [run];
-    },
     pause: function (box) {
       /* A week away, then straight back on: the run carries through. */
       return [miniMonth(box, '11111-----1111')];
-    },
-    unlimited: function (box) {
-      var colors = ['#bf5af2', '#2973ff', '#ff9f0a', '#30d158', '#ff375f'];
-      var r = seeded(11);
-      var runs = [];
-      for (var i = 0; i < colors.length; i++) {
-        var seed = '';
-        for (var j = 0; j < 20; j++) seed += r() < 0.8 ? '1' : '0';
-        runs.push(miniMonth(box, seed, colors[i]));
-      }
-      return runs;
     }
   };
   var minis = document.querySelectorAll('[data-mini]');
@@ -889,309 +840,60 @@
     var kind = minis[mi].dataset.mini;
     var make = MINIS[kind];
     if (!make) continue;
-    minis[mi].classList.add('mini-' + ({ insights: 'heat', reminders: 'ticks', unlimited: 'many', health: 'goals' }[kind] || kind));
+    minis[mi].classList.add('mini-' + ({ insights: 'heat', reminders: 'ticks', unlimited: 'many' }[kind] || kind));
     fillOnView(minis[mi], make(minis[mi]));
   }
 
-  /* Pro yearly, spread over the days it pays for. Runs before the currency
-     block so the toggle rewrites it with the other prices. */
-  var perDay = document.querySelector('[data-per-day]');
-  var yearly = document.querySelector('.plan-featured [data-price]');
-  if (perDay && yearly) {
-    var cents = function (price, mark) {
-      return Math.round((parseFloat(price.replace(/[^0-9.]/g, '')) * 100) / 365) + mark;
-    };
-    var pd = perDay.querySelector('[data-per-day-price]');
-    pd.setAttribute('data-price', '');
-    pd.dataset.aud = cents(yearly.dataset.aud, 'c');
-    pd.dataset.usd = cents(yearly.dataset.usd, '¢');
-    pd.textContent = pd.dataset.aud;
-    var pdRow = perDay.querySelector('.month');
-    var pdRun = miniMonth(pdRow, new Array(31).join('1'));
-    pdRow.parentNode.replaceChild(pdRun.row, pdRow);
-    pdRun.row.setAttribute('aria-hidden', 'true');
-    perDay.hidden = false;
-    fillOnView(perDay, [pdRun]);
-  }
-
-  /* Privacy: the months stay on the phone. */
-  var vault = document.querySelector('[data-vault]');
-  if (vault) {
-    fillOnView(vault, [
-      miniMonth(vault, '11110111111011', '#2973ff'),
-      miniMonth(vault, '11--11111--110', '#e5894a'),
-      miniMonth(vault, '11111111111111', '#9b5fd6')
-    ]);
-  }
-
-  /* The page as a month in the header: a day for each thirtieth of the way
-     down, following the scroll both ways. */
-  var siteHead = document.querySelector('.site-head');
-  if (siteHead && document.querySelector('[data-month-wall]')) {
-    var sm = miniMonth(siteHead, new Array(31).join('0'), null, 0);
-    sm.row.className = 'month scroll-month';
-    sm.row.setAttribute('aria-hidden', 'true');
-    for (var sb = 0; sb < sm.bars.length; sb++) {
-      sm.bars[sb].style.removeProperty('--t');
-      sm.bars[sb].classList.remove('today', 'future', 'lit');
-      sm.bars[sb].dataset.s = 'open';
+  /* Apple Health, as the guide tells it: 7,400 steps by lunch, 2,600 more
+     after work, and today's bar ticks itself off at the goal. Plays once. */
+  var health = document.querySelector('[data-health-demo]');
+  if (health) {
+    var GOAL = 10000;
+    var BEFORE = '1101111111111';
+    var stepsOut = health.querySelector('[data-steps]');
+    var healthRow = health.querySelector('[data-health-days]');
+    var healthBars = [];
+    for (var hb = 0; hb <= BEFORE.length; hb++) {
+      var hBar = makeBar('span');
+      hBar.style.setProperty('--t', hb * 22 + 'ms');
+      healthRow.appendChild(hBar);
+      healthBars.push(hBar);
     }
-    var ticking = false;
-    var paintRead = function () {
-      ticking = false;
-      var max = document.documentElement.scrollHeight - innerHeight;
-      var n = max > 0 ? Math.round((scrollY / max) * sm.bars.length) : 0;
-      for (var i = 0; i < sm.bars.length; i++) {
-        var on = i < n;
-        sm.bars[i].dataset.s = on ? 'done' : 'open';
-        sm.bars[i].classList.toggle('lit', on);
-        sm.bars[i].style.setProperty('--fill', on ? 1 : 0);
-      }
+    var drawSteps = function (steps, hold) {
+      var days = parseDays(BEFORE + (steps >= GOAL ? '1' : 'p'), BEFORE.length);
+      days[BEFORE.length].r = Math.min(1, steps / GOAL);
+      drawDays(healthBars, days, hold);
+      stepsOut.textContent = Math.round(steps).toLocaleString('en-US');
+      health.classList.toggle('is-done', steps >= GOAL);
     };
-    addEventListener('scroll', function () {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(paintRead);
-      }
-    }, { passive: true });
-    paintRead();
-  }
-
-  var heatBox = document.querySelector('[data-tour-heat]');
-  var fillHeat = null;
-  if (heatBox) {
-    var heatRun = heat(heatBox, 26, '#9b5fd6', seeded(31));
-    heatBox.setAttribute('aria-hidden', 'true');
-    fillHeat = function () {
-      drawDays(heatRun.bars, heatRun.days);
+    var countSteps = function (from, to, ms, done) {
+      var start = performance.now();
+      var tick = function (now) {
+        var t = Math.min(1, (now - start) / ms);
+        drawSteps(from + (to - from) * (1 - Math.pow(1 - t, 3)));
+        if (t < 1) requestAnimationFrame(tick);
+        else if (done) done();
+      };
+      requestAnimationFrame(tick);
     };
-    if (reduceMotion) {
-      fillHeat();
-      fillHeat = null;
-    }
-  }
-
-  /* ---------------------------------------------------------------- tour */
-
-  var steps = document.querySelectorAll('.tour-step');
-  var stage = document.querySelector('[data-tour-stage]');
-  if (steps.length && stage && 'IntersectionObserver' in window) {
-    var frames = stage.querySelectorAll('picture');
-    var stageParts = stage.querySelectorAll('.parts');
-    var GLOWS = ['#2973ff', '#2973ff', '#ffad32', '#8c5cff', '#8c5cff', '#3de0d9'];
-    var show = function (n) {
-      for (var i = 0; i < steps.length; i++) {
-        steps[i].classList.toggle('is-active', i === n);
-        if (frames[i]) frames[i].classList.toggle('is-active', i === n);
-        if (stageParts[i]) {
-          stageParts[i].classList.toggle('is-active', i === n);
-          stageParts[i].classList.toggle('is-lifted', i === n && !reduceMotion);
-        }
-      }
-      stage.parentNode.style.setProperty('--glow', GLOWS[n] || GLOWS[0]);
-      /* Step 04, the detail screen, spreads its heatmap out behind the phone. */
-      stage.parentNode.classList.toggle('heat-on', n === 3);
-      if (n === 3 && fillHeat) {
-        fillHeat();
-        fillHeat = null;
-      }
-    };
-    /* A step wins when it crosses the middle band of the viewport. */
-    var tourIO = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) show(+entry.target.dataset.step);
-      });
-    }, { rootMargin: '-45% 0px -45% 0px' });
-    for (var st = 0; st < steps.length; st++) tourIO.observe(steps[st]);
-
-    /* The phone tips toward the pointer; lifted parts travel further. */
-    var tourStage = stage.parentNode;
-    if (!reduceMotion && matchMedia('(hover: hover)').matches) {
-      tourStage.addEventListener('pointermove', function (e) {
-        var r = tourStage.getBoundingClientRect();
-        stage.style.setProperty('--px', (((e.clientX - r.left) / r.width) * 2 - 1).toFixed(3));
-        stage.style.setProperty('--py', (((e.clientY - r.top) / r.height) * 2 - 1).toFixed(3));
-      });
-      tourStage.addEventListener('pointerleave', function () {
-        stage.style.setProperty('--px', 0);
-        stage.style.setProperty('--py', 0);
-      });
-    }
-  }
-
-  /* -------------------------------------------------------- card anatomy */
-
-  /* The Drink water card from the Home capture, in card pixels (the card
-     sits at 65, 528 in the 900 × 1840 shot). Each part is a crop; the base
-     card has holes cut where they sit, so a lifted part leaves its socket
-     behind. The bars are real day bars, filled when the card goes back
-     together. [x, y, w, h, radius, move x, move y, scale, turn°] */
-  (function () {
-    var anatomy = document.querySelector('[data-anatomy]');
-    var anatomyCard = anatomy && anatomy.querySelector('[data-anatomy-card]');
-    if (!anatomyCard) return;
-    var A_PARTS = {
-      icon: [21.5, 20, 104, 104, 52, -36, -150, 1.25, -8],
-      progress: [135, 20, 476, 88, 12, 0, -165, 1.06, 0],
-      button: [645, 8, 116, 116, 58, 36, -150, 1.25, 8],
-      tally: [15, 142, 142, 32, 6, -25, 175, 1.3, 0],
-      streak: [635, 142, 120, 32, 6, 25, 175, 1.3, 0]
-    };
-    var BAR_BOX = [22.5, 188.5, 728, 34.5, 4];
-    var ORDER = ['icon', 'progress', 'button', 'tally', 'bars', 'streak'];
-
-    var rounded = function (b) {
-      var x = b[0], y = b[1], w = b[2], h = b[3], r = Math.min(b[4], w / 2, h / 2);
-      return 'M' + (x + r) + ' ' + y + 'H' + (x + w - r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + w) + ' ' + (y + r) +
-        'V' + (y + h - r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + w - r) + ' ' + (y + h) + 'H' + (x + r) +
-        'A' + r + ' ' + r + ' 0 0 1 ' + x + ' ' + (y + h - r) + 'V' + (y + r) + 'A' + r + ' ' + r + ' 0 0 1 ' + (x + r) + ' ' + y + 'Z';
-    };
-    var holes = 'M0 0H770V248H0Z';
-    for (var hk in A_PARTS) holes += rounded(A_PARTS[hk]);
-    holes += rounded(BAR_BOX);
-    var maskSvg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 770 248" preserveAspectRatio="none">' +
-      '<path fill-rule="evenodd" d="' + holes + '"/></svg>';
-
-    anatomyCard.dataset.srcShot = 'home-current-framed';
-    anatomyCard.style.setProperty('--holes', 'url("data:image/svg+xml,' + encodeURIComponent(maskSvg) + '")');
-    var under = document.createElement('div');
-    under.className = 'anatomy-under';
-    var base = document.createElement('div');
-    base.className = 'anatomy-base';
-    anatomyCard.appendChild(under);
-    anatomyCard.appendChild(base);
-
-    var pieces = {};
-    for (var ak in A_PARTS) {
-      var ap = A_PARTS[ak];
-      var el = document.createElement('div');
-      el.className = 'apart';
-      el.style.cssText = '--x:' + ap[0] + ';--y:' + ap[1] + ';--w:' + ap[2] + ';--h:' + ap[3] + ';--r:' + ap[4];
-      anatomyCard.appendChild(el);
-      pieces[ak] = el;
-    }
-
-    /* September for Drink water: today (the 29th) part way, the 30th ahead. */
-    var aMonth = document.createElement('div');
-    aMonth.className = 'month';
-    var aDays = parseDays('1111111110111110110110101111p0', 28);
-    var aBars = [];
-    for (var ab = 0; ab < aDays.length; ab++) {
-      var abar = makeBar('span');
-      abar.style.setProperty('--t', ab * 22 + 'ms');
-      aMonth.appendChild(abar);
-      aBars.push(abar);
-    }
-    anatomyCard.appendChild(aMonth);
-    drawDays(aBars, aDays, true);
-
-    /* Phones list the notes under the card, so each part carries the number
-       of its note. Shown by CSS at phone widths only. */
-    var marks = {};
-    for (var mk = 0; mk < ORDER.length; mk++) {
-      var mEl = document.createElement('span');
-      mEl.className = 'anatomy-mark';
-      mEl.textContent = mk + 1;
-      anatomyCard.appendChild(mEl);
-      marks[ORDER[mk]] = mEl;
-    }
-    applyShots(currentTheme());
-
-    var notes = {};
-    var noteEls = anatomy.querySelectorAll('[data-note]');
-    for (var ne = 0; ne < noteEls.length; ne++) notes[noteEls[ne].dataset.note] = noteEls[ne];
-
-    var filled = false;
-    var fillCard = function () {
-      if (filled) return;
-      filled = true;
-      drawDays(aBars, aDays);
-    };
-
-    if (reduceMotion) {
-      anatomy.classList.add('is-still');
-      fillCard();
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      drawSteps(GOAL);
     } else {
-      var clamp = function (v) { return v < 0 ? 0 : v > 1 ? 1 : v; };
-      var outBack = function (t) { var c = 1.4; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
-      var inOut = function (t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; };
-      var pin = anatomy.querySelector('.anatomy-pin');
-      var unit = 1;
-      var lift = 1;
-      var measure = function () {
-        unit = anatomyCard.offsetWidth / 770;
-        /* Phones stack the notes under the card and size its margins for the
-           whole flight, so the parts fly full distance. Any shorter and the
-           tally and streak drop straight onto the bars. */
-        if (matchMedia('(max-width: 760px)').matches) {
-          lift = 1;
-          return;
-        }
-        /* Fit the flight to the room the card has above and below it. */
-        var room = parseFloat(getComputedStyle(anatomyCard).marginTop) / unit;
-        lift = clamp((room - 110) / 165) * 0.6 + 0.4;
-      };
-      /* Pin a number to the outer edge of a part as it flies, in card pixels:
-         above the top row, below the bars and the bottom row. */
-      var mark = function (el, b, dx, dy, s, e) {
-        var down = dy > 0;
-        el.dataset.dir = down ? 'down' : 'up';
-        el.style.setProperty('--e', clamp(e).toFixed(3));
-        el.style.setProperty('--mx', (b[0] + b[2] / 2 + dx).toFixed(1));
-        el.style.setProperty('--my', (b[1] + b[3] / 2 + dy + (down ? 1 : -1) * (b[3] * s) / 2).toFixed(1));
-      };
-      var place = function (el, m, e) {
-        el.style.setProperty('--e', e.toFixed(3));
-        el.style.transform = 'translate(' + (m[5] * e * unit).toFixed(1) + 'px,' + (m[6] * e * lift * unit).toFixed(1) +
-          'px) scale(' + (1 + (m[7] - 1) * e).toFixed(3) + ') rotate(' + (m[8] * e).toFixed(2) + 'deg)';
-      };
-      var frame = function () {
-        ticking = false;
-        var r = anatomy.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > innerHeight) return;
-        var p = clamp(-r.top / Math.max(1, anatomy.offsetHeight - pin.offsetHeight));
-        /* Apart over the first third, a short hold with the notes up, then
-           back together, finishing just before the pin lets go. */
-        var apart = clamp(p / 0.36);
-        var back = clamp((p - 0.5) / 0.42);
-        if (back > 0.9) fillCard();
-        for (var k = 0; k < ORDER.length; k++) {
-          var name = ORDER[k];
-          var out = outBack(clamp((apart - k * 0.07) / 0.6));
-          var home = inOut(clamp((back - (ORDER.length - 1 - k) * 0.05) / 0.72));
-          var e = out * (1 - home);
-          if (notes[name]) notes[name].style.setProperty('--e', clamp(e).toFixed(3));
-          if (name === 'bars') {
-            for (var bi = 0; bi < aBars.length; bi++) {
-              var spread = (bi - 14.5) * 3.2 * e * unit;
-              var rise = (70 + Math.sin(bi * 0.55) * 14) * e * lift * unit;
-              aBars[bi].style.transform = 'translate(' + spread.toFixed(1) + 'px,' + rise.toFixed(1) + 'px)';
-            }
-            /* The middle bars drop about 84 card pixels at full flight. */
-            mark(marks.bars, BAR_BOX, 0, 84 * e * lift, 1, e);
-          } else {
-            var mp = A_PARTS[name];
-            place(pieces[name], mp, e);
-            mark(marks[name], mp, mp[5] * e, mp[6] * e * lift, 1 + (mp[7] - 1) * e, e);
-          }
-        }
-        base.style.transform = 'scale(' + (1 - 0.05 * clamp(apart) * (1 - back)).toFixed(3) + ')';
-      };
-      var ticking = false;
-      var request = function () {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(frame);
-      };
-      measure();
-      frame();
-      addEventListener('scroll', request, { passive: true });
-      addEventListener('resize', function () {
-        measure();
-        request();
-      });
+      drawSteps(0, true);
+      var healthIO = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        healthIO.disconnect();
+        drawSteps(0);
+        setTimeout(function () {
+          healthBars[BEFORE.length].style.setProperty('--t', '0ms');
+          countSteps(0, 7400, 1500, function () {
+            setTimeout(function () { countSteps(7400, GOAL, 1100); }, 700);
+          });
+        }, 650);
+      }, { threshold: 0.5 });
+      healthIO.observe(health);
     }
-  })();
+  }
 
   /* ---------------------------------------------------------------- perks */
 
@@ -1205,17 +907,66 @@
     });
   }
 
-  /* ------------------------------------------------------------- compare */
-
-  var compare = document.querySelector('[data-compare]');
-  if (compare) {
-    var range = compare.querySelector('input');
-    range.addEventListener('input', function () {
-      compare.style.setProperty('--split', range.value + '%');
-    });
-  }
-
   /* ------------------------------------------------------------ currency */
+
+  /* A price changes the way the app's numbers do: only the characters that
+     differ move, rolling up when the price rises and down when it drops.
+     Digits line up from the right, and the currency mark moves as one. */
+  var SOFT = getComputedStyle(root).getPropertyValue('--spring-soft').trim();
+  if (!SOFT || !CSS.supports('transition-timing-function', SOFT)) SOFT = 'cubic-bezier(0.2, 0.7, 0.2, 1)';
+
+  function rollPrice(el, next) {
+    var prev = el.dataset.shown || el.textContent;
+    el.dataset.shown = next;
+    if (prev === next) return;
+    if (reduceMotion || !el.animate) {
+      el.textContent = next;
+      return;
+    }
+    var parts = function (s) {
+      var m = /^(\D*)(.*)$/.exec(s);
+      return [m[1]].concat(m[2].split(''));
+    };
+    var amount = function (s) {
+      return parseFloat(s.replace(/[^0-9.]/g, '')) || 0;
+    };
+    var from = parts(prev);
+    var to = parts(next);
+    var dir = amount(next) < amount(prev) ? -1 : 1;
+    var frag = document.createDocumentFragment();
+    var moved = 0;
+    var longest = 0;
+    for (var i = 0; i < to.length; i++) {
+      var j = i === 0 ? 0 : from.length - (to.length - i);
+      var was = j >= 0 && (i === 0 || j > 0) ? from[j] : '';
+      if (was === to[i]) {
+        frag.appendChild(document.createTextNode(to[i]));
+        continue;
+      }
+      var cell = document.createElement('span');
+      cell.className = 'roll';
+      var gone = document.createElement('span');
+      gone.className = 'roll-out';
+      gone.setAttribute('aria-hidden', 'true');
+      gone.textContent = was;
+      var come = document.createElement('span');
+      come.textContent = to[i];
+      cell.appendChild(come);
+      cell.appendChild(gone);
+      frag.appendChild(cell);
+      var delay = moved++ * 45;
+      longest = Math.max(longest, delay + 700);
+      var timing = { duration: 700, delay: delay, easing: SOFT, fill: 'both' };
+      gone.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(' + -dir * 100 + '%)', opacity: 0 }], timing);
+      come.animate([{ transform: 'translateY(' + dir * 100 + '%)', opacity: 0 }, { transform: 'none', opacity: 1 }], timing);
+    }
+    el.textContent = '';
+    el.appendChild(frag);
+    clearTimeout(el._settle);
+    el._settle = setTimeout(function () {
+      el.textContent = next;
+    }, longest + 40);
+  }
 
   var CUR_STORE = 'hg-currency';
   var curBtns = document.querySelectorAll('[data-currency]');
@@ -1223,7 +974,8 @@
     var setCurrency = function (cur, persist) {
       var prices = document.querySelectorAll('[data-price]');
       for (var i = 0; i < prices.length; i++) {
-        prices[i].textContent = prices[i].dataset[cur];
+        if (persist) rollPrice(prices[i], prices[i].dataset[cur]);
+        else prices[i].textContent = prices[i].dataset.shown = prices[i].dataset[cur];
       }
       for (var j = 0; j < curBtns.length; j++) {
         curBtns[j].setAttribute('aria-pressed', String(curBtns[j].dataset.currency === cur));
@@ -1244,120 +996,6 @@
         setCurrency(e.currentTarget.dataset.currency, true);
       });
     }
-  }
-
-  /* --------------------------------------------------------- closer wall */
-
-  /* Three habits on 29 September, each where its month actually stands:
-     water part way through today, reading on weekdays with a slip, and a
-     meditation run that hasn't missed. */
-  var wall = document.querySelector('[data-month-wall]');
-  if (wall) {
-    var HABITS = [
-      { name: 'Drink water', c: '#2973ff', seed: '1111111011111111110111111111p0' },
-      { name: 'Read a Book', c: '#e5894a', seed: '1111--11111--11011--11111--100' },
-      { name: 'Meditate', c: '#9b5fd6', seed: '111111111111111111111111111110' }
-    ];
-    var rows = [];
-    for (var h = 0; h < HABITS.length; h++) {
-      var habit = HABITS[h];
-      var line = document.createElement('div');
-      line.className = 'wall-row';
-      var name = document.createElement('span');
-      name.textContent = habit.name;
-      var month = document.createElement('div');
-      month.className = 'month';
-      var count = document.createElement('span');
-      count.className = 'wall-tally';
-      line.appendChild(name);
-      line.appendChild(month);
-      line.appendChild(count);
-      wall.appendChild(line);
-
-      var days = parseDays(habit.seed, 28);
-      var rowBars = [];
-      for (var wd = 0; wd < days.length; wd++) {
-        var wb = makeBar('span', habit.c);
-        wb.style.setProperty('--t', h * 140 + wd * 24 + 'ms');
-        month.appendChild(wb);
-        rowBars.push(wb);
-      }
-      drawDays(rowBars, days, true);
-      var ct = tally(days);
-      count.innerHTML = '<b>' + ct.done + '</b>/' + ct.due;
-      rows.push({ bars: rowBars, days: days });
-    }
-
-    var fillWall = function () {
-      for (var w = 0; w < rows.length; w++) drawDays(rows[w].bars, rows[w].days);
-    };
-    if (reduceMotion || !('IntersectionObserver' in window)) {
-      fillWall();
-    } else {
-      var wallIO = new IntersectionObserver(function (entries) {
-        if (!entries[0].isIntersecting) return;
-        fillWall();
-        wallIO.disconnect();
-      }, { threshold: 0.6 });
-      wallIO.observe(wall);
-    }
-  }
-
-  /* ----------------------------------------------------------- tick demo */
-
-  /* Mirrors the app: ticks = floor(amount / share), but the last tick waits
-     until the goal itself is reached. */
-  var tickDemos = document.querySelectorAll('[data-tick-demo]');
-  for (var td = 0; td < tickDemos.length; td++) {
-    (function (demo) {
-      var goal = +demo.dataset.goal;
-      var n = +demo.dataset.n;
-      var unit = demo.dataset.unit;
-      var row = demo.querySelector('[data-tick-row]');
-      var countOut = demo.querySelector('[data-tick-count]');
-      var amountOut = demo.querySelector('[data-tick-amount]');
-      var adds = demo.querySelectorAll('[data-add]');
-      var amount = 0;
-      var shown = 0;
-      var ticks = [];
-
-      for (var i = 0; i < n; i++) {
-        var tick = makeBar('span', getComputedStyle(demo).getPropertyValue('--c'));
-        tick.classList.add('lit');
-        row.appendChild(tick);
-        ticks.push(tick);
-      }
-
-      var fmt = function (v) {
-        return Math.round(v).toLocaleString('en-AU');
-      };
-
-      var render = function () {
-        var done = amount >= goal;
-        var filled = done ? n : Math.min(n - 1, Math.floor(amount / (goal / n)));
-        for (var i = 0; i < n; i++) {
-          ticks[i].style.setProperty('--t', Math.max(0, i - shown) * 70 + 'ms');
-          ticks[i].dataset.s = i < filled ? 'done' : 'open';
-          ticks[i].style.setProperty('--fill', i < filled ? 1 : 0);
-        }
-        shown = filled;
-        countOut.textContent = filled + '/' + n;
-        amountOut.textContent = done
-          ? fmt(amount) + ' ' + unit + '. Done for today.'
-          : fmt(amount) + ' of ' + fmt(goal) + ' ' + unit;
-        for (var a = 0; a < adds.length; a++) adds[a].disabled = done;
-      };
-
-      demo.addEventListener('click', function (e) {
-        var btn = e.target.closest('button');
-        if (!btn) return;
-        if (btn.hasAttribute('data-reset')) amount = 0;
-        else if (btn.dataset.add) amount += +btn.dataset.add;
-        render();
-      });
-
-      render();
-    })(tickDemos[td]);
   }
 
   /* ----------------------------------------------------- release slideshow */

@@ -1,8 +1,8 @@
 /* ==========================================================================
    HabitGlass — marketing site
-   Art direction follows the app: Liquid Glass over a mesh gradient, a month
-   drawn as a bar per day, blue -> violet -> teal lifted straight off the app icon.
-   Dark is the default; light mirrors the app's pastel mesh.
+   Editorial and quiet: near-black or warm paper, one sage accent (the green
+   of the plant in the icon), a serif italic in headings, and a month drawn
+   as a bar per day. The homepage layout lives in landing.css.
    ========================================================================== */
 
 @font-face {
@@ -41,21 +41,13 @@
 :root {
   --font: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
-  /* Brand ramp — same three stops as scripts/make_icon.swift */
-  --brand-blue: #2973ff;
-  --brand-violet: #8c5cff;
-  --brand-teal: #3de0d9;
-  --brand-ramp: linear-gradient(118deg, var(--brand-blue) 0%, var(--brand-violet) 52%, var(--brand-teal) 100%);
-  --brand-ramp-text: var(--brand-ramp);
-  --hero-ramp-text: linear-gradient(104deg, #ffd36a 0%, #ff758f 31%, #c38cff 64%, #73d9ff 100%);
-
   --radius-xs: 3px;
   --radius-sm: 12px;
   --radius: 20px;
   --radius-lg: 28px;
   --radius-xl: 36px;
 
-  --shell: 1200px;
+  --shell: 1280px;
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   /* Damped springs sampled into linear(), the same feel as the app's
      .spring(duration:bounce:). --spring overshoots ~16% for pops,
@@ -64,130 +56,69 @@
   --spring-soft: linear(0, 0.021, 0.077, 0.155, 0.246, 0.344, 0.442, 0.536, 0.623, 0.703, 0.773, 0.833, 0.884, 0.926, 0.960, 0.986, 1.006, 1.020, 1.029, 1.035, 1.038, 1.038, 1.037, 1.035, 1.032, 1.028, 1.024, 1.021, 1.017, 1.014, 1.011, 1.008, 1.006, 1.004, 1.002, 1.001, 1);
 }
 
-/* The hero film sits under the copy, edges feathered into the page mesh.
-   It autoplays muted on load, once, with no player chrome; sound and
-   replay are explicit buttons. Reduced motion stays on the poster. Dark
-   and light cuts swap with the theme toggle. */
-.film {
-  position: relative;
-  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
-}
-
-.film-frame {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  container-type: inline-size;
-}
-
-.film-player {
-  display: block;
-  width: 100%;
-  height: 100%;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
-    linear-gradient(transparent, #000 8%, #000 92%, transparent);
-  -webkit-mask-composite: source-in;
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
-    linear-gradient(transparent, #000 8%, #000 92%, transparent);
-  mask-composite: intersect;
-}
-
-.film-float {
-  position: absolute;
-  right: 4%;
-  bottom: 7%;
-  display: flex;
-  gap: 0.5rem;
-}
-
-.film-float button {
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--bg) 55%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--ink);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  padding: 0.45rem 0.9rem;
-}
-
-.film-float button:hover {
-  border-color: var(--accent);
-}
-
-@media (max-width: 560px) {
-  .film-float {
-    position: static;
-    justify-content: flex-end;
-    margin-top: 0.25rem;
-  }
-}
-
-/* Dark (default) */
+/* Dark (default): near-black with sage, the green of the plant in the icon. */
 :root,
 [data-theme='dark'] {
   --bg: #07080c;
-  --mesh-1: rgba(41, 115, 255, 0.11);
-  --mesh-2: rgba(140, 92, 255, 0.1);
-  --mesh-3: rgba(61, 224, 217, 0.055);
-  --mesh-4: rgba(41, 115, 255, 0.045);
+  --ink: #f4f1e9;
+  --ink-soft: #bcbbb2;
+  --ink-mute: #a5a79c;
+  --ink-faint: #85897c;
 
-  --ink: #f3f6fb;
-  --ink-soft: #c3ccdd;
-  --ink-mute: #8b95ab;
-  --ink-faint: #5f6880;
+  --glass: rgba(204, 218, 187, 0.035);
+  --glass-strong: rgba(204, 218, 187, 0.07);
+  --hairline: #24272a;
+  --hairline-lit: rgba(244, 241, 233, 0.22);
 
-  --glass: rgba(255, 255, 255, 0.038);
-  --glass-strong: rgba(255, 255, 255, 0.065);
-  --hairline: rgba(255, 255, 255, 0.085);
-  --hairline-lit: rgba(255, 255, 255, 0.2);
+  --accent: #bdd5a6;
 
-  --accent: #6f9dff;
+  --btn: #d8e5c6;
+  --btn-ink: #20251a;
 
-  --btn: #ffffff;
-  --btn-ink: #080b14;
+  /* Habit colours for day bars. Not brand colours. */
+  --day-blue: #6e9ee7;
+  --day-lilac: #b19acb;
+  --day-green: #91ad84;
+  --day-pink: #e3899a;
+  --day-amber: #d8aa62;
 
   --bar-off: rgba(255, 255, 255, 0.07);
+  --phone-shadow: rgba(0, 0, 0, 0.45);
   --shadow-lift: 0 48px 100px -34px rgba(0, 0, 0, 0.92);
-  --grain: 0.035;
-  --head-fallback: rgba(5, 7, 13, 0.76);
-  --part-shadow: 0 22px 40px -14px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.1);
-  --socket: rgba(3, 4, 8, 0.62);
+  --qr-paper: var(--ink);
+  --qr-ink: var(--bg);
   color-scheme: dark;
 }
 
-/* Light — the app's pastel mesh, contrast-safe text colours from HabitPalette */
+/* Light: warm paper with the same sage, darkened for contrast. */
 [data-theme='light'] {
-  --bg: #f5f7fb;
-  --mesh-1: rgba(112, 165, 255, 0.4);
-  --mesh-2: rgba(174, 143, 255, 0.3);
-  --mesh-3: rgba(104, 224, 202, 0.24);
-  --mesh-4: rgba(255, 199, 158, 0.2);
+  --bg: #f8f7f2;
+  --ink: #25271f;
+  --ink-soft: #616356;
+  --ink-mute: #686c5d;
+  --ink-faint: #777d6c;
 
-  --brand-ramp-text: linear-gradient(118deg, #0a5fe0 0%, #7a3fd9 52%, #00706a 100%);
-  --hero-ramp-text: linear-gradient(104deg, #9b5a00 0%, #c72e52 31%, #7042b8 64%, #006b91 100%);
+  --glass: rgba(255, 255, 255, 0.5);
+  --glass-strong: rgba(255, 255, 255, 0.8);
+  --hairline: #dddfd3;
+  --hairline-lit: #c9ccbd;
 
-  --ink: #0a1020;
-  --ink-soft: #33405c;
-  --ink-mute: #566280;
-  --ink-faint: #8590a8;
+  --accent: #4c653c;
 
-  --glass: rgba(255, 255, 255, 0.66);
-  --glass-strong: rgba(255, 255, 255, 0.84);
-  --hairline: rgba(10, 22, 55, 0.1);
-  --hairline-lit: rgba(255, 255, 255, 0.95);
+  --btn: #293522;
+  --btn-ink: #f8f7f2;
 
-  --accent: #0a5fe0;
+  --day-blue: #517ebc;
+  --day-lilac: #9573b0;
+  --day-green: #6c865c;
+  --day-pink: #b9566b;
+  --day-amber: #a07028;
 
-  --btn: #0b1020;
-  --btn-ink: #ffffff;
-
-  --bar-off: rgba(11, 22, 55, 0.07);
-  --shadow-lift: 0 40px 80px -36px rgba(23, 39, 82, 0.42);
-  --grain: 0.018;
-  --head-fallback: rgba(244, 248, 255, 0.78);
-  --part-shadow: 0 22px 40px -16px rgba(23, 39, 82, 0.42), 0 0 0 1px rgba(255, 255, 255, 0.9);
-  --socket: rgba(214, 222, 240, 0.72);
+  --bar-off: rgba(37, 39, 31, 0.07);
+  --phone-shadow: rgba(42, 47, 29, 0.2);
+  --shadow-lift: 0 40px 80px -36px rgba(42, 47, 29, 0.32);
+  --qr-paper: #fff;
+  --qr-ink: var(--ink);
   color-scheme: light;
 }
 
@@ -222,42 +153,6 @@ body {
   transition: background-color 0.4s var(--ease), color 0.4s var(--ease);
 }
 
-/* The mesh. Five soft lobes, fixed to the viewport so the whole page reads as
-   one continuous pane of glass rather than a stack of sections. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: -20vh -10vw;
-  z-index: -2;
-  pointer-events: none;
-  background:
-    radial-gradient(46vw 46vw at 12% 4%, var(--mesh-1), transparent 62%),
-    radial-gradient(52vw 52vw at 88% 12%, var(--mesh-2), transparent 60%),
-    radial-gradient(44vw 44vw at 78% 74%, var(--mesh-3), transparent 62%),
-    radial-gradient(40vw 40vw at 8% 82%, var(--mesh-4), transparent 64%);
-  animation: drift 34s var(--ease) infinite alternate;
-}
-
-/* Grain. Kills the banding you otherwise get across 40vw gradients. */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: var(--grain);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-@keyframes drift {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(-2.5%, 2%, 0) scale(1.08);
-  }
-}
-
 img,
 svg {
   display: block;
@@ -283,8 +178,23 @@ button {
 }
 
 ::selection {
-  background: var(--brand-violet);
-  color: #fff;
+  background: var(--accent);
+  color: var(--btn-ink);
+}
+
+.skip-link {
+  position: fixed;
+  top: -5rem;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--btn);
+  color: var(--btn-ink);
+}
+
+.skip-link:focus {
+  top: 1rem;
 }
 
 .sr-only {
@@ -315,17 +225,36 @@ h4 {
 
 h1 {
   font-size: clamp(2.75rem, 6.6vw, 4.9rem);
-  font-weight: 900;
+  letter-spacing: -0.055em;
 }
 
 h2 {
   font-size: clamp(2rem, 4.4vw, 3.25rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.1;
 }
 
 h3 {
   font-size: clamp(1.3rem, 2.1vw, 1.6rem);
   letter-spacing: -0.028em;
   line-height: 1.15;
+}
+
+/* One serif italic per heading carries the voice: sage in the page's h1,
+   muted everywhere else. */
+:is(h1, h2, h3) em {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+}
+
+h1 em {
+  color: var(--accent);
+}
+
+h2 em {
+  color: var(--ink-mute);
 }
 
 h4 {
@@ -343,13 +272,6 @@ p {
   font-size: clamp(1.0625rem, 1.55vw, 1.3125rem);
   line-height: 1.6;
   color: var(--ink-soft);
-}
-
-.ramp {
-  background: var(--brand-ramp-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 .kicker {
@@ -405,12 +327,6 @@ section {
   margin-top: 1.1rem;
 }
 
-.rule {
-  height: 1px;
-  border: 0;
-  background: linear-gradient(90deg, transparent, var(--hairline) 18%, var(--hairline) 82%, transparent);
-}
-
 /* --------------------------------------------------------------------------
    Glass surfaces
    -------------------------------------------------------------------------- */
@@ -425,7 +341,7 @@ section {
 }
 
 [data-theme='light'] .glass {
-  box-shadow: 0 20px 44px -34px rgba(23, 39, 82, 0.45);
+  box-shadow: 0 20px 44px -30px var(--phone-shadow);
 }
 
 /* The specular top edge. This one line is most of why it reads as glass. */
@@ -472,11 +388,6 @@ section {
 .btn-primary {
   background: var(--btn);
   color: var(--btn-ink);
-  box-shadow: 0 12px 30px -16px rgba(41, 115, 255, 0.5);
-}
-
-.btn-primary:hover {
-  box-shadow: 0 18px 38px -16px rgba(41, 115, 255, 0.62);
 }
 
 .btn-ghost {
@@ -510,37 +421,12 @@ section {
   top: 0;
   z-index: 60;
   padding-block: 0.85rem;
-  transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease),
-    backdrop-filter 0.3s var(--ease);
+  background: var(--bg);
+  transition: border-color 0.3s var(--ease);
   border-bottom: 1px solid transparent;
 }
 
-/* The page as a month: a day fills for each thirtieth of the page you've
-   read, and stays filled. Index only. */
-.scroll-month {
-  --c: var(--accent);
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  gap: 3px;
-  pointer-events: none;
-}
-
-.scroll-month .bar {
-  --bh: 2px;
-  border-radius: 999px;
-}
-
-.scroll-month .bar[data-s='open']::after {
-  border: 0;
-  background: var(--hairline);
-}
-
 .site-head.is-stuck {
-  background: var(--head-fallback);
-  background: color-mix(in srgb, var(--bg) 74%, transparent);
-  backdrop-filter: blur(22px) saturate(160%);
   border-bottom-color: var(--hairline);
 }
 
@@ -565,7 +451,7 @@ section {
   height: 32px;
   border-radius: 9px;
   flex: none;
-  box-shadow: 0 6px 18px -8px rgba(41, 115, 255, 0.8);
+  box-shadow: 0 6px 18px -10px var(--phone-shadow);
 }
 
 /* Both nav and actions carry auto start-margins, so leftover header space
@@ -592,7 +478,7 @@ section {
   color: var(--ink);
 }
 
-/* Teal bar injected by site.js: slides to the hovered link, locks onto the
+/* Sage bar injected by site.js: slides to the hovered link, locks onto the
    section you are reading. Hidden until script positions it. */
 .nav-indicator {
   position: absolute;
@@ -602,9 +488,7 @@ section {
   width: var(--nav-w, 0);
   transform: translateX(var(--nav-x, 0));
   border-radius: 2px;
-  /* Same ramp as the hero word "filled"; hero var flips with theme. */
-  background: var(--hero-ramp-text);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--brand-violet) 55%, transparent);
+  background: var(--accent);
   opacity: 0;
   pointer-events: none;
   transition: transform 0.22s var(--ease), width 0.22s var(--ease),
@@ -796,31 +680,6 @@ section {
 }
 
 /* Headline left, pitch right, so the film starts above the fold. */
-@media (min-width: 901px) {
-  .hero-copy {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    grid-template-rows: auto auto auto;
-    column-gap: clamp(2.5rem, 6vw, 5rem);
-    align-items: end;
-  }
-  .hero-copy h1 {
-    grid-row: 1 / 4;
-    align-self: end;
-  }
-  .hero-copy .lede,
-  .hero-copy .cta-row,
-  .hero-copy .cta-note {
-    grid-column: 2;
-  }
-  .hero .hero-copy .lede {
-    margin-top: 0;
-  }
-}
-
-.hero h1 .ramp {
-  background-image: var(--hero-ramp-text);
-}
 
 .hero-eyebrow {
   display: inline-flex;
@@ -835,8 +694,7 @@ section {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--brand-teal);
-  box-shadow: 0 0 14px color-mix(in srgb, var(--brand-teal) 75%, transparent);
+  background: var(--accent);
 }
 
 .hero .lede {
@@ -849,25 +707,6 @@ section {
   flex-wrap: wrap;
   gap: 0.75rem;
   margin-top: 2.25rem;
-}
-
-.cta-note {
-  margin-top: 1.1rem;
-  font-size: 0.875rem;
-  color: var(--ink-mute);
-}
-
-.tour-phone img,
-.tour-shot img,
-.compare-stage img {
-  width: 100%;
-  height: auto;
-}
-
-[data-theme='light'] .tour-phone img,
-[data-theme='light'] .tour-shot,
-[data-theme='light'] .compare-stage {
-  filter: drop-shadow(0 34px 44px rgba(23, 39, 82, 0.22));
 }
 
 /* --------------------------------------------------------------------------
@@ -902,7 +741,7 @@ section {
 }
 
 .bar::before {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--c) 65%, white), var(--c));
+  background: var(--c);
   transform: scaleY(var(--fill));
   transform-origin: bottom;
   opacity: 0.7;
@@ -940,7 +779,7 @@ section {
 
 .bar.today {
   outline: 1.5px solid var(--c);
-  outline-offset: 2.5px;
+  outline-offset: 3px;
 }
 
 /* A month: bars side by side, a day each, the way a card ends in the app. */
@@ -959,105 +798,9 @@ section {
    Interactive month
    -------------------------------------------------------------------------- */
 
-.demo {
-  display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: clamp(2.5rem, 6vw, 5.5rem);
-  align-items: center;
-}
-
-.demo .lede {
-  margin-top: 1.25rem;
-  max-width: 28rem;
-}
-
-.demo-readout {
-  display: flex;
-  gap: clamp(1.75rem, 4vw, 3rem);
-  margin-top: 2.5rem;
-}
-
-.demo-readout div {
-  display: flex;
-  flex-direction: column-reverse;
-}
-
-.demo-readout dt {
-  margin-top: 0.35rem;
-  font-size: 0.875rem;
-  color: var(--ink-mute);
-}
-
-.demo-readout dd {
-  margin: 0;
-  font-size: clamp(2.25rem, 4vw, 3rem);
-  font-weight: 900;
-  letter-spacing: -0.045em;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-
 .month-card {
   padding: clamp(1.5rem, 3.5vw, 2.5rem);
   border-radius: var(--radius-xl);
-}
-
-.month-title {
-  font-weight: 700;
-  font-size: 1.125rem;
-  letter-spacing: -0.02em;
-}
-
-.month-title span {
-  color: var(--ink-mute);
-  font-weight: 500;
-}
-
-.habit-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.15rem 1rem;
-}
-
-.habit-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
-
-.habit-sub {
-  font-size: 0.875rem;
-  color: var(--ink-mute);
-}
-
-/* The card's tally and streak, as the app sets them over the strip. */
-.habit-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.75rem;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: var(--ink-mute);
-  font-variant-numeric: tabular-nums;
-}
-
-.habit-meta b {
-  color: var(--ink);
-}
-
-.habit-streak {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.habit-streak svg {
-  width: 14px;
-  height: 14px;
-  color: var(--c);
 }
 
 /* The demo strip. A bar is only 10-15px wide, so the whole strip is the tap
@@ -1094,12 +837,6 @@ section {
   cursor: default;
 }
 
-.demo-hint {
-  margin-top: 1.25rem;
-  font-size: 0.8125rem;
-  color: var(--ink-mute);
-}
-
 /* --------------------------------------------------------------------------
    Dot lists (see AGENTS.md: 5px muted dot, tabbed in two steps)
    -------------------------------------------------------------------------- */
@@ -1133,117 +870,6 @@ section {
    Tour: the phone pins while the steps scroll past it
    -------------------------------------------------------------------------- */
 
-.tour-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2rem, 6vw, 5rem);
-}
-
-.tour-steps {
-  list-style: none;
-  padding: 0;
-}
-
-.tour-step {
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  opacity: 0.28;
-  transition: opacity 0.5s var(--ease);
-}
-
-.tour-step.is-active {
-  opacity: 1;
-}
-
-.step-num {
-  font-size: 0.875rem;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink-mute);
-}
-
-.tour-step h3 {
-  margin-top: 0.75rem;
-  font-size: clamp(1.6rem, 2.8vw, 2.25rem);
-  line-height: 1.08;
-}
-
-.tour-step > p:not(.step-num) {
-  margin-top: 1.1rem;
-  max-width: 30rem;
-  color: var(--ink-soft);
-}
-
-.tour-shot {
-  display: none;
-}
-
-.tour-step .text-link {
-  align-self: flex-start;
-  color: var(--accent);
-}
-
-.tour-stage {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: grid;
-  place-items: center;
-  isolation: isolate;
-}
-
-.tour-stage::before {
-  content: '';
-  position: absolute;
-  width: 70%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: var(--glow, var(--brand-blue));
-  filter: blur(110px);
-  opacity: 0.18;
-  z-index: -1;
-  transition: background-color 0.8s var(--ease);
-}
-
-.tour-phone {
-  position: relative;
-  width: min(340px, 82%, calc(78vh * 900 / 1840));
-  aspect-ratio: 900 / 1840;
-}
-
-.tour-phone img {
-  filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.45));
-}
-
-/* Step 04 is the detail screen, so its consistency heatmap spreads out
-   behind the phone: months of squares, sparse at first, then the habit
-   taking hold. It fills once, the first time the step comes up, and fades
-   with the step like the screenshots do. */
-.tour-heat {
-  --cell: clamp(12px, 1.25vw, 18px);
-  position: absolute;
-  top: 58%;
-  left: 50%;
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(7, var(--cell));
-  grid-auto-columns: var(--cell);
-  gap: calc(var(--cell) * 0.3);
-  translate: -50% -50%;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.6s var(--ease);
-  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent);
-  mask-image: radial-gradient(closest-side, #000 55%, transparent);
-}
-
-.tour-stage.heat-on .tour-heat {
-  opacity: 0.7;
-}
-
-.tour-heat .bar,
 .mini-heat .bar {
   height: auto;
   align-self: stretch;
@@ -1251,24 +877,9 @@ section {
   background: var(--bar-off);
 }
 
-.tour-heat .bar[data-s='done'],
-.tour-heat .bar[data-s='partial'],
 .mini-heat .bar[data-s='done'],
 .mini-heat .bar[data-s='partial'] {
   background: color-mix(in srgb, var(--c) 12%, transparent);
-}
-
-.tour-phone picture {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transform: translateY(14px) scale(0.975);
-  transition: opacity 0.55s var(--ease), transform 0.7s var(--ease);
-}
-
-.tour-phone picture.is-active {
-  opacity: 1;
-  transform: none;
 }
 
 /* --------------------------------------------------------------------------
@@ -1279,526 +890,18 @@ section {
    copy. Coordinates are 900 × 1840 capture pixels (see PARTS in site.js).
    -------------------------------------------------------------------------- */
 
-.parts {
-  position: absolute;
-  inset: 0;
-  container-type: inline-size;
-  pointer-events: none;
-}
-
-.part,
-.socket {
-  position: absolute;
-  left: calc(var(--x) / 900 * 100%);
-  top: calc(var(--y) / 1840 * 100%);
-  width: calc(var(--w) / 900 * 100%);
-  height: calc(var(--h) / 1840 * 100%);
-  border-radius: calc(var(--r) / 9 * 1cqw);
-}
-
-.part {
-  background-image: var(--src);
-  background-size: calc(900 / var(--w) * 100%) calc(1840 / var(--h) * 100%);
-  background-position: calc(var(--x) / (900 - var(--w)) * 100%) calc(var(--y) / (1840 - var(--h)) * 100%);
-  transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), translate 0.5s var(--ease);
-  will-change: transform;
-}
-
-.socket {
-  background: var(--socket);
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
-}
-
-.parts.is-lifted .part {
-  transform: translate(calc(var(--mx, 0) / 9 * 1cqw), calc(var(--my, 0) / 9 * 1cqw)) scale(var(--s, 1.06)) rotate(var(--rot, 0deg));
-  translate: calc(var(--px, 0) * var(--z, 8) * 1px) calc(var(--py, 0) * var(--z, 8) * 1px);
-  box-shadow: var(--part-shadow);
-  transition: transform 0.95s var(--spring), box-shadow 0.5s var(--ease), translate 0.5s var(--ease);
-  transition-delay: calc(0.18s + var(--d, 0) * 70ms), calc(0.18s + var(--d, 0) * 70ms), 0s;
-}
-
-.parts.is-lifted .socket {
-  opacity: 1;
-  transition-delay: calc(0.18s + var(--d, 0) * 70ms);
-}
-
-.tour-phone .parts {
-  opacity: 0;
-  transition: opacity 0.4s var(--ease);
-}
-
-.tour-phone .parts.is-active {
-  opacity: 1;
-}
-
-/* The pinned phone tips toward the pointer, and lifted parts drift a little
-   further than the glass behind them, so the stack reads as depth. */
-.tour-phone {
-  transform: perspective(1600px) rotateY(calc(var(--px, 0) * 5deg)) rotateX(calc(var(--py, 0) * -5deg));
-  transition: transform 0.7s var(--ease);
-}
-
-.tour-shot {
-  position: relative;
-}
-
 /* --------------------------------------------------------------------------
    Card anatomy: a Home card taken apart while you scroll, then put back
    together. The pin is tall so the scroll has room to scrub it.
    -------------------------------------------------------------------------- */
 
-.anatomy {
-  height: 190vh;
-}
-
-.anatomy-pin {
-  position: sticky;
-  top: var(--head-h, 4.5rem);
-  height: calc(100vh - var(--head-h, 4.5rem));
-  height: calc(100svh - var(--head-h, 4.5rem));
-  display: grid;
-  align-items: center;
-  overflow: clip;
-}
-
-.anatomy-band {
-  padding-top: clamp(4.5rem, 9vw, 8rem);
-}
-
-.anatomy-band .section-head {
-  margin-bottom: 0;
-}
-
-.anatomy-stage {
-  --cw: min(100cqw, 46rem);
-  position: relative;
-  container-type: inline-size;
-}
-
-/* The margins are the room the parts fly into; site.js scales the flight
-   to whatever they come out at. */
-.anatomy-card {
-  --c: #0a84ff;
-  position: relative;
-  width: var(--cw);
-  aspect-ratio: 770 / 248;
-  margin: clamp(9rem, 27vh, 15rem) auto;
-}
-
-[data-theme='light'] .anatomy-card {
-  --c: #007aff;
-}
-
-.anatomy-card > * {
-  position: absolute;
-}
-
-/* The card's own surface, cut out wherever a part lifts away. */
-.anatomy-under,
-.anatomy-base {
-  inset: 0;
-  border-radius: calc(46 / 770 * var(--cw));
-}
-
-.anatomy-under {
-  background: var(--glass);
-  box-shadow: inset 0 0 0 1px var(--hairline);
-}
-
-.anatomy-base {
-  background-image: var(--src);
-  background-size: calc(900 / 770 * 100%) calc(1840 / 248 * 100%);
-  background-position: calc(65 / 130 * 100%) calc(528 / 1592 * 100%);
-  -webkit-mask: var(--holes) center / 100% 100% no-repeat;
-  mask: var(--holes) center / 100% 100% no-repeat;
-  box-shadow: var(--shadow-lift);
-}
-
-.anatomy-card .apart {
-  left: calc(var(--x) / 770 * 100%);
-  top: calc(var(--y) / 248 * 100%);
-  width: calc(var(--w) / 770 * 100%);
-  height: calc(var(--h) / 248 * 100%);
-  border-radius: calc(var(--r) / 770 * var(--cw));
-  background-image: var(--src);
-  background-size: calc(900 / var(--w) * 100%) calc(1840 / var(--h) * 100%);
-  background-position: calc((var(--x) + 65) / (900 - var(--w)) * 100%) calc((var(--y) + 528) / (1840 - var(--h)) * 100%);
-  box-shadow: 0 calc(var(--e, 0) * 26px) calc(var(--e, 0) * 44px) calc(var(--e, 0) * -14px) rgb(0 0 0 / 0.55);
-  will-change: transform;
-}
-
-[data-theme='light'] .anatomy-card .apart {
-  box-shadow: 0 calc(var(--e, 0) * 22px) calc(var(--e, 0) * 40px) calc(var(--e, 0) * -16px) rgb(23 39 82 / 0.32);
-}
-
-.anatomy-card .month {
-  left: calc(22.5 / 770 * 100%);
-  top: calc(188.5 / 248 * 100%);
-  width: calc(728 / 770 * 100%);
-  height: calc(34.5 / 248 * 100%);
-  gap: calc(7 / 770 * var(--cw));
-}
-
-.anatomy-card .month .bar {
-  height: 100%;
-  border-radius: calc(4 / 770 * var(--cw));
-}
-
-/* Notes sit in two rows, three above the card and three below, each over
-   the column its part flies into. */
-.anatomy-notes {
-  list-style: none;
-  padding: 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: var(--cw);
-  translate: -50% 0;
-  pointer-events: none;
-}
-
-.anatomy-notes li {
-  position: absolute;
-  width: min(15rem, 30%);
-  font-size: 0.9375rem;
-  line-height: 1.45;
-  color: var(--ink-soft);
-  opacity: calc(var(--e, 0) * 1.4 - 0.4);
-  transform: translateY(calc((1 - var(--e, 0)) * 10px));
-}
-
-.anatomy-notes strong {
-  display: block;
-  color: var(--ink);
-  font-weight: 700;
-}
-
-.anatomy-notes li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  width: 1px;
-  height: calc(var(--e, 0) * 2.25rem);
-  background: linear-gradient(var(--hairline-lit), transparent);
-}
-
-.anatomy-notes li:nth-child(-n + 3) {
-  top: 0;
-  padding-bottom: 2.75rem;
-}
-
-.anatomy-notes li:nth-child(-n + 3)::before {
-  bottom: 0.25rem;
-  transform-origin: bottom;
-  background: linear-gradient(transparent, var(--hairline-lit));
-}
-
-.anatomy-notes li:nth-child(n + 4) {
-  bottom: 0;
-  padding-top: 2.75rem;
-}
-
-.anatomy-notes li:nth-child(n + 4)::before {
-  top: 0.25rem;
-}
-
-.anatomy-notes li:nth-child(3n + 1) {
-  left: 0;
-}
-
-.anatomy-notes li:nth-child(3n + 2) {
-  left: 50%;
-  translate: -50% 0;
-}
-
-.anatomy-notes li:nth-child(3n) {
-  right: 0;
-  text-align: right;
-}
-
-.anatomy-notes li:nth-child(3n)::before {
-  left: auto;
-  right: 0;
-}
-
-.anatomy-notes li:nth-child(3n + 2)::before {
-  left: 50%;
-}
-
-.anatomy-notes li:nth-child(3n + 2) {
-  text-align: center;
-}
-
-@media (max-width: 760px) {
-  .anatomy {
-    height: 160vh;
-  }
-  /* A touch narrower so the icon and ring have room to swing out, and margins
-     in card pixels: the top row rises ~190 above the card, the tally and
-     streak drop ~125 below it. */
-  .anatomy-stage {
-    --cw: 90cqw;
-  }
-  .anatomy-card {
-    margin-block: calc(var(--cw) * 225 / 770) calc(var(--cw) * 125 / 770 + 3rem);
-  }
-  /* Numbers tie each flying part to its note in the list below. */
-  .anatomy-card .anatomy-mark,
-  .anatomy-notes strong::before {
-    display: inline-grid;
-    place-items: center;
-    width: 1.375rem;
-    height: 1.375rem;
-    border-radius: 999px;
-    background: var(--ink);
-    color: var(--bg);
-    font-size: 0.75rem;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-  }
-  .anatomy-card .anatomy-mark {
-    left: calc(var(--mx, 0) / 770 * 100%);
-    top: calc(var(--my, 0) / 248 * 100%);
-    translate: -50% calc(-100% - 0.375rem);
-    opacity: calc(var(--e, 0) * 1.4 - 0.4);
-    pointer-events: none;
-  }
-  .anatomy-card .anatomy-mark[data-dir='down'] {
-    translate: -50% 0.375rem;
-  }
-  .anatomy-notes {
-    counter-reset: note;
-  }
-  .anatomy-notes li {
-    counter-increment: note;
-  }
-  .anatomy-notes strong::before {
-    content: counter(note);
-    margin-right: 0.5rem;
-    vertical-align: 0.1em;
-  }
-  .anatomy-notes {
-    position: static;
-    width: auto;
-    translate: none;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem 1.25rem;
-  }
-  .anatomy-notes li,
-  .anatomy-notes li:nth-child(n) {
-    position: static;
-    width: auto;
-    padding: 0;
-    translate: none;
-    text-align: left;
-    font-size: 0.875rem;
-  }
-  .anatomy-notes li::before {
-    display: none;
-  }
-}
-
-/* Reduced motion: no pin, no scrub. The card sits whole with its notes. */
-.anatomy.is-still {
-  height: auto;
-}
-
-.anatomy.is-still .anatomy-pin {
-  position: static;
-  height: auto;
-  padding-block: clamp(3rem, 8vw, 6rem);
-}
-
-.anatomy.is-still .anatomy-notes li {
-  --e: 1;
-}
-
-/* Desktop has leader lines instead, and a still card has nothing to number. */
-.anatomy-mark,
-.anatomy.is-still .anatomy-mark {
-  display: none;
-}
-
-.anatomy.is-still .anatomy-notes strong::before {
-  content: none;
-}
-
 /* --------------------------------------------------------------------------
    Tick demo: goal split into one share per reminder
    -------------------------------------------------------------------------- */
 
-.ticks-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2.5rem, 6vw, 5rem);
-  margin-bottom: clamp(2rem, 4vw, 3rem);
-}
-
-.tick-demo {
-  padding-top: 1.75rem;
-  border-top: 1px solid var(--hairline);
-}
-
-.tick-demo h3 {
-  font-size: 1.25rem;
-  letter-spacing: -0.02em;
-}
-
-.tick-setup {
-  margin-top: 0.6rem;
-  max-width: 30rem;
-  min-height: 4.8em;
-  font-size: 0.9375rem;
-  color: var(--ink-soft);
-}
-
-/* Both rows size their squares off the 13-across fit, so water and reading
-   match. Squares, like the app's Tiles and week strip. */
-.tick-row {
-  display: grid;
-  grid-template-columns: repeat(var(--n), min(2rem, calc((100% - 12 * 0.4rem) / 13)));
-  gap: 0.4rem;
-  margin-top: 1.5rem;
-}
-
-.tick-row .bar {
-  height: auto;
-  aspect-ratio: 1;
-  border-radius: 25%;
-}
-
-.tick-status {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin-top: 1.1rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.tick-status strong {
-  font-size: 1.75rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-}
-
-.tick-status span {
-  font-size: 0.9375rem;
-  color: var(--ink-mute);
-}
-
-.tick-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.25rem;
-}
-
-.tick-actions .btn:disabled {
-  opacity: 0.4;
-  cursor: default;
-  transform: none;
-}
-
-.tick-reset {
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--ink-mute);
-  transition: color 0.2s var(--ease);
-}
-
-.tick-reset:hover {
-  color: var(--ink);
-}
-
-.tick-note {
-  margin-top: 1rem;
-  max-width: 30rem;
-  font-size: 0.875rem;
-  color: var(--ink-mute);
-}
-
 /* --------------------------------------------------------------------------
    Light / dark compare
    -------------------------------------------------------------------------- */
-
-.compare {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2.5rem, 6vw, 5rem);
-  align-items: center;
-}
-
-.compare-copy .lede {
-  margin-top: 1.25rem;
-  max-width: 30rem;
-}
-
-.compare-stage {
-  position: relative;
-  width: min(340px, 100%);
-  aspect-ratio: 900 / 1840;
-  margin-inline: auto;
-  filter: drop-shadow(0 40px 50px rgba(0, 0, 0, 0.45));
-}
-
-.compare-stage img {
-  position: absolute;
-  inset: 0;
-}
-
-.compare-light {
-  clip-path: inset(0 0 0 var(--split));
-}
-
-.compare-handle {
-  position: absolute;
-  top: 3%;
-  bottom: 3%;
-  left: var(--split);
-  width: 2px;
-  translate: -50% 0;
-  background: #fff;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12), 0 0 18px rgba(0, 0, 0, 0.3);
-  pointer-events: none;
-}
-
-.compare-handle::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 44px;
-  height: 44px;
-  translate: -50% -50%;
-  border-radius: 50%;
-  background:
-    linear-gradient(#0a1020, #0a1020) 17px 50% / 2px 14px no-repeat,
-    linear-gradient(#0a1020, #0a1020) 25px 50% / 2px 14px no-repeat,
-    #fff;
-  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
-}
-
-.compare-stage:has(.compare-range:focus-visible) .compare-handle::after {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.compare-range {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  opacity: 0;
-  cursor: ew-resize;
-  touch-action: pan-y;
-}
 
 /* --------------------------------------------------------------------------
    Pro perks
@@ -1950,28 +1053,10 @@ section {
   --bh: 2rem;
 }
 
-.mini-goals b,
-.mini-export small {
+.mini-goals b {
   font-size: 0.8125rem;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
-}
-
-/* Export: the same days, as the numbers that go in the file. */
-.mini-export {
-  display: grid;
-  grid-template-columns: repeat(10, 1fr);
-  gap: 0.25rem 3px;
-  align-content: center;
-  width: 9rem;
-}
-
-.mini-export small {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-weight: 500;
-  font-size: 0.6875rem;
-  color: var(--ink-mute);
-  text-align: center;
 }
 
 /* Notes: one missed day with its reason pinned above it. */
@@ -2041,34 +1126,6 @@ section {
    Pricing
    -------------------------------------------------------------------------- */
 
-.pricing-head {
-  margin-inline: auto;
-  text-align: center;
-}
-
-/* The yearly price spread over the days it pays for. */
-.per-day {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-  font-size: 0.9375rem;
-  color: var(--ink-mute);
-}
-
-.per-day .month {
-  --c: var(--accent);
-  --bh: 1.1rem;
-  width: min(18rem, 100%);
-}
-
-.per-day b {
-  color: var(--ink);
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-}
-
 .currency {
   display: inline-flex;
   margin-top: 1.75rem;
@@ -2111,20 +1168,7 @@ section {
 
 .plan-featured {
   background: var(--glass-strong);
-  border-color: color-mix(in srgb, var(--brand-violet) 45%, var(--hairline));
-  box-shadow: 0 30px 80px -40px color-mix(in srgb, var(--brand-violet) 70%, transparent);
-}
-
-.plan-featured::after {
-  content: '';
-  position: absolute;
-  inset: -40% 10% auto;
-  height: 70%;
-  border-radius: 50%;
-  background: var(--brand-violet);
-  filter: blur(80px);
-  opacity: 0.16;
-  pointer-events: none;
+  border-color: var(--accent);
 }
 
 .plan-name {
@@ -2179,18 +1223,6 @@ section {
    Privacy
    -------------------------------------------------------------------------- */
 
-.privacy {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2.5rem, 6vw, 5rem);
-  align-items: start;
-}
-
-.privacy .lede {
-  margin-top: 1.25rem;
-  max-width: 30rem;
-}
-
 .text-link {
   display: inline-flex;
   align-items: center;
@@ -2205,120 +1237,6 @@ section {
 
 .text-link:hover svg {
   transform: translateX(3px);
-}
-
-/* The privacy picture: the months live inside the phone, and only two
-   thin lines leave it. */
-.vault {
-  display: flex;
-  align-items: center;
-  margin-top: 2.75rem;
-  max-width: 30rem;
-}
-
-.vault-phone {
-  flex: none;
-  width: 9.5rem;
-  padding: 0.9rem 0.8rem 1rem;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-lg);
-}
-
-.vault-phone p {
-  margin-bottom: 0.7rem;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  color: var(--ink-mute);
-  text-align: center;
-}
-
-.vault-runs {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.vault-runs .bar {
-  --bh: 0.9rem;
-}
-
-.vault-runs .month {
-  gap: 2px;
-}
-
-.vault-wires {
-  display: grid;
-  gap: 1.1rem;
-  flex: 1;
-  min-width: 0;
-}
-
-.wire {
-  position: relative;
-  padding-left: 3.25rem;
-  font-size: 0.8125rem;
-  color: var(--ink-mute);
-}
-
-.wire span {
-  display: block;
-  font-weight: 700;
-  color: var(--ink);
-}
-
-.wire::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.65em;
-  width: 2.75rem;
-  border-top: 1.5px dotted var(--ink-mute);
-}
-
-.wire-opt::before {
-  border-top-style: dashed;
-  opacity: 0.5;
-}
-
-.privacy-list {
-  list-style: none;
-  padding: 0;
-}
-
-.privacy-list li {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1rem;
-  padding-block: 1.35rem;
-  border-top: 1px solid var(--hairline);
-}
-
-.privacy-list li:first-child {
-  padding-top: 0.4rem;
-  border-top: 0;
-}
-
-.privacy-list svg {
-  width: 20px;
-  height: 20px;
-  margin-top: 0.15rem;
-  color: var(--brand-teal);
-}
-
-[data-theme='light'] .privacy-list svg {
-  color: #00857d;
-}
-
-.privacy-list strong {
-  display: block;
-  font-size: 1rem;
-  letter-spacing: -0.01em;
-}
-
-.privacy-list span {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.9375rem;
-  color: var(--ink-mute);
 }
 
 /* --------------------------------------------------------------------------
@@ -2384,93 +1302,6 @@ section {
 /* --------------------------------------------------------------------------
    Closing CTA
    -------------------------------------------------------------------------- */
-
-.closer {
-  position: relative;
-  isolation: isolate;
-  text-align: center;
-  padding-block: clamp(1rem, 3vw, 2rem);
-}
-
-.closer::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: -10%;
-  width: min(900px, 100%);
-  aspect-ratio: 2 / 1;
-  translate: -50% 0;
-  border-radius: 50%;
-  background: var(--brand-ramp);
-  filter: blur(120px);
-  opacity: 0.18;
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* The closer shows three habits at once, each stopping where its month
-   actually stands: a record, not a progress bar someone maxed out. */
-.month-wall {
-  display: grid;
-  gap: 1rem;
-  max-width: 38rem;
-  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
-}
-
-.wall-row {
-  display: grid;
-  grid-template-columns: 6.5rem minmax(0, 1fr) 3rem;
-  align-items: center;
-  gap: 1rem;
-  font-size: 0.8125rem;
-  color: var(--ink-mute);
-  text-align: left;
-  font-variant-numeric: tabular-nums;
-}
-
-.wall-row .month {
-  --bh: 1.35rem;
-}
-
-.wall-tally {
-  text-align: right;
-  font-weight: 700;
-}
-
-.wall-tally b {
-  color: var(--ink);
-}
-
-@media (max-width: 560px) {
-  .wall-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 0.4rem 1rem;
-  }
-
-  .wall-row .month {
-    grid-column: 1 / -1;
-    grid-row: 2;
-  }
-}
-
-.closer h2 {
-  font-size: clamp(2.25rem, 5vw, 4rem);
-  max-width: 16ch;
-  margin-inline: auto;
-}
-
-.closer h2 span {
-  display: block;
-  color: var(--ink-mute);
-}
-
-.closer .lede {
-  margin: 1.25rem auto 0;
-}
-
-.closer .cta-row {
-  justify-content: center;
-}
 
 /* --------------------------------------------------------------------------
    Footer
@@ -2662,8 +1493,8 @@ section {
   margin: 0 0 1.75rem;
   padding: 1.15rem 1.35rem;
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--brand-teal) 9%, transparent);
-  border: 1px solid color-mix(in srgb, var(--brand-teal) 24%, transparent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 26%, transparent);
   font-size: 0.9375rem;
   color: var(--ink-soft);
 }
@@ -2767,7 +1598,7 @@ section {
   bottom: 0.55rem;
   width: 2px;
   border-radius: 999px;
-  background: var(--brand-teal);
+  background: var(--accent);
 }
 
 .guide {
@@ -2972,7 +1803,7 @@ html:not(.js) .guide article + article {
   bottom: 2.25rem;
   left: calc((100% - min(100%, var(--shell))) / 2 + clamp(1.25rem, 4vw, 2.5rem));
   width: 1px;
-  background: linear-gradient(180deg, var(--brand-violet), var(--hairline) 34%, var(--hairline) 80%, transparent);
+  background: linear-gradient(180deg, var(--accent), var(--hairline) 34%, var(--hairline) 80%, transparent);
   opacity: 0.55;
 }
 
@@ -3014,7 +1845,7 @@ html:not(.js) .guide article + article {
 .release-panel[hidden] { display: none; }
 .release-entry:has(.release-toggle[aria-expanded='false']) { margin-bottom: 1.5rem; }
 .release-entry > h2 { margin: 0; font-size: clamp(1.35rem, 2.6vw, 2rem); }
-.release-entry.release-enhanced::before { content: ''; position: absolute; left: -1px; top: 0.95rem; width: 13px; height: 13px; border: 4px solid var(--bg); border-radius: 50%; translate: -50% 0; background: var(--brand-violet); box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand-violet) 70%, transparent), 0 0 24px var(--brand-violet); }
+.release-entry.release-enhanced::before { content: ''; position: absolute; left: -1px; top: 0.95rem; width: 13px; height: 13px; border: 4px solid var(--bg); border-radius: 50%; translate: -50% 0; background: var(--accent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent); }
 .release-launch.release-enhanced::before { background: var(--ink-mute); box-shadow: 0 0 0 1px var(--hairline); }
 @media (prefers-reduced-motion: reduce) {
   .release-toggle-title, .release-toggle .chev { transition: none; }
@@ -3040,9 +1871,8 @@ html:not(.js) .guide article + article {
   border: 4px solid var(--bg);
   border-radius: 50%;
   translate: -50% 0;
-  background: var(--brand-violet);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand-violet) 70%, transparent),
-    0 0 24px var(--brand-violet);
+  background: var(--accent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent);
 }
 
 .release-version {
@@ -3057,9 +1887,9 @@ html:not(.js) .guide article + article {
   align-items: center;
   gap: 0.4rem;
   padding: 0.28rem 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--brand-teal) 28%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-teal) 9%, transparent);
+  background: color-mix(in srgb, var(--accent) 9%, transparent);
   color: var(--ink-soft);
   font-size: 0.6875rem;
   letter-spacing: 0.04em;
@@ -3070,8 +1900,7 @@ html:not(.js) .guide article + article {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--brand-teal);
-  box-shadow: 0 0 10px var(--brand-teal);
+  background: var(--accent);
 }
 
 .release-status-released {
@@ -3191,7 +2020,7 @@ html:not(.js) .guide article + article {
 .release-slides {
   position: relative;
   height: clamp(32rem, 44vw, 40rem);
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--brand-violet) 16%, transparent), transparent);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 10%, transparent), transparent);
   touch-action: pan-y;
 }
 
@@ -3226,7 +2055,7 @@ html:not(.js) .guide article + article {
   height: 100%;
   max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 28px 36px var(--phone-shadow));
   -webkit-user-drag: none;
   user-select: none;
 }
@@ -3241,7 +2070,7 @@ html:not(.js) .guide article + article {
   height: calc(100% - 2rem);
   max-width: 100%;
   aspect-ratio: 900 / 1840;
-  filter: drop-shadow(0 28px 36px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 28px 36px var(--phone-shadow));
 }
 
 .release-video-phone img {
@@ -3279,13 +2108,6 @@ html:not(.js) .slide-controls {
   display: none;
 }
 
-[data-theme='light'] .release-slide img {
-  filter: drop-shadow(0 26px 32px rgba(23, 39, 82, 0.2));
-}
-
-[data-theme='light'] .release-video-phone {
-  filter: drop-shadow(0 26px 32px rgba(23, 39, 82, 0.2));
-}
 
 .slide-controls {
   display: flex;
@@ -3530,17 +2352,6 @@ html:not(.js) .slide-controls {
   transform: none;
 }
 
-/* The hero's ramp word sweeps through its gradient once as it lands. */
-.js .hero h1.split .ramp {
-  background-size: 260% 100%;
-  background-position: 100% 0;
-  transition: background-position 1.6s var(--ease) 0.5s;
-}
-
-.js .hero h1.split.in .ramp {
-  background-position: 0 0;
-}
-
 /* --------------------------------------------------------------------------
    Responsive
    -------------------------------------------------------------------------- */
@@ -3556,14 +2367,9 @@ html:not(.js) .slide-controls {
 }
 
 @media (max-width: 900px) {
-  .demo,
-  .tour-grid,
-  .ticks-grid,
   .guides-layout,
-  .contact,
-  .compare,
-  .privacy,
-  .plans {
+.contact,
+.plans {
     grid-template-columns: minmax(0, 1fr);
   }
   /* The sidebar folds into a row of pills above the guide. */
@@ -3592,24 +2398,10 @@ html:not(.js) .slide-controls {
   .guides-nav a[aria-current='true']::before {
     content: none;
   }
-  .tour-stage {
-    display: none;
-  }
-  .tour-step {
-    min-height: 0;
-    opacity: 1;
-    padding-block: 3rem;
-  }
-  .tour-step + .tour-step {
-    border-top: 1px solid var(--hairline);
-  }
-  .tour-shot {
-    order: -1;
-    display: block;
-    width: min(250px, 68vw);
-    margin: 0 auto 2rem;
-    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.4));
-  }
+  
+  
+  
+  
   .plans {
     max-width: 30rem;
     margin-inline: auto;
@@ -3641,9 +2433,7 @@ html:not(.js) .slide-controls {
   .cta-row .btn {
     width: 100%;
   }
-  .month-strip {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-  }
+  
   .plan-sub {
     min-height: 0;
   }
@@ -3673,8 +2463,6 @@ html:not(.js) .slide-controls {
 }
 
 @media print {
-  body::before,
-  body::after,
   .site-head,
   .site-foot {
     display: none;

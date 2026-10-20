@@ -1,0 +1,247 @@
+/* Homepage layout over site.css. Captures stay whole; motion belongs to the layout. */
+/* The serif italic outside headings: the wordmark and the privacy line. */
+.wordmark em, .privacy-type em { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -.06em; }
+
+.editorial-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  padding-block: 5rem 4rem;
+  text-align: left;
+  gap: 1rem;
+}
+.opening-copy { z-index: 2; padding-block: 1rem; }
+.opening-note { font-size: .9375rem; color: var(--ink-mute); margin-bottom: 2.2rem; }
+.editorial .hero h1 { font-size: clamp(4.8rem, 8.8vw, 8rem); line-height: .98; letter-spacing: -.075em; font-weight: 700; }
+.editorial .hero h1 .w { padding-bottom: .16em; margin-bottom: -.16em; }
+.opening-lede { max-width: 28rem; margin-top: 2.2rem; font-size: 1.125rem; line-height: 1.7; color: var(--ink-soft); }
+.editorial .cta-row { justify-content: flex-start; gap: 1.6rem; margin-top: 2rem; }
+.opening-small { margin-top: 1rem; font-size: .8125rem; color: var(--ink-mute); }
+.quiet-link { display: inline-flex; align-items: center; gap: .6rem; font-size: .9375rem; font-weight: 500; }
+.quiet-link span { transition: transform .6s var(--spring); }
+.quiet-link:hover span { transform: translate(2px, -2px); }
+
+/* On a computer, Get HabitGlass offers a code to scan with the phone. It
+   springs out of the button after a short hover, stays while the pointer is
+   on it, and Escape puts it away. Always dark on light so cameras read it. */
+.store-qr { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .has-qr { position: relative; }
+  .store-qr { position: absolute; bottom: calc(100% + 14px); left: 50%; z-index: 5; display: grid; width: max-content; justify-items: center; gap: .45rem; padding: 12px 12px 14px; border: 1px solid var(--hairline); border-radius: var(--radius); background: var(--qr-paper); color: var(--qr-ink); box-shadow: 0 28px 50px -24px var(--phone-shadow); font-size: .8125rem; font-weight: 600; letter-spacing: -.01em; translate: -50% 0; transform-origin: 50% 100%; opacity: 0; transform: translateY(8px) scale(.9); visibility: hidden; transition: opacity .14s var(--ease), transform .14s var(--ease), visibility 0s .14s; }
+  .store-qr svg { max-width: none; }
+  .store-qr::after { content: ''; position: absolute; top: 100%; left: 0; right: 0; height: 16px; }
+  .has-qr:is(:hover, :focus-visible):not(.qr-off) .store-qr { opacity: 1; transform: none; visibility: visible; transition: opacity .2s var(--ease) .12s, transform .6s var(--spring) .12s, visibility 0s .12s; }
+}
+
+.opening-art { position: relative; min-height: 590px; isolation: isolate; margin: 0; }
+.opening-art::before { content: ''; position: absolute; inset: 12% 0 5%; background: radial-gradient(ellipse, color-mix(in srgb, var(--day-green) 18%, transparent), transparent 68%); z-index: -1; }
+.opening-phone { position: absolute; width: 258px; top: 10px; left: 50%; transform: translateX(-50%) rotate(6deg); }
+.opening-phone img, .story-stack img { width: 100%; height: auto; filter: drop-shadow(0 24px 22px var(--phone-shadow)); }
+.opening-art figcaption { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font: italic 1.125rem Georgia, serif; color: var(--ink-mute); }
+.ribbon { position: absolute; left: -4%; width: 110%; z-index: -1; }
+.ribbon-one { top: 22%; transform: rotate(-24deg); }
+.ribbon-two { top: 45%; transform: rotate(-24deg); }
+.ribbon-three { top: 68%; transform: rotate(-24deg); }
+.ribbon .month { gap: 6px; --bh: 70px; }
+.ribbon .bar { border-radius: var(--radius-xs); }
+.ribbon .bar.lit[data-s='done']::before { box-shadow: none; }
+
+.month-interlude { padding-block: 2.5rem 4.5rem; }
+.interlude-label, .interlude-scale { display: flex; justify-content: space-between; color: var(--ink-mute); font-size: .8125rem; }
+.interlude-label { border-top: 1px solid var(--hairline); padding-top: 1.5rem; margin-bottom: 1.8rem; }
+.month-interlude .month { --bh: 58px; gap: 9px; }
+.month-interlude .bar.lit[data-s='done']::before { box-shadow: none; }
+.interlude-scale { margin-top: 1rem; font-variant-numeric: tabular-nums; }
+
+.editorial-section { padding-block: clamp(4rem, 8vw, 7rem); }
+.editorial-heading { max-width: none; display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: 3rem; margin-bottom: 4rem; }
+.editorial-heading h2 { font-size: clamp(2.5rem, 4.6vw, 4rem); line-height: 1.1; font-weight: 500; letter-spacing: -.055em; }
+.editorial-heading p { max-width: 24rem; font-size: 1.0625rem; color: var(--ink-soft); line-height: 1.7; margin: 0 0 .2rem; }
+.product-story { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 6rem; }
+.story-screen { position: relative; text-align: center; padding: 2.5rem 0 1rem; background: radial-gradient(ellipse, color-mix(in srgb, var(--day-blue) 10%, transparent), transparent 70%); }
+.story-stack { display: grid; width: min(65%, 280px); margin: auto; }
+.story-captions { display: grid; margin-top: 2rem; font: italic 1.125rem Georgia, serif; color: var(--ink-mute); }
+/* Each point has its own screen: the three captures sit in one cell and the
+   one being read shows. Whole captures only. Without the script, the details
+   screen stands alone. */
+.story-stack > picture, .story-captions > span { grid-area: 1 / 1; }
+.story-stack > picture { display: block; }
+.story-stack > :not(.is-active), .story-captions > :not(.is-active) { opacity: 0; visibility: hidden; }
+html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [data-step='2'] { opacity: 1; visibility: visible; }
+.story-point { position: relative; display: flex; align-items: baseline; gap: 1.8rem; border-top: 1px solid var(--hairline); padding-block: 2rem; }
+.story-number { color: var(--ink-faint); font-size: .8125rem; font-variant-numeric: tabular-nums; }
+.story-point h3 { font-size: 1.6rem; font-weight: 500; }
+.story-point p { margin-top: .9rem; max-width: 23rem; color: var(--ink-soft); }
+.story-copy > a { margin-top: 1rem; }
+/* The point being read keeps full ink and draws its rule across. */
+.story-point h3, .story-point p, .story-number { transition: color .5s var(--ease); }
+.is-reading .story-point:not(.is-active) :is(h3, p) { color: var(--ink-faint); }
+.story-point.is-active .story-number { color: var(--accent); }
+.is-reading .story-point::before { content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .9s var(--spring-soft); }
+.is-reading .story-point.is-active::before { transform: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .story-stack { transition: rotate 1.2s var(--spring-soft); }
+  .product-story[data-step='0'] .story-stack { rotate: -1.5deg; }
+  .product-story[data-step='2'] .story-stack { rotate: 1.5deg; }
+  /* The new screen settles up into place; the old one sinks away faster. */
+  .story-stack > picture, .story-captions > span { transition: opacity .3s var(--ease), translate .5s var(--ease), visibility 0s .3s; }
+  .story-stack > :not(.is-active), .story-captions > :not(.is-active) { translate: 0 10px; }
+  .story-stack > .is-active, .story-captions > .is-active { transition: opacity .45s var(--ease) .08s, translate .9s var(--spring-soft) .08s, visibility 0s; }
+}
+
+.playground-section { border-block: 1px solid var(--hairline); }
+.playground { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+.playground .editorial-heading { display: block; margin: 0; }
+.playground .editorial-heading p { margin-top: 1.8rem; }
+.editorial .month-card { padding: 2rem; border-radius: var(--radius); }
+.sample-heading { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+.sample-heading h3 { font-size: 1.25rem; font-weight: 700; }
+.sample-heading p, .sample-label, .sample-footnote { font-size: .8125rem; color: var(--ink-mute); }
+.sample-label { border: 1px solid var(--hairline); padding: .25rem .7rem; border-radius: 999px; }
+.editorial .field { margin: 2rem 0; --bh: 50px; gap: 5px; }
+.editorial .field .bar { height: var(--bh); }
+.sample-stats { display: flex; gap: 2rem; justify-content: space-between; }
+.sample-stats dt { font-size: .75rem; color: var(--ink-mute); }
+.sample-stats dd { margin: .2rem 0 0; font-size: 2rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.sample-footnote { margin-top: 1.6rem; padding-top: 1rem; border-top: 1px solid var(--hairline); }
+
+/* Pro leads with Apple Health: a day of steps counts up the way the guide
+   tells it, 7,400 then 2,600 more, and today's bar ticks itself off. */
+.health-lead { --c: var(--tint); display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; gap: 5rem; border-top: 1px solid var(--hairline); padding-block: 3rem 4.5rem; }
+.health-label, .health-note { font-size: .8125rem; color: var(--ink-mute); font-variant-numeric: tabular-nums; }
+.health-count { margin-top: .4rem; font-size: clamp(3.75rem, 7.5vw, 6.5rem); font-weight: 700; line-height: 1; letter-spacing: -.055em; font-variant-numeric: tabular-nums; }
+.health-demo .month { --bh: clamp(46px, 5.2vw, 68px); gap: clamp(4px, .6vw, 8px); margin-top: 2rem; }
+.health-note { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+.health-note [data-health-done] { color: var(--tint); opacity: 0; translate: 0 6px; transition: opacity .4s var(--ease), translate .7s var(--spring-soft); }
+.is-done .health-note [data-health-done] { opacity: 1; translate: none; }
+.is-done .health-demo .bar.today { animation: health-tick .7s var(--spring); }
+@keyframes health-tick { 40% { scale: 1 1.14; } }
+.health-copy h3 { font-size: clamp(1.75rem, 2.8vw, 2.4rem); font-weight: 500; line-height: 1.12; }
+.health-copy p { margin-top: 1.1rem; max-width: 30rem; color: var(--ink-soft); }
+.health-copy p + p { margin-top: .8rem; font-size: .9375rem; color: var(--ink-mute); }
+.health-copy .quiet-link { margin-top: 1.75rem; }
+
+.editorial .perks { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.editorial .perks h3 { font-size: 1.25rem; font-weight: 500; }
+.editorial .perks p { color: var(--ink-soft); }
+:is(.perks, .health-demo) .bar.lit[data-s='done']::before { box-shadow: none; }
+
+#pricing { border-top: 1px solid var(--hairline); }
+.currency-row { display: flex; justify-content: center; margin-bottom: 2rem; }
+.editorial .currency { margin: 0; }
+.editorial .plans { gap: 1.5rem; }
+.editorial .plan { border-radius: var(--radius); }
+.editorial .plan-name { font-weight: 500; font-size: 1.125rem; }
+.editorial .plan-price { font-size: clamp(2rem, 3vw, 3rem); letter-spacing: -.05em; }
+.editorial .plan-sub { min-height: 3rem; }
+.editorial .plan-action { margin-top: auto; }
+.editorial .plan ul { margin-bottom: 2rem; }
+.privacy-note { border-top: 1px solid var(--hairline); display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 6rem; }
+.privacy-type { font-size: clamp(5rem, 10vw, 9rem); line-height: .85; letter-spacing: -.08em; color: var(--ink-mute); padding-bottom: .15em; }
+.privacy-type em { color: var(--accent); }
+.privacy-note h2 { font-size: 2rem; font-weight: 500; line-height: 1.2; }
+.privacy-note p { margin-block: 1.5rem; color: var(--ink-soft); }
+.questions { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; border-top: 1px solid var(--hairline); }
+.questions .editorial-heading { display: block; }
+#faq .section-head, .editorial .faq { margin-inline: 0; text-align: left; }
+.editorial .faq { max-width: none; }
+.editorial .faq summary { font-size: 1rem; }
+.editorial-closer { position: relative; text-align: center; border-top: 1px solid var(--hairline); padding-block: 6rem 4.5rem; overflow: hidden; }
+.editorial-closer .section-head { max-width: none; margin: 0 0 2rem; }
+.editorial-closer h2 { font-size: clamp(3.5rem, 7.5vw, 6.5rem); font-weight: 500; line-height: 1.04; }
+.editorial-closer h2 em { color: var(--accent); }
+.editorial-closer p { margin-top: 1.5rem; color: var(--ink-mute); font-size: .875rem; }
+/* The name, as wide as the page, over a month that fills as you reach the
+   end. The month walks with the scroll (data-scrub in site.js). */
+.closer-mark { margin-top: clamp(4.5rem, 10vw, 8rem); container-type: inline-size; }
+.wordmark { font-size: 23.4cqi; font-weight: 700; line-height: .9; letter-spacing: -.075em; white-space: nowrap; margin-inline: -.2em; padding-inline-end: .12em; }
+.wordmark em { margin-inline-start: .05em; color: var(--accent); }
+.wordmark .w { padding-block: .12em; margin-block: -.12em; }
+.closer-mark .month { --bh: clamp(26px, 4.6cqi, 60px); gap: clamp(3px, .55cqi, 7px); margin-top: clamp(1.25rem, 3cqi, 2.5rem); }
+.closer-mark .bar.lit[data-s='done']::before { box-shadow: none; }
+
+/* One entrance, with the phone arriving after the day ribbons. */
+.js .opening-art:not(.in) .opening-phone { transform: translate(-50%, 36px) rotate(11deg); }
+.opening-phone { transition: transform 1.4s var(--spring-soft); }
+.opening-phone picture { display: block; }
+.js .ribbon:not(.has-days) { visibility: hidden; }
+
+/* Then the scroll takes over: over the first screen the phone turns square,
+   comes forward and trails the page a little, and the ribbons slide along
+   themselves. Scrubbed, so it runs back on the way up, and nothing fades. */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .opening-phone picture, .ribbon .month { animation: linear both; animation-timeline: scroll(root); }
+    .opening-phone picture { animation-name: phone-settle; animation-range: 0 70vh; }
+    .ribbon .month { animation-name: ribbon-on; animation-range: 0 100vh; }
+    .ribbon-two .month { animation-name: ribbon-back; }
+  }
+}
+@keyframes phone-settle { to { rotate: -6deg; translate: 0 var(--trail, 14%); scale: 1.05; } }
+@keyframes ribbon-on { to { translate: -12% 0; } }
+@keyframes ribbon-back { to { translate: 10% 0; } }
+
+/* A changed price character rolls in over the old one (rollPrice in site.js). */
+.roll { position: relative; display: inline-block; clip-path: inset(-.04em -1em); }
+.roll > span { display: inline-block; }
+.roll-out { position: absolute; top: 0; right: 0; }
+
+@media (max-width: 1000px) {
+  .editorial-hero { gap: 0; padding-top: 3rem; }
+  .editorial .hero h1 { font-size: 6rem; }
+  .opening-phone { width: 225px; }
+  .opening-art { min-height: 530px; }
+  .product-story, .playground, .privacy-note, .questions { gap: 3rem; }
+  .health-lead { gap: 3rem; }
+  .editorial .perks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wide-only { display: none; }
+}
+
+@media (max-width: 720px) {
+  .editorial-hero { display: block; padding-top: 2rem; padding-bottom: 2rem; }
+  .opening-note { margin-bottom: 1.5rem; font-size: .8125rem; }
+  .editorial .hero h1 { font-size: clamp(4.2rem, 14vw, 6rem); }
+  .opening-lede { margin-top: 1.6rem; font-size: 1rem; max-width: 23rem; }
+  .editorial .cta-row { gap: 1rem; flex-wrap: wrap; }
+  .editorial .cta-row .btn { padding-inline: 1.25rem; }
+  .quiet-link { font-size: .875rem; }
+  .opening-art { margin: 3rem auto 0; min-height: 520px; max-width: 400px; }
+  .opening-phone { width: 225px; --trail: 0%; }
+  .ribbon { left: 0; width: 100%; }
+  .ribbon .month { gap: 4px; --bh: 50px; }
+  .month-interlude { padding-block: 1rem 2rem; }
+  .month-interlude .month { --bh: 34px; gap: 4px; }
+  .interlude-label { font-size: .75rem; }
+  .editorial-heading { display: block; margin-bottom: 2rem; }
+  .editorial-heading h2 { font-size: 2.6rem; }
+  .editorial-heading p { margin-top: 1.5rem; font-size: 1rem; }
+  .product-story, .playground, .privacy-note, .questions { grid-template-columns: 1fr; gap: 2.5rem; }
+  .story-screen { padding-top: 1rem; }
+  .story-stack { width: 220px; }
+  /* The phone has scrolled away before the points do, so a swap would play
+     off screen. Phones keep the details screen, and never load the others. */
+  .story-stack > :not([data-step='2']), .story-captions > :not([data-step='2']) { display: none; }
+  .story-stack > [data-step='2'], .story-captions > [data-step='2'] { opacity: 1; visibility: visible; translate: none; }
+  .story-point { padding-block: 1.5rem; gap: 1.2rem; }
+  .story-point h3 { font-size: 1.4rem; }
+  .story-point p { font-size: .9375rem; }
+  .editorial .month-card { padding: 1.25rem; }
+  .editorial .field { gap: 3px; --bh: 44px; }
+  .sample-stats { gap: .6rem; }
+  .sample-stats dd { font-size: 1.7rem; }
+  .health-lead { grid-template-columns: 1fr; gap: 2.5rem; padding-block: 2rem 3.5rem; }
+  .health-count { font-size: 4.25rem; }
+  .editorial .perks { grid-template-columns: minmax(0, 1fr); }
+  .editorial .plans { grid-template-columns: 1fr; }
+  .editorial .plan-sub { min-height: auto; }
+  .privacy-type { font-size: 6rem; }
+  .privacy-note h2 { font-size: 1.8rem; }
+  .questions .editorial-heading { margin-bottom: 0; }
+  .editorial-closer { padding-block: 4rem 3rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial *, .editorial *::before, .editorial *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .js .opening-art:not(.in) .opening-phone { transform: translateX(-50%) rotate(6deg); }
+}
