@@ -199,20 +199,21 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
 }
 
 @media (max-width: 720px) {
-  .editorial-hero { display: block; padding-top: 2rem; padding-bottom: 2rem; }
-  .opening-note { margin-bottom: 1.5rem; font-size: .8125rem; }
+  .editorial-hero { display: block; padding-top: 1rem; padding-bottom: 2rem; }
+  .opening-note { margin-bottom: 1rem; font-size: .8125rem; }
   .editorial .hero h1 { font-size: clamp(4.2rem, 14vw, 6rem); }
-  .opening-lede { margin-top: 1.6rem; font-size: 1rem; max-width: 23rem; }
-  .editorial .cta-row { gap: 1rem; flex-wrap: wrap; }
+  .opening-lede { margin-top: 1.25rem; font-size: 1rem; max-width: 23rem; }
+  .editorial .cta-row { gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
   .editorial .cta-row .btn { padding-inline: 1.25rem; }
   .quiet-link { font-size: .875rem; }
-  .opening-art { margin: 3rem auto 0; min-height: 520px; max-width: 400px; }
+  .opening-art { margin: 1.5rem auto 0; min-height: 520px; max-width: 400px; }
   .opening-phone { width: 225px; --trail: 0%; }
   .ribbon { left: 0; width: 100%; }
   .ribbon .month { gap: 4px; --bh: 50px; }
   .month-interlude { padding-block: 1rem 2rem; }
   .month-interlude .month { --bh: 34px; gap: 4px; }
   .interlude-label { font-size: .75rem; }
+  .editorial-section { padding-block: 3rem; }
   .editorial-heading { display: block; margin-bottom: 2rem; }
   .editorial-heading h2 { font-size: 2.6rem; }
   .editorial-heading p { margin-top: 1.5rem; font-size: 1rem; }
@@ -230,9 +231,15 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
   .editorial .field { gap: 3px; --bh: 44px; }
   .sample-stats { gap: .6rem; }
   .sample-stats dd { font-size: 1.7rem; }
-  .health-lead { grid-template-columns: 1fr; gap: 2.5rem; padding-block: 2rem 3.5rem; }
+  .health-lead { grid-template-columns: 1fr; gap: 2rem; padding-block: 1.5rem 2.5rem; }
   .health-count { font-size: 4.25rem; }
-  .editorial .perks { grid-template-columns: minmax(0, 1fr); }
+  .editorial .perks { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .editorial .perks li { display: grid; grid-template-columns: minmax(0, 1fr) 9rem; align-items: center; gap: .75rem 1rem; padding-top: 1.25rem; }
+  .editorial .perks .mini { grid-column: 2; grid-row: 1; max-width: 100%; }
+  .editorial .perks h3 { grid-column: 1; grid-row: 1; margin: 0; font-size: 1.125rem; }
+  .editorial .perks p { grid-column: 1 / -1; margin: 0; }
+  .editorial .mini-ticks { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+  .editorial .mini-goals .month { flex: 1; width: auto; }
   .editorial .plans { grid-template-columns: 1fr; }
   .editorial .plan-sub { min-height: auto; }
   .privacy-type { font-size: 6rem; }

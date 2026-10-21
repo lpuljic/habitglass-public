@@ -1507,21 +1507,39 @@ section {
    Support and guides
    -------------------------------------------------------------------------- */
 
-.support-hero,
-.guides-hero {
+.support-hero {
   padding-block: clamp(3.5rem, 8vw, 6.5rem) 0;
   text-align: center;
 }
 
-.support-hero h1,
-.guides-hero h1 {
+.support-hero h1 {
   font-size: clamp(2.75rem, 6vw, 4.5rem);
 }
 
-.support-hero .lede,
-.guides-hero .lede {
+.support-hero .lede {
   max-width: 32rem;
   margin: 1.25rem auto 0;
+}
+
+.guides-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: end;
+  gap: 2rem 4rem;
+  padding-block: clamp(3rem, 7vw, 6rem) 3rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.guides-hero h1 {
+  max-width: 10ch;
+  font-size: clamp(3rem, 5.5vw, 4.75rem);
+  line-height: 1.04;
+}
+
+.guides-hero .lede {
+  max-width: 29rem;
+  margin: 0 0 0.2rem;
+  font-size: 1.125rem;
 }
 
 .support-hero .cta-row,
@@ -1556,7 +1574,7 @@ section {
    guide shows, one after another. */
 .guides-layout {
   display: grid;
-  grid-template-columns: 14rem minmax(0, 1fr);
+  grid-template-columns: 15rem minmax(0, 42rem);
   gap: clamp(2.5rem, 6vw, 5rem);
   align-items: start;
 }
@@ -1579,7 +1597,7 @@ section {
   align-items: center;
   gap: 0.5rem;
   min-height: 2.75rem;
-  padding-left: 1.1rem;
+  padding: 0.65rem 0 0.65rem 1.1rem;
   color: var(--ink-mute);
   font-weight: 500;
   transition: color 0.2s var(--ease);
@@ -1590,7 +1608,7 @@ section {
   color: var(--ink);
 }
 
-/* The nav's teal bar, standing up beside the open guide. */
+/* The nav's sage bar, standing up beside the open guide. */
 .guides-nav a[aria-current='true']::before {
   content: '';
   position: absolute;
@@ -1603,7 +1621,9 @@ section {
 }
 
 .guide {
-  max-width: 40rem;
+  max-width: 42rem;
+  min-width: 0;
+  line-height: 1.8;
 }
 
 /* Only without script, where every guide shows in a column. */
@@ -1612,12 +1632,24 @@ html:not(.js) .guide article + article {
 }
 
 .guide h2 {
-  font-size: clamp(1.75rem, 3.2vw, 2.25rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  font-size: clamp(2rem, 3.8vw, 3rem);
+  line-height: 1.15;
+  font-weight: 500;
+  letter-spacing: -0.045em;
 }
 
 .guide p {
-  margin-top: 0.9rem;
+  margin-top: 1rem;
   color: var(--ink-soft);
+}
+
+.guide h2 + p {
+  margin-top: 1.25rem;
+  font-size: 1.125rem;
 }
 
 .guide strong {
@@ -1625,27 +1657,26 @@ html:not(.js) .guide article + article {
 }
 
 .guide h3 {
-  margin-top: 1.9rem;
-  font-size: 1.0625rem;
-  font-weight: 700;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 2.5rem;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
 
 .guide h3 + p {
-  margin-top: 0.45rem;
+  margin-top: 0.65rem;
 }
 
 /* App buttons named in the copy: Add 160 mL, Adjust, Complete. */
 .guide kbd {
-  white-space: nowrap;
-  padding: 0.1em 0.55em;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  background: var(--glass-strong);
   color: var(--ink);
   font: inherit;
-  font-size: 0.9em;
   font-weight: 700;
 }
 
@@ -1673,28 +1704,59 @@ html:not(.js) .guide article + article {
   font-variant-numeric: tabular-nums;
 }
 
-/* The worked example: goal ÷ reminders = one tick. */
-.guide .sum {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.35rem 0.5rem;
-  margin-top: 1.1rem;
-  padding: 0.8rem 0;
+/* Worked examples give the goal and result their own reading space. */
+.guide-example {
+  margin-block: 2rem;
+  padding-block: 1.5rem;
   border-block: 1px solid var(--hairline);
+}
+
+.guide-example dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.guide-example dt {
   color: var(--ink-mute);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.guide-example dd {
+  margin-top: 0.5rem;
+  color: var(--ink);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
   font-variant-numeric: tabular-nums;
 }
 
-.guide .sum b {
-  color: var(--ink);
-  font-size: 1.15rem;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+.guide-example figcaption {
+  max-width: 56ch;
+  margin-top: 1.25rem;
+  color: var(--ink-mute);
+  font-size: 0.9375rem;
+  line-height: 1.65;
 }
 
-.guide .sum span {
-  color: var(--ink-faint);
+.guide-steps {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1rem;
+  padding-left: 1.5rem;
+  color: var(--ink-soft);
+}
+
+.guide-steps li {
+  padding-left: 0.6rem;
+}
+
+.guide-steps li::marker {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
 }
 
 .guide .dots {
@@ -1715,8 +1777,8 @@ html:not(.js) .guide article + article {
 }
 
 .guide :is(h2, h3) .release-status {
-  margin-left: 0.5rem;
-  vertical-align: 0.2em;
+  margin: 0;
+  letter-spacing: 0.04em;
 }
 
 .guides-nav .release-status span,
@@ -2401,31 +2463,52 @@ html:not(.js) .slide-controls {
 .plans {
     grid-template-columns: minmax(0, 1fr);
   }
-  /* The sidebar folds into a row of pills above the guide. */
+  /* Topics become a compact index above the guide on smaller screens. */
+  .guides-hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+  }
+  .guides-hero h1 {
+    max-width: 14ch;
+  }
+  .guides-hero .lede {
+    font-size: 1rem;
+  }
   .guides-layout {
-    gap: 2rem;
+    gap: 2.5rem;
   }
   .guides-nav {
     position: static;
   }
   .guides-nav ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 1.25rem;
     border-left: 0;
   }
   .guides-nav a {
     min-height: 2.75rem;
-    padding: 0 1rem;
-    border: 1px solid var(--hairline);
-    border-radius: 999px;
-    font-size: 0.9375rem;
+    height: 100%;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--hairline);
+    font-size: 0.875rem;
   }
   .guides-nav a[aria-current='true'] {
-    background: var(--glass-strong);
+    color: var(--accent);
   }
   .guides-nav a[aria-current='true']::before {
-    content: none;
+    left: 0;
+    top: auto;
+    bottom: -1px;
+    width: 100%;
+    height: 2px;
+  }
+  .guide h2 + p {
+    font-size: 1.0625rem;
+  }
+  .guide-example dl {
+    gap: 1rem;
   }
   
   
