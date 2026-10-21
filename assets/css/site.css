@@ -1556,7 +1556,7 @@ section {
    guide shows, one after another. */
 .guides-layout {
   display: grid;
-  grid-template-columns: 13rem minmax(0, 1fr);
+  grid-template-columns: 14rem minmax(0, 1fr);
   gap: clamp(2.5rem, 6vw, 5rem);
   align-items: start;
 }
@@ -1577,6 +1577,7 @@ section {
   position: relative;
   display: flex;
   align-items: center;
+  gap: 0.5rem;
   min-height: 2.75rem;
   padding-left: 1.1rem;
   color: var(--ink-mute);
@@ -1694,6 +1695,34 @@ html:not(.js) .guide article + article {
 
 .guide .sum span {
   color: var(--ink-faint);
+}
+
+.guide .dots {
+  margin-top: 0.9rem;
+  font-size: inherit;
+}
+
+/* A guide, or part of one, for an update that isn't out yet. It's the
+   release page's status pill, sized down to sit beside a heading. */
+.guides-nav .release-status,
+.guide .release-status {
+  gap: 0.35rem;
+  padding: 0.16rem 0.45rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.guide :is(h2, h3) .release-status {
+  margin-left: 0.5rem;
+  vertical-align: 0.2em;
+}
+
+.guides-nav .release-status span,
+.guide .release-status span {
+  width: 5px;
+  height: 5px;
 }
 
 .contact {
