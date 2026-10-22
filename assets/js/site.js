@@ -212,11 +212,12 @@
 
   /* --------------------------------------------------------------- reveal */
 
-  /* Big headings rise a word at a time. Words are wrapped in place, so
-     nested spans keep their styling; an element with no space in it, like
-     the italic word, moves as one piece. */
+  /* Big headings rise a word at a time; the closing wordmark uses letters.
+     Words are wrapped in place, so nested spans keep their styling; an
+     element with no space in it, like the italic word, moves as one piece. */
   function splitWords(el) {
     var n = 0;
+    var letters = el.classList.contains('wordmark');
     var wrap = function (node) {
       var w = document.createElement('span');
       w.className = 'w';
@@ -230,7 +231,7 @@
       for (var k = 0; k < kids.length; k++) {
         var node = kids[k];
         if (node.nodeType === 3) {
-          var bits = node.textContent.split(/(\s+)/);
+          var bits = letters ? Array.from(node.textContent) : node.textContent.split(/(\s+)/);
           var frag = document.createDocumentFragment();
           for (var b = 0; b < bits.length; b++) {
             if (!bits[b]) continue;
@@ -245,7 +246,7 @@
           parent.replaceChild(frag, node);
         } else if (node.nodeType === 1) {
           if (node.tagName === 'BR') continue;
-          if (!/\s/.test(node.textContent.trim())) {
+          if (!letters && !/\s/.test(node.textContent.trim())) {
             var whole = wrap();
             parent.replaceChild(whole.w, node);
             whole.inner.appendChild(node);
@@ -491,6 +492,7 @@
       shown = k;
       var walked = seed.slice(0, k) + seed.slice(k).replace(/./g, '0');
       drawDays(bars, parseDays(walked, Math.min(k, today)));
+      if (k === last && month.hasAttribute('data-finale')) month.classList.add('is-complete');
     };
   }
 
@@ -507,12 +509,13 @@
       var seed = month.dataset.editorialDays;
       var today = +month.dataset.today;
       var opening = month.hasAttribute('data-opening-days');
+      var finale = month.hasAttribute('data-finale');
       var scrub = 'scrub' in month.dataset && !reduceMotion;
       var days = parseDays(seed, today);
       var bars = [];
       for (var day = 0; day < days.length; day++) {
         var bar = makeBar('span');
-        if (opening) bar.style.setProperty('--day', day);
+        if (opening || finale) bar.style.setProperty('--day', day);
         else if (!scrub) bar.style.setProperty('--t', day * 24 + 'ms');
         month.appendChild(bar);
         bars.push(bar);
@@ -546,6 +549,26 @@
             bar.getAnimations().forEach(function (animation) { animation.cancel(); });
             bar.animate([{ transform: 'scaleY(1)' }, { transform: 'scaleY(1.18)', offset: .35 }, { transform: 'scaleY(1)' }], { duration: 650, easing: 'ease-out' });
           });
+        });
+      }
+      /* The wordmark and its month share one quiet, decorative pointer response. */
+      if (finale) {
+        var mark = month.closest('.closer-mark');
+        var lastKey = -1;
+        mark.addEventListener('pointermove', function (event) {
+          if (event.pointerType !== 'mouse' || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          var rect = month.getBoundingClientRect();
+          var at = Math.max(0, Math.min(bars.length - 1, Math.floor((event.clientX - rect.left) / rect.width * bars.length)));
+          if (at === lastKey) return;
+          lastKey = at;
+          bars.forEach(function (bar, index) {
+            var strength = Math.max(0, 1 - Math.abs(index - at) / 3);
+            bar.style.setProperty('--key-scale', 1 + strength * .3);
+          });
+        });
+        mark.addEventListener('pointerleave', function () {
+          lastKey = -1;
+          bars.forEach(function (bar) { bar.style.removeProperty('--key-scale'); });
         });
       }
     })(editorialMonths[em]);

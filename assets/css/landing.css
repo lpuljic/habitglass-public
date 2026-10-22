@@ -36,13 +36,14 @@
   .has-qr:is(:hover, :focus-visible):not(.qr-off) .store-qr { opacity: 1; transform: none; visibility: visible; transition: opacity .2s var(--ease) .12s, transform .6s var(--spring) .12s, visibility 0s .12s; }
 }
 
-.opening-art { position: relative; z-index: 1; min-height: 590px; isolation: isolate; margin: 0; }
-.opening-phone { position: absolute; width: 258px; top: 10px; left: 50%; transform: translateX(-50%) rotate(6deg); }
+.opening-art { --phone-tilt: 3deg; position: relative; z-index: 1; display: grid; justify-items: center; gap: 2.5rem; min-width: 0; isolation: isolate; margin: 0; padding-block: 1rem; }
+.opening-phone { position: relative; width: clamp(16rem, 30vw, 21.5rem); max-width: 100%; transform: rotate(var(--phone-tilt)); }
 .opening-phone img, .story-stack img { width: 100%; height: auto; filter: drop-shadow(0 24px 22px var(--phone-shadow)); }
-.opening-art figcaption { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font: italic 1.125rem Georgia, serif; color: var(--ink-mute); }
+.opening-art figcaption { position: relative; text-align: center; font: italic 1.125rem Georgia, serif; color: var(--ink-mute); }
 .ribbon { --bar-gap: 6px; --unfold-delay: .26s; position: absolute; left: -4%; width: 110%; z-index: -1; pointer-events: none; }
-.ribbon-one { --unfold-delay: .46s; top: 13%; transform: rotate(-24deg); }
-.ribbon-two { --unfold-delay: .6s; top: 68%; transform: rotate(-24deg); }
+.opening-art .ribbon { left: 0; width: 100%; opacity: .6; }
+.ribbon-one { --unfold-delay: .46s; top: 22%; transform: rotate(-18deg); }
+.ribbon-two { --unfold-delay: .6s; top: 70%; transform: rotate(-18deg); }
 .ribbon .month { gap: var(--bar-gap); --bh: 70px; }
 .ribbon-lead { left: 0; top: 24px; width: 166%; z-index: 0; transform: rotate(-3deg); transform-origin: 0 50%; }
 .ribbon-lead .month { --bh: 58px; }
@@ -160,14 +161,23 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
 .editorial-closer h2 { font-size: clamp(3.5rem, 7.5vw, 6.5rem); font-weight: 500; line-height: 1.04; }
 .editorial-closer h2 em { color: var(--accent); }
 .editorial-closer p { margin-top: 1.5rem; color: var(--ink-mute); font-size: .875rem; }
-/* The name, as wide as the page, over a month that fills as you reach the
-   end. The month walks with the scroll (data-scrub in site.js). */
+/* The name rises letter by letter over a month that walks with the scroll.
+   Completing the month sends one ripple across it; the pointer plays the bars. */
 .closer-mark { margin-top: clamp(4.5rem, 10vw, 8rem); container-type: inline-size; }
 .wordmark { font-size: 23.4cqi; font-weight: 700; line-height: .9; letter-spacing: -.075em; white-space: nowrap; margin-inline: -.2em; padding-inline-end: .12em; }
 .wordmark em { margin-inline-start: .05em; color: var(--accent); }
 .wordmark .w { padding-block: .12em; margin-block: -.12em; }
-.closer-mark .month { --bh: clamp(26px, 4.6cqi, 60px); gap: clamp(3px, .55cqi, 7px); margin-top: clamp(1.25rem, 3cqi, 2.5rem); }
+.closer-mark .month { --bh: clamp(36px, 6cqi, 78px); gap: clamp(3px, .55cqi, 7px); margin-top: clamp(1.25rem, 3cqi, 2.5rem); }
 .closer-mark .bar.lit[data-s='done']::before { box-shadow: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .wordmark.split .w > span { transition-duration: 1.1s; transition-delay: calc(var(--i) * 45ms); }
+  .closer-mark .bar { transform-origin: 50% 100%; scale: 1 var(--key-scale, 1); transition: scale .75s var(--spring); }
+  .closer-mark .month.is-complete .bar { animation: closer-ripple .85s var(--spring-soft) calc(var(--day) * 24ms); }
+}
+@keyframes closer-ripple {
+  0%, 100% { transform: scaleY(1); }
+  45% { transform: scaleY(1.26); }
+}
 
 /* One entrance, with the phone arriving after the day ribbons. */
 .opening-phone picture { display: block; }
@@ -195,8 +205,8 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
   to { opacity: 1; transform: none; }
 }
 @keyframes opening-phone-in {
-  from { opacity: 0; transform: translate(-50%, 42px) rotate(11deg) scale(.96); }
-  to { opacity: 1; transform: translateX(-50%) rotate(6deg); }
+  from { opacity: 0; transform: translateY(32px) rotate(calc(var(--phone-tilt) + 3deg)) scale(.98); }
+  to { opacity: 1; transform: rotate(var(--phone-tilt)); }
 }
 @keyframes opening-caption-in {
   from { opacity: 0; transform: translateY(8px); }
@@ -215,7 +225,7 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
     .ribbon-lead .month { animation-name: ribbon-lead-on; }
   }
 }
-@keyframes phone-settle { to { rotate: -6deg; translate: 0 var(--trail, 4%); scale: 1.05; } }
+@keyframes phone-settle { to { rotate: calc(-1 * var(--phone-tilt)); translate: 0 var(--trail, 2%); scale: 1.02; } }
 @keyframes ribbon-on { to { translate: -12% 0; } }
 @keyframes ribbon-back { to { translate: 10% 0; } }
 @keyframes ribbon-lead-on { to { translate: -3% 0; } }
@@ -227,9 +237,7 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
 
 @media (max-width: 1000px) {
   .editorial-hero { gap: 0; padding-top: 3rem; }
-  .editorial .hero h1 { font-size: 6rem; }
-  .opening-phone { width: 225px; }
-  .opening-art { min-height: 530px; }
+  .editorial .hero h1 { font-size: clamp(4.2rem, 8.8vw, 6rem); }
   .product-story, .playground, .privacy-note, .questions { gap: 3rem; }
   .health-lead { gap: 3rem; }
   .editorial .perks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -245,8 +253,8 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
   .editorial .cta-row { gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
   .editorial .cta-row .btn { padding-inline: 1.25rem; }
   .quiet-link { font-size: .875rem; }
-  .opening-art { margin: 1.5rem auto 0; min-height: 520px; max-width: 400px; }
-  .opening-phone { width: 225px; --trail: 0%; }
+  .opening-art { --phone-tilt: 2deg; margin: 1.5rem auto 0; gap: 2rem; max-width: 400px; }
+  .opening-phone { width: min(82%, 19rem); --trail: 0%; }
   .ribbon { --bar-gap: 4px; left: 0; width: 100%; }
   .ribbon .month { --bh: 50px; }
   .ribbon-lead { --bar-gap: 3px; top: 8px; transform: rotate(-4deg); }
