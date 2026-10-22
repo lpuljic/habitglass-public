@@ -79,19 +79,21 @@
 <main id="main">
   <section class="hero editorial-hero shell">
     <div class="opening-copy">
-      <p class="opening-note reveal">A habit tracker for iPhone.</p>
+      <p class="opening-note">A habit tracker for iPhone.</p>
       <h1>A little,<br><em>every day.</em></h1>
-      <p class="opening-lede reveal" style="--delay:180ms">Read a few pages. Drink some water. Go for that walk.<br class="wide-only"> Make room for the things you want more of.</p>
-      <div class="cta-row reveal" style="--delay:260ms">
+      <div class="opening-rhythm" aria-hidden="true">
+        <div class="ribbon ribbon-lead"><div class="month" data-opening-days data-editorial-days="111-1101111-111111-11111111000" data-today="27" style="--c:var(--accent)"></div></div>
+      </div>
+      <p class="opening-lede">Read a few pages. Drink some water. Go for that walk.<br class="wide-only"> Make room for the things you want more of.</p>
+      <div class="cta-row">
         <a class="btn btn-primary has-qr" href="https://apps.apple.com/us/app/habit-glass-habit-tracker/id6807643942"><svg width="18" height="18" aria-hidden="true"><use href="#i-apple"/></svg>Get HabitGlass<span class="store-qr" aria-hidden="true"><svg width="165" height="165"><use href="#i-qr"/></svg>Scan with your iPhone</span></a>
         <a class="quiet-link" href="#tour">Take a closer look <span aria-hidden="true">↗</span></a>
       </div>
-      <p class="opening-small reveal" style="--delay:320ms">Three habits free. Yours to keep.</p>
+      <p class="opening-small">Requires iOS 26 or later.<br>Three habits free. Yours to keep.</p>
     </div>
-    <figure class="opening-art reveal" style="--delay:180ms">
-      <div class="ribbon ribbon-one" aria-hidden="true"><div class="month" data-editorial-days="111101111111011111111111110000" data-today="27" style="--c:var(--day-blue)"></div></div>
-      <div class="ribbon ribbon-two" aria-hidden="true"><div class="month" data-editorial-days="111111111011111111111110000000" data-today="27" style="--c:var(--day-lilac)"></div></div>
-      <div class="ribbon ribbon-three" aria-hidden="true"><div class="month" data-editorial-days="111011111111111111111111110000" data-today="27" style="--c:var(--day-green)"></div></div>
+    <figure class="opening-art">
+      <div class="ribbon ribbon-one" aria-hidden="true"><div class="month" data-opening-days data-editorial-days="111101111111011111111111110000" data-today="27" style="--c:var(--day-blue)"></div></div>
+      <div class="ribbon ribbon-two" aria-hidden="true"><div class="month" data-opening-days data-editorial-days="111111111011111111111110000000" data-today="27" style="--c:var(--day-lilac)"></div></div>
       <div class="opening-phone">
         <picture data-shot="editorial-home-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/editorial-home-framed-light.webp"><img src="assets/shots/editorial-home-framed-dark.webp" width="900" height="1840" fetchpriority="high" alt="HabitGlass Home, showing morning run, water, reading and family habits with a month of day bars."></picture>
       </div>
@@ -130,7 +132,8 @@
       <div class="section-head editorial-heading reveal"><h2>A small action.<br><em>A visible difference.</em></h2><p>Try a month. Tap a day, or drag across a few. The gaps stay honest. Rest days keep the run intact.</p></div>
       <div class="month-card glass reveal" style="--c:var(--day-lilac)">
         <div class="sample-heading"><div><h3>Morning walk</h3><p>Weekdays · September</p></div><span class="sample-label">Try it</span></div>
-        <div class="month field" data-field data-seed="1111--11011--11111--11011--10000" data-today="29" data-first="1" role="group" aria-label="Try marking days for a weekday habit in September"></div>
+        <div class="month field" data-field data-seed="1111--11011--11111--11011--100" data-today="29" data-first="1" role="group" aria-label="Try marking days for a weekday habit in September"></div>
+        <div class="sample-feedback" data-month-feedback hidden><p data-day-status role="status" aria-atomic="true"></p><button class="sample-reset" type="button" data-month-reset>Reset<span class="sr-only"> example month</span></button></div>
         <dl class="sample-stats"><div><dt>Days done</dt><dd data-out="days">18</dd></div><div><dt>Best streak</dt><dd data-out="best">8</dd></div><div><dt>Completion</dt><dd data-out="rate">90%</dd></div></dl>
         <p class="sample-footnote">An example month. Nothing is saved.</p>
       </div>

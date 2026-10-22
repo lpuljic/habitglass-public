@@ -3,18 +3,21 @@
 .wordmark em, .privacy-type em { font-family: Georgia, 'Times New Roman', serif; font-weight: 400; letter-spacing: -.06em; }
 
 .editorial-hero {
+  isolation: isolate;
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   align-items: center;
-  padding-block: 5rem 4rem;
+  padding-block: 3.5rem 3rem;
   text-align: left;
   gap: 1rem;
 }
-.opening-copy { z-index: 2; padding-block: 1rem; }
-.opening-note { font-size: .9375rem; color: var(--ink-mute); margin-bottom: 2.2rem; }
+.opening-copy { min-width: 0; padding-block: 1rem; }
+.opening-copy > :not(.opening-rhythm) { position: relative; z-index: 2; }
+.opening-note { font-size: .9375rem; color: var(--ink-mute); margin-bottom: 1.5rem; }
 .editorial .hero h1 { font-size: clamp(4.8rem, 8.8vw, 8rem); line-height: .98; letter-spacing: -.075em; font-weight: 700; }
 .editorial .hero h1 .w { padding-bottom: .16em; margin-bottom: -.16em; }
-.opening-lede { max-width: 28rem; margin-top: 2.2rem; font-size: 1.125rem; line-height: 1.7; color: var(--ink-soft); }
+.opening-rhythm { position: relative; height: 76px; margin-top: 1.25rem; pointer-events: none; }
+.opening-lede { max-width: 28rem; margin-top: 1.25rem; font-size: 1.125rem; line-height: 1.7; color: var(--ink-soft); }
 .editorial .cta-row { justify-content: flex-start; gap: 1.6rem; margin-top: 2rem; }
 .opening-small { margin-top: 1rem; font-size: .8125rem; color: var(--ink-mute); }
 .quiet-link { display: inline-flex; align-items: center; gap: .6rem; font-size: .9375rem; font-weight: 500; }
@@ -33,17 +36,18 @@
   .has-qr:is(:hover, :focus-visible):not(.qr-off) .store-qr { opacity: 1; transform: none; visibility: visible; transition: opacity .2s var(--ease) .12s, transform .6s var(--spring) .12s, visibility 0s .12s; }
 }
 
-.opening-art { position: relative; min-height: 590px; isolation: isolate; margin: 0; }
-.opening-art::before { content: ''; position: absolute; inset: 12% 0 5%; background: radial-gradient(ellipse, color-mix(in srgb, var(--day-green) 18%, transparent), transparent 68%); z-index: -1; }
+.opening-art { position: relative; z-index: 1; min-height: 590px; isolation: isolate; margin: 0; }
 .opening-phone { position: absolute; width: 258px; top: 10px; left: 50%; transform: translateX(-50%) rotate(6deg); }
 .opening-phone img, .story-stack img { width: 100%; height: auto; filter: drop-shadow(0 24px 22px var(--phone-shadow)); }
 .opening-art figcaption { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font: italic 1.125rem Georgia, serif; color: var(--ink-mute); }
-.ribbon { position: absolute; left: -4%; width: 110%; z-index: -1; }
-.ribbon-one { top: 22%; transform: rotate(-24deg); }
-.ribbon-two { top: 45%; transform: rotate(-24deg); }
-.ribbon-three { top: 68%; transform: rotate(-24deg); }
-.ribbon .month { gap: 6px; --bh: 70px; }
+.ribbon { --bar-gap: 6px; --unfold-delay: .26s; position: absolute; left: -4%; width: 110%; z-index: -1; pointer-events: none; }
+.ribbon-one { --unfold-delay: .46s; top: 13%; transform: rotate(-24deg); }
+.ribbon-two { --unfold-delay: .6s; top: 68%; transform: rotate(-24deg); }
+.ribbon .month { gap: var(--bar-gap); --bh: 70px; }
+.ribbon-lead { left: 0; top: 24px; width: 166%; z-index: 0; transform: rotate(-3deg); transform-origin: 0 50%; }
+.ribbon-lead .month { --bh: 58px; }
 .ribbon .bar { border-radius: var(--radius-xs); }
+.ribbon .bar::before { transition: none; }
 .ribbon .bar.lit[data-s='done']::before { box-shadow: none; }
 
 .month-interlude { padding-block: 2.5rem 4.5rem; }
@@ -101,6 +105,10 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
 .sample-label { border: 1px solid var(--hairline); padding: .25rem .7rem; border-radius: 999px; }
 .editorial .field { margin: 2rem 0; --bh: 50px; gap: 5px; }
 .editorial .field .bar { height: var(--bh); }
+.sample-feedback { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: -1rem 0 1rem; font-size: .8125rem; color: var(--ink-soft); }
+.sample-feedback[hidden] { display: none; }
+.sample-reset { min-width: 44px; min-height: 44px; color: var(--ink-mute); text-decoration: underline; text-underline-offset: .2em; }
+.sample-reset:hover { color: var(--ink); }
 .sample-stats { display: flex; gap: 2rem; justify-content: space-between; }
 .sample-stats dt { font-size: .75rem; color: var(--ink-mute); }
 .sample-stats dd { margin: .2rem 0 0; font-size: 2rem; font-weight: 700; font-variant-numeric: tabular-nums; }
@@ -162,10 +170,38 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
 .closer-mark .bar.lit[data-s='done']::before { box-shadow: none; }
 
 /* One entrance, with the phone arriving after the day ribbons. */
-.js .opening-art:not(.in) .opening-phone { transform: translate(-50%, 36px) rotate(11deg); }
-.opening-phone { transition: transform 1.4s var(--spring-soft); }
 .opening-phone picture { display: block; }
 .js .ribbon:not(.has-days) { visibility: hidden; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .opening-motion .ribbon .bar {
+    animation: day-unfold .85s var(--spring-soft) both;
+    animation-delay: calc(var(--unfold-delay) + var(--day) * 12ms);
+  }
+  .opening-motion .ribbon-lead .bar:first-child { animation: first-day .7s var(--spring) both; }
+  .opening-motion h1 em .w > span { transition-delay: calc(.26s + var(--i) * 55ms); }
+  .opening-motion .opening-phone { animation: opening-phone-in 1s var(--spring-soft) .6s both; }
+  .opening-motion .opening-art figcaption { animation: opening-caption-in .6s var(--ease) 1s both; }
+}
+
+/* Every day starts at the first bar, then unfolds to its own place. The
+   phone's entrance and scroll motion live on separate elements. */
+@keyframes first-day {
+  from { opacity: 0; transform: translateY(16px) scale(.65, .8); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes day-unfold {
+  from { opacity: 0; transform: translateX(calc(var(--day) * (-100% - var(--bar-gap)))) scale(.65, .8); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes opening-phone-in {
+  from { opacity: 0; transform: translate(-50%, 42px) rotate(11deg) scale(.96); }
+  to { opacity: 1; transform: translateX(-50%) rotate(6deg); }
+}
+@keyframes opening-caption-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
 
 /* Then the scroll takes over: over the first screen the phone turns square,
    comes forward and trails the page a little, and the ribbons slide along
@@ -176,11 +212,13 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
     .opening-phone picture { animation-name: phone-settle; animation-range: 0 70vh; }
     .ribbon .month { animation-name: ribbon-on; animation-range: 0 100vh; }
     .ribbon-two .month { animation-name: ribbon-back; }
+    .ribbon-lead .month { animation-name: ribbon-lead-on; }
   }
 }
-@keyframes phone-settle { to { rotate: -6deg; translate: 0 var(--trail, 14%); scale: 1.05; } }
+@keyframes phone-settle { to { rotate: -6deg; translate: 0 var(--trail, 4%); scale: 1.05; } }
 @keyframes ribbon-on { to { translate: -12% 0; } }
 @keyframes ribbon-back { to { translate: 10% 0; } }
+@keyframes ribbon-lead-on { to { translate: -3% 0; } }
 
 /* A changed price character rolls in over the old one (rollPrice in site.js). */
 .roll { position: relative; display: inline-block; clip-path: inset(-.04em -1em); }
@@ -202,14 +240,17 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
   .editorial-hero { display: block; padding-top: 1rem; padding-bottom: 2rem; }
   .opening-note { margin-bottom: 1rem; font-size: .8125rem; }
   .editorial .hero h1 { font-size: clamp(4.2rem, 14vw, 6rem); }
+  .opening-rhythm { height: 58px; margin-top: 1rem; }
   .opening-lede { margin-top: 1.25rem; font-size: 1rem; max-width: 23rem; }
   .editorial .cta-row { gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
   .editorial .cta-row .btn { padding-inline: 1.25rem; }
   .quiet-link { font-size: .875rem; }
   .opening-art { margin: 1.5rem auto 0; min-height: 520px; max-width: 400px; }
   .opening-phone { width: 225px; --trail: 0%; }
-  .ribbon { left: 0; width: 100%; }
-  .ribbon .month { gap: 4px; --bh: 50px; }
+  .ribbon { --bar-gap: 4px; left: 0; width: 100%; }
+  .ribbon .month { --bh: 50px; }
+  .ribbon-lead { --bar-gap: 3px; top: 8px; transform: rotate(-4deg); }
+  .ribbon-lead .month { --bh: 42px; }
   .month-interlude { padding-block: 1rem 2rem; }
   .month-interlude .month { --bh: 34px; gap: 4px; }
   .interlude-label { font-size: .75rem; }
@@ -250,5 +291,4 @@ html:not(.js) .story-stack > [data-step='2'], html:not(.js) .story-captions > [d
 
 @media (prefers-reduced-motion: reduce) {
   .editorial *, .editorial *::before, .editorial *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  .js .opening-art:not(.in) .opening-phone { transform: translateX(-50%) rotate(6deg); }
 }

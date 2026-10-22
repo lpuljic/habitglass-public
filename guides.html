@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Guides — HabitGlass</title>
-<meta name="description" content="How HabitGlass counts quit, limit, time, water and reading habits, which reminders are free and which are Pro, and how to use Siri and Shortcuts.">
+<meta name="description" content="Learn how HabitGlass counts habits, tracks yearly history and notes, pauses routines, restores backups, uses Apple Health, and works with Siri and Shortcuts.">
 <link rel="canonical" href="https://habitglass.info/guides.html">
 <meta name="theme-color" content="#07080c" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f8f7f2" media="(prefers-color-scheme: light)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Guides — HabitGlass">
-<meta property="og:description" content="How quit, limit, time, water and reading habits count in HabitGlass, and how to log them with Siri and Shortcuts.">
+<meta property="og:description" content="Learn how HabitGlass counts habits, tracks yearly history and notes, pauses routines, restores backups, uses Apple Health, and works with Siri and Shortcuts.">
 <meta property="og:url" content="https://habitglass.info/guides.html">
 <meta property="og:image" content="https://habitglass.info/assets/og.jpg">
 <link rel="icon" href="assets/icon-512.png" sizes="512x512">
@@ -127,9 +127,14 @@
           <li><a href="#water" data-guide-link>Water</a></li>
           <li><a href="#reading" data-guide-link>Reading</a></li>
           <li><a href="#reminders" data-guide-link>Reminders</a></li>
+          <li><a href="#schedule" data-guide-link>Schedules and streaks</a></li>
+          <li><a href="#insights" data-guide-link>Insights and widgets</a></li>
           <li><a href="#limit" data-guide-link>Limit habits<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
           <li><a href="#health" data-guide-link>Apple Health<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
           <li><a href="#shortcuts" data-guide-link>Siri and Shortcuts<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
+          <li><a href="#history" data-guide-link>Year and notes<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
+          <li><a href="#pausing" data-guide-link>Pausing habits</a></li>
+          <li><a href="#backup" data-guide-link>Backups<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
         </ul>
       </nav>
 
@@ -278,6 +283,10 @@
             <dl><div><dt>Daily goal</dt><dd>2,000 mL</dd></div><div><dt>Each reminder</dt><dd>≈160 mL</dd></div></dl>
             <figcaption>13 hourly reminders, from 7:30 am to 7:30 pm, split the goal into sips.</figcaption>
           </figure>
+          <figure class="guide-shot">
+            <picture data-shot="guide-water-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-water-framed-light.webp"><img src="assets/shots/guide-water-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Drink water details showing today's 750 mL progress toward a 2,000 mL goal, consistency and monthly history."></picture>
+            <figcaption>Today’s amount, goal and history on one screen.</figcaption>
+          </figure>
 
           <h3>Logging a sip</h3>
           <p>
@@ -361,6 +370,14 @@
             HabitGlass looks again at the last two days too. It also works with the app
             closed, but Health stays locked while your iPhone is, so sometimes the tick only
             lands when you next open the app.
+          </p>
+
+          <h3>Progress and completion alerts <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <p>
+            Apple Health reminders can show your latest reading and goal, such as
+            <kbd>6,240 of 10,000 steps as of 4:10 PM</kbd>. In the habit's Apple Health
+            settings, turn on <kbd>Notify When Done</kbd> to get an alert when you reach
+            your goal. It can take up to an hour.
           </p>
 
           <h3>Checking in by hand</h3>
@@ -448,6 +465,72 @@
             Your reminders keep coming. Each habit gets its first time with HabitGlass's own
             text, and a habit set to repeat gets one daily reminder. Your other times and
             your text stay saved, and come back if you subscribe again.
+          </p>
+        </article>
+
+        <article id="schedule" data-guide>
+          <h2>Schedules and streaks</h2>
+          <p>
+            A schedule decides which days count for a habit. Set it when you create or edit
+            the habit, under <kbd>Repeat</kbd>.
+          </p>
+
+          <h3>Choose a schedule</h3>
+          <ul class="dots">
+            <li><kbd>Daily</kbd> counts every day from the habit's start date.</li>
+            <li><kbd>Days of Week</kbd> lets you pick weekdays, such as Monday, Wednesday and Friday.</li>
+            <li><kbd>Times per Week</kbd> sets a target of 1 to 7 check-ins per week.</li>
+            <li><kbd>Every N Days</kbd> repeats every 2 to 30 days.</li>
+          </ul>
+          <h3>More ways to repeat <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <ul class="dots">
+            <li><kbd>Times per Month</kbd> sets a target of 1 to 31 check-ins on any days in the month. The goal resets on the first.</li>
+            <li><kbd>Every Other Week</kbd> repeats on the weekdays you choose, starting with the week of the start date.</li>
+            <li><kbd>Quarterly</kbd> and <kbd>Yearly</kbd> repeat on your chosen start date. A short month uses its last day; February 29 uses February 28 in other years.</li>
+            <li><kbd>Once</kbd> is due on the date you pick. Finish it to move it to Archived without losing its history.</li>
+          </ul>
+          <p>
+            Set the first day of the week in <kbd>Settings</kbd>, under <kbd>General</kbd>.
+            Weekly goals, calendars and streaks use that day as their boundary.
+          </p>
+
+          <h3>How streaks count</h3>
+          <p>
+            Streaks follow the schedule: a day that isn't due doesn't break a daily streak.
+            Weekly habits build a week streak by reaching their check-in target. Today stays
+            open until the day ends, so you have time to finish.
+          </p>
+          <h3>Monthly goals <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <p>
+            A monthly goal builds a month streak. Home shows it under <kbd>This month</kbd>
+            until you reach the goal. Your check-ins count on any unpaused day in the month.
+          </p>
+          <p>
+            Home groups weekly habits under <kbd>This week</kbd> until their target is met.
+            Habits that aren't due today appear under <kbd>Not today</kbd>; finished habits
+            appear under <kbd>Done</kbd>.
+          </p>
+        </article>
+
+        <article id="insights" data-guide>
+          <h2>Insights and widgets</h2>
+          <p>
+            Insights summarizes progress across habits. Choose <kbd>7 Days</kbd>,
+            <kbd>4 Weeks</kbd> or <kbd>3 Months</kbd> to change the period. Full Insights is
+            part of Pro and adds coaching, habit performance, a check-in calendar and a
+            consistency heatmap.
+          </p>
+
+          <h3>Add a widget</h3>
+          <ul class="dots">
+            <li><kbd>Today</kbd> shows a checklist. Touch and hold it to choose which habits it lists.</li>
+            <li><kbd>Habit Focus</kbd> shows the next habit due. Touch and hold it to pin one habit instead.</li>
+            <li><kbd>Habit Streak</kbd> puts a habit's streak and today's progress on the Lock Screen.</li>
+          </ul>
+          <p>
+            Add a widget from the iPhone's Home Screen or Lock Screen edit controls. Tap a
+            habit in a widget to open it; check-in buttons work for habits that support a
+            direct check-in.
           </p>
         </article>
 
@@ -555,6 +638,92 @@
             A deleted or archived habit needs picking again. A paused habit says so; resume it
             in HabitGlass first. If HabitGlass can't save, the action tells you rather than
             saying it worked. With your iPhone locked, iOS may ask you to unlock it first.
+          </p>
+        </article>
+
+        <article id="history" data-guide>
+          <h2>Year and notes <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h2>
+          <p>
+            Habit details hold your month-by-month history. Open a habit to see its calendar,
+            add or edit a note on a day, and review the year without losing the daily view.
+          </p>
+          <figure class="guide-shot">
+            <picture data-shot="guide-year-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-year-framed-light.webp"><img src="assets/shots/guide-year-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="The Year view for Drink water, with a best-month summary and a progress grid for every month in 2026."></picture>
+            <figcaption>The Year view compares progress across months.</figcaption>
+          </figure>
+
+          <h3>Review the year</h3>
+          <ol class="guide-steps">
+            <li>Open a habit and scroll to its History.</li>
+            <li>Tap <kbd>View Year</kbd> to see the best month and a dot grid for each month.</li>
+            <li>Use the year controls to move through earlier years.</li>
+            <li>Tap a month or a day to return to that point in History.</li>
+          </ol>
+          <p>The best month uses completion rate, or most check-ins for a weekly habit.</p>
+
+          <h3>Add or change a day note</h3>
+          <p>
+            Tap a day in History to edit its check-in and note. Days with notes have a dot on
+            the calendar. Notes in the selected month appear in the <kbd>Notes</kbd> card;
+            tap a note there to edit it. Changing a check-in doesn't erase its note.
+          </p>
+        </article>
+
+        <article id="pausing" data-guide>
+          <h2>Pausing habits</h2>
+          <p>
+            Pause a habit for a trip, illness or another break. Its pause dates are excluded
+            from its schedule and streak, so the break doesn't count as missed progress.
+            Starting or changing a pause requires Pro; resuming or cancelling one is free.
+          </p>
+
+          <h3>Set a pause <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <ol class="guide-steps">
+            <li>Open the habit's menu and choose <kbd>Pause Habit</kbd>.</li>
+            <li>Choose the first and last paused days on the calendar.</li>
+            <li>Optionally turn on <kbd>No End Date</kbd> to keep the pause open.</li>
+            <li>Add a reason, such as <kbd>Travelling</kbd>, then tap <kbd>Pause Habit</kbd>.</li>
+          </ol>
+          <p>The habit card and its details show the pause and reason while it is active.</p>
+
+          <h3>Change or end a pause</h3>
+          <p>
+            Open the habit menu and choose <kbd>Edit Pause</kbd> to change its dates or reason.
+            Choose <kbd>Resume Habit</kbd> to end a running pause; days already paused stay
+            paused. For a pause that hasn't started, choose <kbd>Cancel Pause</kbd> to remove it.
+          </p>
+        </article>
+
+        <article id="backup" data-guide>
+          <h2>Backups <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h2>
+          <p>
+            Export a JSON backup before changing phones or to keep a copy of your habits and
+            history. Backups are free. CSV exports are for spreadsheets; they aren't restore
+            files.
+          </p>
+          <figure class="guide-shot">
+            <picture data-shot="guide-backup-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-backup-framed-light.webp"><img src="assets/shots/guide-backup-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Data & Backup settings with Export Backup, Export Spreadsheet, Import Backup and Delete All Data options."></picture>
+            <figcaption>Export and restore options live together in Data &amp; Backup.</figcaption>
+          </figure>
+
+          <h3>Save a backup</h3>
+          <ol class="guide-steps">
+            <li>Open <kbd>Settings</kbd>, then <kbd>Data &amp; Backup</kbd>.</li>
+            <li>Tap <kbd>Export Backup</kbd> and save or share the JSON file somewhere safe.</li>
+            <li>For a spreadsheet, choose <kbd>Export Spreadsheet</kbd> instead.</li>
+          </ol>
+          <p>Export a fresh backup before each restore if you want a recent way back.</p>
+
+          <h3>Restore a backup</h3>
+          <ol class="guide-steps">
+            <li>In <kbd>Data &amp; Backup</kbd>, tap <kbd>Import Backup</kbd> and choose a HabitGlass JSON backup in Files.</li>
+            <li>Review its habits, check-ins and history dates before restoring.</li>
+            <li>If you already have habits on this iPhone, tap <kbd>Save Current Data First</kbd> to export them, or cancel.</li>
+            <li>Tap <kbd>Restore This Backup</kbd> to replace the current habits and history.</li>
+          </ol>
+          <p>
+            Restore replaces data on this iPhone. If iCloud sync is on, changes can sync to
+            your other devices. Health readings aren't included in backups.
           </p>
         </article>
       </div>

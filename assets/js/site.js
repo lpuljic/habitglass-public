@@ -503,20 +503,24 @@
   var scrubs = [];
   var editorialMonths = document.querySelectorAll('[data-editorial-days]');
   for (var em = 0; em < editorialMonths.length; em++) {
-    (function (month, index) {
+    (function (month) {
       var seed = month.dataset.editorialDays;
       var today = +month.dataset.today;
+      var opening = month.hasAttribute('data-opening-days');
       var scrub = 'scrub' in month.dataset && !reduceMotion;
       var days = parseDays(seed, today);
       var bars = [];
       for (var day = 0; day < days.length; day++) {
         var bar = makeBar('span');
-        if (!scrub) bar.style.setProperty('--t', (index < 3 ? index * 140 : 0) + day * 24 + 'ms');
+        if (opening) bar.style.setProperty('--day', day);
+        else if (!scrub) bar.style.setProperty('--t', day * 24 + 'ms');
         month.appendChild(bar);
         bars.push(bar);
       }
       if (month.parentElement.classList.contains('ribbon')) month.parentElement.classList.add('has-days');
-      if (scrub) {
+      if (opening) {
+        drawDays(bars, days);
+      } else if (scrub) {
         scrubs.push(walkDays(month, bars, seed, today, +month.dataset.scrub || 0.5));
       } else {
         drawDays(bars, days, !reduceMotion);
@@ -544,7 +548,12 @@
           });
         });
       }
-    })(editorialMonths[em], em);
+    })(editorialMonths[em]);
+  }
+
+  var openingHero = document.querySelector('.editorial-hero');
+  if (openingHero && !reduceMotion && !location.hash && window.scrollY < 32) {
+    openingHero.classList.add('opening-motion');
   }
 
   if (scrubs.length) {
@@ -606,6 +615,11 @@
     /* Weekday of the first day, Monday 0. 1 September 2026 is a Tuesday. */
     var FIRST = field.dataset.first ? +field.dataset.first : -1;
     var monthDays = parseDays(field.dataset.seed, TODAY);
+    var selectedDay = TODAY;
+    var feedback = document.querySelector('[data-month-feedback]');
+    var dayStatus = document.querySelector('[data-day-status]');
+    var resetMonth = document.querySelector('[data-month-reset]');
+    var stateNames = { done: 'Done', partial: 'Partial', missed: 'Missed', open: 'Open', rest: 'Rest day' };
     var bars = [];
     var taps = [];
 
@@ -635,6 +649,12 @@
       if (out[key]) out[key].textContent = value;
     };
 
+    var showDay = function (i) {
+      selectedDay = i;
+      var text = 'September ' + (i + 1) + ' · ' + stateNames[monthDays[i].s];
+      if (dayStatus && dayStatus.textContent !== text) dayStatus.textContent = text;
+    };
+
     var render = function () {
       var link = drawDays(bars, monthDays);
       var t = tally(monthDays);
@@ -644,12 +664,17 @@
       put('days', t.done);
       put('best', bestRun(monthDays));
       put('rate', (t.due ? Math.round((t.done / t.due) * 100) : 0) + '%');
+      showDay(selectedDay);
     };
 
     var setDay = function (i, on) {
+      selectedDay = i;
       var day = monthDays[i];
       var next = on ? 'done' : day.today ? 'open' : 'missed';
-      if (day.s === next) return;
+      if (day.s === next) {
+        showDay(i);
+        return;
+      }
       day.s = next;
       render();
     };
@@ -697,6 +722,10 @@
       var i = +btn.dataset.i;
       setDay(i, monthDays[i].s !== 'done');
     });
+    field.addEventListener('focusin', function (e) {
+      var btn = e.target.closest('button.bar');
+      if (btn) showDay(+btn.dataset.i);
+    });
     field.addEventListener('keydown', function (e) {
       var step = { ArrowRight: 1, ArrowLeft: -1, Home: -taps.length, End: taps.length }[e.key];
       if (!step) return;
@@ -709,7 +738,15 @@
       next.focus();
     });
 
+    if (resetMonth) resetMonth.addEventListener('click', function () {
+      painting = null;
+      monthDays = parseDays(field.dataset.seed, TODAY);
+      selectedDay = TODAY;
+      for (var n = 0; n < taps.length; n++) taps[n].tabIndex = +taps[n].dataset.i === TODAY ? 0 : -1;
+      render();
+    });
     render();
+    if (feedback) feedback.hidden = false;
   }
 
   /* ------------------------------------------------------- small months */
