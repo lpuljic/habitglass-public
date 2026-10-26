@@ -124,6 +124,7 @@
         <ul>
           <li><a href="#quit" data-guide-link>Quit habits</a></li>
           <li><a href="#time" data-guide-link>Time habits</a></li>
+          <li><a href="#counter" data-guide-link>Counter habits<span class="sr-only">, coming in 1.7</span> <span class="release-status" aria-hidden="true"><span></span>1.7</span></a></li>
           <li><a href="#water" data-guide-link>Water</a></li>
           <li><a href="#reading" data-guide-link>Reading</a></li>
           <li><a href="#reminders" data-guide-link>Reminders</a></li>
@@ -265,11 +266,71 @@
             custom amount, or reset today. A day holds up to 24 hours.
           </p>
 
-          <h3>Log time on the day</h3>
+          <h3>Missed a session? <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
           <p>
-            Time goes on the day you spend it, so earlier days can't get minutes added
-            later. A reminder or widget tap opens the time log, since only you know how long
+            Tap an earlier day in the habit's History to add the time to that day.
+            <kbd>Adjust</kbd> works there too, and today's total stays as it was.
+          </p>
+
+          <h3>From a reminder or the widget</h3>
+          <p>
+            A reminder or widget tap opens today's time log, since only you know how long
             it took.
+          </p>
+        </article>
+
+        <article id="counter" data-guide>
+          <h2>Counter habits <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h2>
+          <p>
+            Count anything with a number: reps, kilometres, pages, words. Pick a unit, set a
+            goal per day, like 50 push-ups, or per week, like 20 km of running, and log as
+            you go. Everything you log adds up.
+          </p>
+          <figure class="guide-example">
+            <dl><div><dt>Runs this week</dt><dd>3</dd></div><div><dt>Weekly goal met</dt><dd>20 km</dd></div></dl>
+            <figcaption>8 km, then 3.5 km, then 8.5 km. Decimals add up too.</figcaption>
+          </figure>
+
+          <h3>Choosing a unit</h3>
+          <p>
+            Pick reps, sets, kilometres, miles, kilograms, pounds, pages, words or servings,
+            or choose <kbd>Custom</kbd> and type your own, like laps. Changing the unit later
+            keeps the numbers you've logged, so 5 km switched to miles reads 5 mi.
+          </p>
+
+          <h3>Logging</h3>
+          <p>
+            Tap the button on the card to open <kbd>Log Progress</kbd>, set the amount, and
+            tap <kbd>Add</kbd>. The steps fit the unit: one rep at a time, or half a
+            kilometre. A daily goal completes once the day's total reaches it.
+          </p>
+
+          <h3>Per day or per week</h3>
+          <p>
+            Set <kbd>Goal Period</kbd> to Per Week and everything you log that week counts,
+            however you spread it. Days with something logged fill in on the week, and the
+            streak counts weeks.
+          </p>
+
+          <h3>Logged too much?</h3>
+          <p>
+            Tap <kbd>Adjust</kbd> to undo the last log, remove a custom amount, or reset the
+            day. Resetting asks first and keeps your notes and other days.
+          </p>
+
+          <h3>Missed a day?</h3>
+          <p>
+            Tap an earlier day in the habit's History to add to that day or fix it.
+            <kbd>Adjust</kbd> works there too, and today's total stays as it was.
+          </p>
+
+          <h3>From a reminder or the widget</h3>
+          <p>
+            With a daily goal, tap <kbd>Complete</kbd> on a reminder or <kbd>+</kbd> on the
+            widget to log without opening the app. HabitGlass adds one reminder's share of
+            the goal, like 17 of 50 reps over 3 reminders, or just what's left. Once the goal
+            is met, those taps don't add anything. A weekly goal has no share to guess, so
+            the tap opens <kbd>Log Progress</kbd> instead.
           </p>
         </article>
 
@@ -572,6 +633,14 @@
             the only ones it lists. Water takes an amount through <kbd>Log Amount</kbd>. Time,
             reading, quit and limit habits still log in the app. Checking off an Apple Health
             habit counts as checked in by hand, and nothing is written to Health.
+          </p>
+
+          <h3>Add to a counter <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <p>
+            <kbd>Log Count</kbd> adds an amount to a counter habit in its own unit, like
+            20 reps or 5 km. Say “Log a count in HabitGlass”, or “Add to Push-ups in
+            HabitGlass”, and Siri asks how much. Each run adds more, even after the goal is
+            met.
           </p>
 
           <h3>Make a water shortcut</h3>
