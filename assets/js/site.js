@@ -356,7 +356,6 @@
      shared link or the back button opens the right one. */
   var guides = document.querySelectorAll('[data-guide]');
   var guideLinks = document.querySelectorAll('[data-guide-link]');
-  var guideLayout = document.querySelector('.guides-layout');
 
   function showGuide(id) {
     var target = document.getElementById(id);
@@ -378,12 +377,14 @@
         var id = this.getAttribute('href').slice(1);
         history.pushState(null, '', '#' + id);
         showGuide(id);
-        if (guideLayout.getBoundingClientRect().top < 0) {
-          guideLayout.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-        }
+        var heading = document.getElementById(id).querySelector('h2');
+        heading.setAttribute('tabindex', '-1');
+        heading.focus({ preventScroll: true });
+        heading.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       });
     }
     addEventListener('popstate', function () { showGuide(location.hash.slice(1)); });
+    addEventListener('hashchange', function () { showGuide(location.hash.slice(1)); });
     showGuide(location.hash.slice(1));
   }
 

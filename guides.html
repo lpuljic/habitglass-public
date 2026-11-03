@@ -113,7 +113,7 @@
   <section class="shell guides-hero">
     <h1>How each habit <em>counts.</em></h1>
     <p class="lede">
-      Choose a habit, see what counts, and make your first check-in.
+      Start a habit, see what counts, and make your first check-in.
       Find help with reminders, widgets and Siri along the way.
     </p>
   </section>
@@ -122,44 +122,79 @@
     <div class="shell guides-layout">
       <nav class="guides-nav" aria-label="Guides">
         <ul>
+          <li><a href="#start" data-guide-link>Get started</a></li>
           <li><a href="#quit" data-guide-link>Quit habits</a></li>
+          <li><a href="#limit" data-guide-link>Limit habits</a></li>
           <li><a href="#time" data-guide-link>Time habits</a></li>
-          <li><a href="#counter" data-guide-link>Counter habits<span class="sr-only">, coming in 1.7</span> <span class="release-status" aria-hidden="true"><span></span>1.7</span></a></li>
+          <li><a href="#counter" data-guide-link>Counter habits</a></li>
           <li><a href="#water" data-guide-link>Water</a></li>
           <li><a href="#reading" data-guide-link>Reading</a></li>
           <li><a href="#reminders" data-guide-link>Reminders</a></li>
           <li><a href="#schedule" data-guide-link>Schedules and streaks</a></li>
           <li><a href="#insights" data-guide-link>Insights and widgets</a></li>
-          <li><a href="#limit" data-guide-link>Limit habits<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
-          <li><a href="#health" data-guide-link>Apple Health<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
-          <li><a href="#shortcuts" data-guide-link>Siri and Shortcuts<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
-          <li><a href="#history" data-guide-link>Year and notes<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
+          <li><a href="#health" data-guide-link>Apple Health</a></li>
+          <li><a href="#shortcuts" data-guide-link>Siri and Shortcuts</a></li>
+          <li><a href="#history" data-guide-link>Year and notes</a></li>
           <li><a href="#pausing" data-guide-link>Pausing habits</a></li>
-          <li><a href="#backup" data-guide-link>Backups<span class="sr-only">, coming in 1.6</span> <span class="release-status" aria-hidden="true"><span></span>1.6</span></a></li>
+          <li><a href="#backup" data-guide-link>Backups</a></li>
         </ul>
       </nav>
 
       <div class="guide">
+        <article id="start" data-guide>
+          <h2>Get started</h2>
+          <p>
+            Start with one thing you want to do, track, or cut back on. You can edit its
+            schedule and goal later; the days you've already logged stay in your history.
+          </p>
+          <h3>Make your first habit</h3>
+          <ol class="guide-steps">
+            <li>On Home, tap the <kbd>+</kbd> button at the top and name your habit.</li>
+            <li>Tap <kbd>Tracking</kbd> to choose how you want to log it. For a daily check-off, keep <kbd>Simple Completion</kbd>.</li>
+            <li>Tap <kbd>Repeat</kbd> to pick the days it counts. Leave it on <kbd>Daily</kbd> if you want to do it every day.</li>
+            <li>If you want a reminder, turn on <kbd>Remind me</kbd> and choose a time.</li>
+            <li>Tap the checkmark at the top right to create the habit.</li>
+            <li>On Home, tap its check-in button when you've done it.</li>
+          </ol>
+          <p>
+            Open the habit to see its history. For a simple check-off, tap an earlier day
+            to fix a check-in. To change its goal or schedule, open its menu and choose
+            <kbd>Edit Habit</kbd>.
+            The <a href="#history">Year and notes</a> guide shows how to look back further.
+          </p>
+          <h3>Choose the right tracking type</h3>
+          <p>
+            Use a simple check-off for something you either did or didn't do. Choose
+            <a href="#time">Time</a> or <a href="#counter">Counter</a> when an amount matters,
+            <a href="#water">Water</a> or <a href="#reading">Reading</a> for their own logs,
+            <a href="#quit">Quit</a> for something you're stopping, or
+            <a href="#limit">Limit</a> for a daily maximum.
+          </p>
+        </article>
+
         <article id="quit" data-guide>
           <h2>Quit habits</h2>
           <p>
-            For something you're stopping, like smoking or late-night snacking. Every day
-            counts as on track unless you log a slip, so you only open the app when
-            something goes wrong.
+            For something you're stopping, like smoking or late-night snacking. Each
+            scheduled day after the start date counts as on track unless you log a slip.
+            You don't need a daily check-in.
           </p>
           <figure class="guide-example">
             <dl><div><dt>Slips, Monday to Thursday</dt><dd>0</dd></div><div><dt>Your streak</dt><dd>4 days</dd></div></dl>
             <figcaption>Four finished days without a slip. Each one counts.</figcaption>
           </figure>
 
+          <h3>Set one up</h3>
+          <p>When you create a habit, tap <kbd>Tracking</kbd> and choose <kbd>Quit Habit</kbd>.</p>
+
           <h3>Today stays open</h3>
           <p>
             Today counts once it's over, so a bad evening can still go in. Want it on the
-            board now? Tap the check-in button on the card and choose
-            <kbd>Stayed On Track</kbd>.
+            board now? Tap the check-in control on the card, choose <kbd>Stayed On Track</kbd>,
+            then tap <kbd>Save</kbd>.
           </p>
 
-          <h3>Didn't open the app? <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <h3>Didn't open the app?</h3>
           <p>
             That's not a missed day. For a quit habit, the only way to miss a day is a slip,
             and only you can log one. A day you didn't answer counts as on track.
@@ -167,8 +202,8 @@
 
           <h3>Logging a slip</h3>
           <p>
-            Tap the check-in button, choose <kbd>Had a Slip</kbd>, add a note if it helps,
-            and save. The streak starts again the next day. Every day before the slip stays
+            Tap the check-in control on the card, choose <kbd>Had a Slip</kbd>, add a note if it helps,
+            then tap <kbd>Save</kbd>. The streak starts again the next day. Every day before the slip stays
             in your history.
           </p>
 
@@ -187,7 +222,7 @@
         </article>
 
         <article id="limit" data-guide>
-          <h2>Limit habits <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h2>
+          <h2>Limit habits</h2>
           <p>
             For something you want to cut back on rather than stop, like no more than 2
             coffees a day. Set a <kbd>Daily Limit</kbd> when you create the habit and log each
@@ -198,11 +233,18 @@
             <figcaption>With a daily limit of 2, only the third coffee takes you over.</figcaption>
           </figure>
 
+          <h3>Set one up</h3>
+          <p>
+            When you create a habit, tap <kbd>Tracking</kbd>, choose <kbd>Limit Habit</kbd>,
+            then set its <kbd>Daily Limit</kbd>.
+          </p>
+
           <h3>Logging one</h3>
           <p>
-            Tap <kbd>+</kbd> on the card to open <kbd>Log Occurrences</kbd>, step the count up,
-            add a note if it helps, and save. The card shows where you are, like
-            <b class="n">1 / 2</b> within limit.
+            Tap <kbd>+</kbd> on the card to open <kbd>Log Occurrences</kbd>. <kbd>Logged</kbd>
+            is today's total, not how many to add. If you've already logged one coffee,
+            set it to 2 for the next one, then tap <kbd>Save</kbd>. The card shows your
+            total, like <b class="n">2 / 2</b> within limit.
           </p>
 
           <h3>Today stays open</h3>
@@ -226,7 +268,8 @@
 
           <h3>Fixing an earlier day</h3>
           <p>
-            Open the habit and tap any day in its history to set that day's total.
+            Open the habit and tap an earlier day in History to set that day's total,
+            just as you would today.
           </p>
 
           <h3>From a reminder or the widget</h3>
@@ -251,7 +294,7 @@
 
           <h3>Logging a session</h3>
           <p>
-            Tap the button on the card to open the time log, set the time in minutes or
+            Tap the check-in button on the card to open <kbd>Log Time</kbd>, set the time in minutes or
             hours, and tap <kbd>Add</kbd>.
           </p>
           <p>
@@ -266,7 +309,7 @@
             custom amount, or reset today. A day holds up to 24 hours.
           </p>
 
-          <h3>Missed a session? <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Missed a session?</h3>
           <p>
             Tap an earlier day in the habit's History to add the time to that day.
             <kbd>Adjust</kbd> works there too, and today's total stays as it was.
@@ -280,7 +323,7 @@
         </article>
 
         <article id="counter" data-guide>
-          <h2>Counter habits <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h2>
+          <h2>Counter habits</h2>
           <p>
             Count anything with a number: reps, kilometres, pages, words. Pick a unit, set a
             goal per day, like 50 push-ups, or per week, like 20 km of running, and log as
@@ -310,6 +353,20 @@
             Set <kbd>Goal Period</kbd> to Per Week and everything you log that week counts,
             however you spread it. Days with something logged fill in on the week, and the
             streak counts weeks.
+          </p>
+
+          <h3 id="counter-health">Track distance with Apple Health <span class="release-status"><span aria-hidden="true"></span>Coming in 1.8</span></h3>
+          <p>
+            Choose kilometres or miles and turn on <kbd>Track with Apple Health</kbd>.
+            With Pro and your permission, HabitGlass reads everyday walking and running
+            distance from your iPhone or Apple Watch toward the same daily or weekly goal.
+            This includes movement outside recorded workouts, and updates may take up to an hour.
+          </p>
+          <p>
+            While linked, the card opens Apple Health progress instead of a manual log.
+            Health distance and manual entries never add together. Your earlier logs stay
+            saved, and you can turn the switch off to log manually again, even without Pro.
+            Health readings stay on your iPhone; only earned completion is saved and synced.
           </p>
 
           <h3>Logged too much?</h3>
@@ -344,17 +401,22 @@
             <dl><div><dt>Daily goal</dt><dd>2,000 mL</dd></div><div><dt>Each reminder</dt><dd>≈160 mL</dd></div></dl>
             <figcaption>13 hourly reminders, from 7:30 am to 7:30 pm, split the goal into sips.</figcaption>
           </figure>
-          <figure class="guide-shot">
-            <picture data-shot="guide-water-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-water-framed-light.webp"><img src="assets/shots/guide-water-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Drink water details showing today's 750 mL progress toward a 2,000 mL goal, consistency and monthly history."></picture>
-            <figcaption>Today’s amount, goal and history on one screen.</figcaption>
-          </figure>
-
           <h3>Logging a sip</h3>
+          <ol class="guide-steps">
+            <li>On Home, tap <kbd>+</kbd> on the water card to open <kbd>Log Water</kbd>.</li>
+            <li>Under <kbd>Amount to Add</kbd>, keep the suggested sip or enter what you drank. Use the plus and minus buttons to adjust it in 50 mL steps.</li>
+            <li>Tap <kbd>Add</kbd> with the amount shown on the button to record it.</li>
+          </ol>
+          <figure class="guide-phone">
+            <div class="guide-phone-shot">
+              <picture data-shot="log-water-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/log-water-framed-light.webp"><img src="assets/shots/log-water-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Log Water open over Home, showing 750 mL consumed, Amount to Add set to 200 mL, and the Add 200 mL button."></picture>
+              <svg class="guide-callout" viewBox="0 0 900 1840" aria-hidden="true" focusable="false"><path d="M652 1644 L732 1572 M732 1572 L698 1580 M732 1572 L724 1606"/><rect class="guide-callout-label" x="416" y="1644" width="236" height="86" rx="43"/><text x="534" y="1700" text-anchor="middle">Tap Add</text></svg>
+            </div>
+            <figcaption>Tap <kbd>Add</kbd> to record the amount.</figcaption>
+          </figure>
           <p>
-            Log Water opens with 160 mL ready, one reminder's share. Tap
-            <kbd>Add 160 mL</kbd> and the card goes <b class="n">1/13</b>,
-            <b class="n">2/13</b> and so on, or nudge the amount first in 50 mL steps.
-            Finish a 500 mL bottle and it jumps 3 ticks at once.
+            With the 2,000 mL goal above, the sheet suggests 160 mL, one reminder's share.
+            You can change it to the amount you actually drank, as in the 200 mL example.
           </p>
           <p>
             The last tick fills when you reach 2,000 mL. The bottle's badge turns green
@@ -376,6 +438,9 @@
             2,000 mL goal, or just what's left if you're closer than that. Once the goal is
             met, those taps don't add anything.
           </p>
+
+          <h3>See your progress</h3>
+          <p>Open the water habit to see today's total, your goal and your history together.</p>
         </article>
 
         <article id="reading" data-guide>
@@ -388,6 +453,28 @@
           <figure class="guide-example">
             <dl><div><dt>Daily goal</dt><dd>30 pages</dd></div><div><dt>Each tick</dt><dd>5 pages</dd></div></dl>
             <figcaption>Six reminders split your daily goal into six ticks.</figcaption>
+          </figure>
+
+          <h3>Set up a book</h3>
+          <ol class="guide-steps">
+            <li>When creating the habit, choose <kbd>Book / Reading</kbd> under <kbd>Tracking</kbd>.</li>
+            <li>Under <kbd>Book</kbd>, tap <kbd>Add Book</kbd> to choose what you're reading.</li>
+            <li>Choose <kbd>Goal</kbd>, set the <kbd>Daily Goal</kbd>, then save the habit.</li>
+          </ol>
+
+          <h3>Logging your reading</h3>
+          <p>
+            Tap the check-in button on the reading card to open <kbd>Read a Book</kbd>.
+            Choose <kbd>Pages</kbd> to enter how many you read, or <kbd>Current Page</kbd>
+            to update your place. If your goal is in minutes, log the time you read.
+            Tap <kbd>Save</kbd> to add the session to today's progress.
+          </p>
+          <figure class="guide-phone">
+            <div class="guide-phone-shot">
+              <picture data-shot="log-book-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/log-book-framed-light.webp"><img src="assets/shots/log-book-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Read a Book open over Home, with Pages selected, 20 pages entered, and the Save button below."></picture>
+              <svg class="guide-callout" viewBox="0 0 900 1840" aria-hidden="true" focusable="false"><path d="M652 1644 L732 1572 M732 1572 L698 1580 M732 1572 L724 1606"/><rect class="guide-callout-label" x="404" y="1644" width="260" height="86" rx="43"/><text x="534" y="1700" text-anchor="middle">Tap Save</text></svg>
+            </div>
+            <figcaption>Tap <kbd>Save</kbd> to add the session to today.</figcaption>
           </figure>
 
           <h3>Reading by the clock</h3>
@@ -405,7 +492,7 @@
         </article>
 
         <article id="health" data-guide>
-          <h2>Apple Health <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h2>
+          <h2>Apple Health</h2>
           <p>
             Link a habit to Apple Health and it checks itself off once Health shows the goal
             met. Pick one reading: steps, active energy, exercise minutes or workouts. Apple
@@ -427,13 +514,13 @@
 
           <h3>When it checks off</h3>
           <p>
-            As soon as the numbers reach Health. A Watch can take a while to sync, so
-            HabitGlass looks again at the last two days too. It also works with the app
-            closed, but Health stays locked while your iPhone is, so sometimes the tick only
-            lands when you next open the app.
+            HabitGlass checks the day off when it receives a Health reading that meets your
+            goal. A Watch can take a while to sync, so the app checks the last two days too.
+            It can update with the app closed, but Health stays locked while your iPhone is;
+            sometimes the check-in lands when you next unlock or open the app.
           </p>
 
-          <h3>Progress and completion alerts <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <h3>Progress and completion alerts</h3>
           <p>
             Apple Health reminders can show your latest reading and goal, such as
             <kbd>6,240 of 10,000 steps as of 4:10 PM</kbd>. In the habit's Apple Health
@@ -481,21 +568,24 @@
             <figcaption>Reminder times per day. Pro also adds custom text, repeats and follow-ups.</figcaption>
           </figure>
 
-          <h3>Free: one reminder a day <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Free: one reminder a day</h3>
           <p>
             Turn on <kbd>Remind me</kbd> in the habit and pick a time. It goes off on each day
-            the habit is scheduled, and stays quiet once that day is done. A weekly or monthly
-            goal stays quiet once you've met it, until the next week or month starts.
+            the habit is scheduled, and stays quiet once that day is done.
           </p>
+          <h3>Weekly and monthly goals</h3>
+          <p>Reminders stop once you meet the goal, then start again next week or month.</p>
 
-          <h3>Pro: several set times <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <h3>Pro: several set times</h3>
           <p>
             Tap <kbd>Add Time</kbd> for up to 6 times a day, like 8 am and 10 pm for brushing
-            your teeth. With more than one time, each reminder is one check-in, so two
-            times means the day is done after two. Once it's done, the rest stay quiet.
+            your teeth. For a simple check-off habit, two times set a target of two
+            check-ins that day. Measured habits use the times to split their daily goal;
+            weekly goals, Apple Health, quit and limit habits have their own rules below.
+            Once a daily goal is met, the rest stay quiet.
           </p>
 
-          <h3>Pro: your own words <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <h3>Pro: your own words</h3>
           <p>
             Write what the reminder says, like "Floss too", under
             <kbd>Reminder Text</kbd>. It shows on every reminder for that habit. Leave it
@@ -515,11 +605,18 @@
             Pro you can still write its text.
           </p>
 
-          <h3>Apple Health habits <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <h3>Apple Health habits</h3>
           <p>
             Apple Health habits keep every set time you add, but the day still takes one
             check-off, and there are no repeats or follow-ups. Each reminder stops once Health
             shows the goal met.
+          </p>
+
+          <h3>Measured and weekly goals</h3>
+          <p>
+            Water, reading and daily counter goals use reminder times to divide the goal
+            into smaller steps. Time and weekly counter goals open a log so you can enter
+            the amount you did.
           </p>
 
           <h3>If Pro ends</h3>
@@ -544,7 +641,7 @@
             <li><kbd>Times per Week</kbd> sets a target of 1 to 7 check-ins per week.</li>
             <li><kbd>Every N Days</kbd> repeats every 2 to 30 days.</li>
           </ul>
-          <h3>More ways to repeat <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>More ways to repeat</h3>
           <ul class="dots">
             <li><kbd>Times per Month</kbd> sets a target of 1 to 31 check-ins on any days in the month. The goal resets on the first.</li>
             <li>Turn on <kbd>Every Other Week</kbd> under <kbd>Days of Week</kbd> to repeat on your weekdays every second week, starting with the week of the start date.</li>
@@ -552,7 +649,7 @@
             <li><kbd>Once</kbd> is due on the date you pick. Finish it early or late and it stays in <kbd>Done</kbd> for the rest of that day, then moves to Archived without losing its history.</li>
             <li>For a schedule that skips weeks or months, <kbd>Repeat</kbd> shows its next dates as you set it up.</li>
           </ul>
-          <h3>Custom intervals <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Custom intervals</h3>
           <ul class="dots">
             <li><kbd>Custom Interval</kbd> takes over from <kbd>Every N Days</kbd>. Repeat every 2 to 30 days, 1 to 12 weeks, or 1 to 12 months.</li>
             <li>Turn on <kbd>Count From Last Done</kbd> for chores like mopping every two weeks. The habit shows up when it's due and stays due until you check it off. The next date is two weeks from the day you did it, early or late.</li>
@@ -570,7 +667,7 @@
             Weekly habits build a week streak by reaching their check-in target. Today stays
             open until the day ends, so you have time to finish.
           </p>
-          <h3>Monthly goals <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Monthly goals</h3>
           <p>
             A monthly goal builds a month streak. Home shows it under <kbd>This month</kbd>
             until you reach the goal. Your check-ins count on any unpaused day in the month.
@@ -585,13 +682,12 @@
         <article id="insights" data-guide>
           <h2>Insights and widgets</h2>
           <p>
-            Insights summarizes progress across habits. Choose <kbd>7 Days</kbd>,
-            <kbd>4 Weeks</kbd> or <kbd>3 Months</kbd> to change the period. Full Insights is
-            part of Pro and adds coaching, habit performance, a check-in calendar and a
-            consistency heatmap.
+            Insights and widgets are part of Pro. Open Insights from Home to see progress
+            across habits. Choose <kbd>7 Days</kbd>, <kbd>4 Weeks</kbd> or <kbd>3 Months</kbd>
+            for coaching, habit performance, a check-in calendar and a consistency heatmap.
           </p>
 
-          <h3>See your year <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>See your year</h3>
           <p>
             Tap <kbd>View Year</kbd> under the check-in calendar to see every month across
             your habits, each day shaded by how much of it you got done, and your best month.
@@ -599,20 +695,20 @@
           </p>
 
           <h3>Add a widget</h3>
+          <p>With Pro, add a widget from your iPhone's Home Screen or Lock Screen edit controls:</p>
           <ul class="dots">
             <li><kbd>Today</kbd> shows a checklist. Touch and hold it to choose which habits it lists.</li>
             <li><kbd>Habit Focus</kbd> shows the next habit due. Touch and hold it to pin one habit instead.</li>
             <li><kbd>Habit Streak</kbd> puts a habit's streak and today's progress on the Lock Screen.</li>
           </ul>
           <p>
-            Add a widget from the iPhone's Home Screen or Lock Screen edit controls. Tap a
-            habit in a widget to open it; check-in buttons work for habits that support a
-            direct check-in.
+            Tap a habit to open it. Widget check-in buttons work for habits that support a
+            direct check-in. Without Pro, widgets open the upgrade screen.
           </p>
         </article>
 
         <article id="shortcuts" data-guide>
-          <h2>Siri and Shortcuts <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h2>
+          <h2>Siri and Shortcuts</h2>
           <p>
             Check off a habit, log water, or hear how today is going without opening
             HabitGlass. Ask Siri, or build the same actions into a shortcut, an automation or
@@ -643,7 +739,7 @@
             habit counts as checked in by hand, and nothing is written to Health.
           </p>
 
-          <h3>Add to a counter <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Add to a counter</h3>
           <p>
             <kbd>Log Count</kbd> adds an amount to a counter habit in its own unit, like
             20 reps or 5 km. Say “Log a count in HabitGlass”, or “Add to Push-ups in
@@ -669,7 +765,8 @@
           <h3>On the Action button or Lock Screen</h3>
           <p>
             On an iPhone with an Action button, open Settings, then <kbd>Action Button</kbd>,
-            swipe to <kbd>Shortcut</kbd> and pick Log Water. One press logs a drink. The
+            swipe to <kbd>Shortcut</kbd> and pick Log Water. Press and hold the Action button
+            to log a drink. The
             Shortcut control puts it in Control Center or on the Lock Screen too.
           </p>
 
@@ -686,18 +783,23 @@
             an Apple Watch workout.
           </p>
 
-          <h3>Use your progress in a shortcut <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Use your progress in a shortcut</h3>
           <p>
             <kbd>Get Habit Progress</kbd> returns Completed Today, Check-Ins Today, Daily
-            Target, Due Today, Paused, Weekly Goal Met and Monthly Goal Met. Put it in an
+            Target, Due Today, Paused and Weekly Goal Met. Put it in an
             <kbd>If</kbd> action to build your own nudge, like a 6 pm automation that sends a
-            notification when Morning run isn't Completed Today. Weekly Goal Met and Monthly
-            Goal Met are separate from Completed Today for weekly and monthly habits.
+            notification when Morning run isn't Completed Today. Weekly Goal Met is separate
+            from Completed Today for weekly habits.
           </p>
           <p>
             <kbd>Get Today's Progress</kbd> returns Completed, Total and Remaining for the
-            habits due today, the same count as Home. Weekly and monthly goals come back
-            separately, and paused habits aren't counted.
+            habits due today, the same count as Home. Weekly goals come back separately,
+            and paused habits aren't counted.
+          </p>
+          <h3>Monthly goal status</h3>
+          <p>
+            <kbd>Get Habit Progress</kbd> also returns Monthly Goal Met. Monthly goals come
+            back separately from today's completion in <kbd>Get Today's Progress</kbd>.
           </p>
           <p>
             For a quit habit, Completed Today means you checked in on track, and Slipped Today
@@ -727,30 +829,52 @@
         </article>
 
         <article id="history" data-guide>
-          <h2>Year and notes <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h2>
+          <h2>Year and notes</h2>
           <p>
             Habit details hold your month-by-month history. Open a habit to see its calendar,
             add or edit a note on a day, and review the year without losing the daily view.
           </p>
-          <figure class="guide-shot">
-            <picture data-shot="guide-year-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-year-framed-light.webp"><img src="assets/shots/guide-year-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="The Year view for Drink water, with a best-month summary and a progress grid for every month in 2026."></picture>
-            <figcaption>The Year view compares progress across months.</figcaption>
-          </figure>
-
-          <h3>Review the year <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Review the year</h3>
           <ol class="guide-steps">
             <li>Open a habit and scroll to its History.</li>
             <li>Tap <kbd>View Year</kbd> to see the best month and a dot grid for each month.</li>
             <li>Use the year controls to move through earlier years.</li>
             <li>Tap a month or a day to return to that point in History.</li>
           </ol>
-          <p>The year starts at the month the habit began. The best month uses completion rate, or most check-ins for a weekly habit.</p>
+          <p>
+            The best month uses completion rate, or most check-ins for a weekly habit.
+          </p>
+          <figure class="guide-phone">
+            <picture data-shot="guide-year-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-year-framed-light.webp"><img src="assets/shots/guide-year-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Year view showing September 2026 as the best month, then monthly progress grids from January to June."></picture>
+            <figcaption>Year view, with the best month at the top.</figcaption>
+          </figure>
+          <h3>Start at the first month</h3>
+          <p>The year opens at the month the habit began, without earlier empty months.</p>
+
+          <h3>See a day's totals</h3>
+          <p>
+            Touch and hold a day in History to open <kbd>Day Details</kbd>. See the water,
+            time, counts, and reading you logged that day, including progress above your goal.
+            Reading totals include every book you logged that day. A manual check-in on its own
+            has no recorded amount.
+          </p>
+          <p>
+            Apple Health habits read the selected day's steps, energy, exercise minutes, or
+            workouts from Health on your iPhone. These readings require Pro and Health access.
+            If no reading is available, Day Details says so. Viewing a day doesn't change its check-in.
+          </p>
 
           <h3>Add or change a day note</h3>
           <p>
-            Tap a day in History to edit its check-in and note. Days with notes have a dot on
-            the calendar. Notes in the selected month appear in the <kbd>Notes</kbd> card;
-            tap a note there to edit it. Changing a check-in doesn't erase its note.
+            Day notes are part of Pro. Days with notes have a dot on the calendar. The
+            <kbd>Notes</kbd> card shows notes in the selected month; tap a note there to edit
+            it. Changing a check-in doesn't erase its note.
+          </p>
+          <h3>From a day in History</h3>
+          <p>
+            Touch and hold a day, then choose <kbd>Add Note</kbd> or <kbd>Edit Note</kbd>.
+            For quit and limit habits, choose <kbd>Edit Log</kbd> to change the note with
+            that day's log.
           </p>
         </article>
 
@@ -762,7 +886,7 @@
             Starting or changing a pause requires Pro; resuming or cancelling one is free.
           </p>
 
-          <h3>Set a pause <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h3>
+          <h3>Set a pause</h3>
           <ol class="guide-steps">
             <li>Open the habit's menu and choose <kbd>Pause Habit</kbd>.</li>
             <li>Choose the first and last paused days on the calendar.</li>
@@ -780,17 +904,12 @@
         </article>
 
         <article id="backup" data-guide>
-          <h2>Backups <span class="release-status"><span aria-hidden="true"></span>Coming in 1.6</span></h2>
+          <h2>Backups</h2>
           <p>
             Export a JSON backup before changing phones or to keep a copy of your habits and
             history. Backups are free. CSV exports are for spreadsheets; they aren't restore
             files.
           </p>
-          <figure class="guide-shot">
-            <picture data-shot="guide-backup-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-backup-framed-light.webp"><img src="assets/shots/guide-backup-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Data & Backup settings with Export Backup, Export Spreadsheet, Import Backup and Delete All Data options."></picture>
-            <figcaption>Export and restore options live together in Data &amp; Backup.</figcaption>
-          </figure>
-
           <h3>Save a backup</h3>
           <ol class="guide-steps">
             <li>Open <kbd>Settings</kbd>, then <kbd>Data &amp; Backup</kbd>.</li>
@@ -798,6 +917,10 @@
             <li>For a spreadsheet, choose <kbd>Export Spreadsheet</kbd> instead.</li>
           </ol>
           <p>Export a fresh backup before each restore if you want a recent way back.</p>
+          <figure class="guide-phone">
+            <picture data-shot="guide-backup-framed"><source media="(prefers-color-scheme: light)" srcset="assets/shots/guide-backup-framed-light.webp"><img src="assets/shots/guide-backup-framed-dark.webp" width="900" height="1840" loading="lazy" decoding="async" alt="Data &amp; Backup screen with Export Backup, Export Spreadsheet and Import Backup."></picture>
+            <figcaption>Data &amp; Backup holds export and import together.</figcaption>
+          </figure>
 
           <h3>Restore a backup</h3>
           <ol class="guide-steps">
@@ -807,11 +930,13 @@
             <li>Tap <kbd>Restore This Backup</kbd> to replace the current habits and history.</li>
           </ol>
           <p>
-            Restore replaces data on this iPhone. If iCloud sync is on, changes can sync to
-            your other devices. Health readings aren't included in backups.
+            Restoring deletes the current habits and their history on this iPhone, then
+            brings back the backup's data. If iCloud sync is on, the replacement also
+            reaches your other devices. Save your current data first if you might need it.
+            Health readings aren't included in backups.
           </p>
 
-          <h3>Check iCloud sync <span class="release-status"><span aria-hidden="true"></span>Coming in 1.7</span></h3>
+          <h3>Check iCloud sync</h3>
           <p>
             The <kbd>iCloud Sync</kbd> row near the top of <kbd>Settings</kbd> says whether sync
             is off, waiting, syncing or has no issues. When it needs you, like signing in to
